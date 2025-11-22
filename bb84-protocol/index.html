@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="num-bits">
+                        Number of Bits to Send
+                        <span class="value-display" id="num-bits-value">100</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-bits" min="20" max="200" step="20" value="100">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="error-rate">
+                        Channel Error Rate (%)
+                        <span class="value-display" id="error-rate-value">3</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="error-rate" min="0" max="25" step="1" value="3">
+                </div>
+
+                <div class="input-group">
+                    <label for="eavesdropper">Eavesdropper Attack</label>
+                    <select id="eavesdropper">
+                        <option value="none" selected>No Attack</option>
+                        <option value="intercept-resend">Intercept-Resend</option>
+                        <option value="partial">Partial Interception (50%)</option>
+                        <option value="full">Full Interception (100%)</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('secure')">Secure Channel</button>
+                    <button class="preset-btn" onclick="applyPreset('noisy')">Noisy Channel</button>
+                    <button class="preset-btn" onclick="applyPreset('attack')">Under Attack</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The BB84 Protocol Steps</h3>
                     <p>
-                        BB84 Protocol is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        BB84 (Bennett-Brassard 1984) is the first quantum key distribution protocol, enabling Alice and Bob to establish a shared secret key. The protocol uses four quantum states in two conjugate bases: rectilinear basis Z with |0⟩ (horizontal polarization) and |1⟩ (vertical), and diagonal basis X with |+⟩ = (|0⟩+|1⟩)/√2 (45°) and |-⟩ = (|0⟩-|1⟩)/√2 (135°). Step 1: Alice randomly chooses bits (0 or 1) and bases (Z or X) for each bit, prepares the corresponding photon state, and sends it to Bob. Step 2: Bob randomly chooses a measurement basis (Z or X) for each photon and measures. Step 3: Alice and Bob publicly announce their basis choices (not the measurement results). Step 4: They keep bits where bases matched (~50% on average) and discard the rest—this is the sifted key. Step 5: To detect eavesdropping, they publicly compare a random subset (~10-20%) of the sifted key. If the error rate (QBER) is below threshold (~11%), they proceed; otherwise, they abort. Step 6: They perform error correction (e.g., Cascade, LDPC codes) to fix remaining errors. Step 7: They apply privacy amplification (hash functions) to remove any information an eavesdropper might have, producing the final secure key.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        States: |0⟩, |1⟩ (Z-basis), |+⟩, |-⟩ (X-basis)<br>
+                        Sifted key: ~50% (bases matched)<br>
+                        QBER threshold: ~11% (higher → abort)<br>
+                        Final key rate: R ≈ 1 - 2h(QBER) bits/photon
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Security Against Eavesdropping</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        BB84 security relies on the no-cloning theorem and measurement disturbance. If an eavesdropper (Eve) intercepts a photon, she must measure it to gain information. However, she doesn't know which basis Alice used. If Eve guesses the wrong basis (50% probability), she measures in the wrong basis and gets a random result. When she resends the photon to Bob (intercept-resend attack), Bob's measurement will have errors. Specifically, if Eve measures in the wrong basis, she collapses the state to an eigenstate of her basis, and when Bob measures in Alice's original basis, he gets the wrong result 50% of the time. Overall, Eve's interception introduces 25% error rate in the sifted key (50% wrong basis × 50% wrong result). Alice and Bob detect this by comparing a subset of their sifted key: if QBER > 11%, they know Eve is present and abort. The 11% threshold comes from information theory: below this, Alice and Bob can distill a secure key using error correction and privacy amplification; above this, Eve has too much information. More sophisticated attacks (e.g., photon number splitting, Trojan horse) are countered by decoy states, detector blinding countermeasures, and device-independent protocols.
                     </p>
+                    <div class="formula-box">
+                        Intercept-resend: 25% error rate (50% × 50%)<br>
+                        Detection: Compare subset of sifted key<br>
+                        Security threshold: QBER < 11%<br>
+                        Countermeasures: Decoy states, device-independent QKD
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Error Correction and Privacy Amplification</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        After sifting, Alice and Bob have correlated but not identical keys due to channel noise and potential eavesdropping. Error correction reconciles their keys without revealing too much information to Eve. Classical error correction codes (Cascade, LDPC, polar codes) are used: Alice and Bob publicly exchange parity information to identify and correct errors. This leaks some information to Eve, reducing the final key rate. Privacy amplification removes Eve's residual information using universal hash functions: Alice and Bob agree on a random hash function h and compute the final key K = h(sifted key). By the leftover hash lemma, if Eve has at most t bits of information about the sifted key, hashing to a key of length n - t - s bits (s = security parameter) produces a key indistinguishable from uniform random to Eve. The final key rate is R ≈ 1 - h(QBER) - h(QBER_Eve), where h is binary entropy. For QBER = 3% (typical), R ≈ 0.7 bits/photon. For QBER = 11% (threshold), R ≈ 0. Practical BB84 systems achieve 1-10 kbps key rates over 10-100 km fiber. The security proof (Shor-Preskill 2000, Renner 2005) shows BB84 is unconditionally secure against any attack allowed by quantum mechanics, assuming authenticated classical channel.
                     </p>
+                    <div class="formula-box">
+                        Error correction: Cascade, LDPC, polar codes<br>
+                        Privacy amplification: K = h(sifted key) (universal hash)<br>
+                        Key rate: R ≈ 1 - h(QBER) - h(QBER_Eve)<br>
+                        Typical: QBER = 3% → R ≈ 0.7 bits/photon
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Practical Implementation and Variants</h3>
+                    <p>
+                        Practical BB84 implementations use weak coherent pulses (attenuated lasers) instead of true single photons, as single-photon sources are expensive and slow. However, coherent pulses occasionally contain multiple photons, enabling photon number splitting (PNS) attacks: Eve splits off extra photons without disturbing the signal. Decoy states (Hwang 2003) counter PNS: Alice randomly varies pulse intensities (signal, decoy, vacuum) and monitors statistics to detect Eve. Commercial QKD systems (ID Quantique, Toshiba, QuantumCTek) use decoy-state BB84 over fiber (10-100 km, 1-10 kbps) or free space (satellite, 1000+ km). Variants of BB84 include: B92 (2 states instead of 4, simpler but lower key rate), SARG04 (robust against PNS without decoy states), and differential-phase-shift (DPS) QKD. Continuous-variable BB84 uses coherent states and homodyne detection, enabling integration with telecom infrastructure. Measurement-device-independent (MDI) BB84 uses an untrusted relay, removing detector side-channel vulnerabilities. BB84 is the most widely deployed QKD protocol, securing government, military, and financial communications in China, Europe, and the US. Future: integrated photonics will enable chip-scale BB84 for consumer applications.
+                    </p>
+                    <div class="formula-box">
+                        Practical: Weak coherent pulses + decoy states<br>
+                        Commercial: 10-100 km fiber, 1-10 kbps, $50k-$500k<br>
+                        Variants: B92, SARG04, DPS, CV-QKD, MDI-QKD<br>
+                        Deployment: China, Europe, US (gov, military, finance)
+                    </div>
                 </div>
             </section>
 
