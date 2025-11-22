@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="spin-axis">Measurement Axis</label>
+                    <select id="spin-axis">
+                        <option value="z">Z-axis (Sz)</option>
+                        <option value="x">X-axis (Sx)</option>
+                        <option value="y">Y-axis (Sy)</option>
+                        <option value="custom">Custom Direction</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="theta">
+                        Polar Angle θ (degrees)
+                        <span class="value-display" id="theta-value">0</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="theta" min="0" max="180" step="5" value="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="phi">
+                        Azimuthal Angle φ (degrees)
+                        <span class="value-display" id="phi-value">0</span>
+                    </label>
+                    <input type="range" id="phi" min="0" max="360" step="5" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('spin-up-z')">Spin-Up |↑⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('spin-down-z')">Spin-Down |↓⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('spin-right')">Spin-Right |→⟩</button>
                 </div>
             </section>
 
@@ -49,34 +59,53 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Intrinsic Angular Momentum</h3>
                     <p>
-                        Spin and Pauli Matrices is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Spin is an intrinsic form of angular momentum carried by elementary particles, distinct from orbital angular momentum L = r × p. Unlike orbital angular momentum, spin has no classical analog—it's not due to physical rotation. Electrons, protons, and neutrons are spin-½ particles: measuring spin along any axis gives ±ℏ/2. The spin state lives in a 2D complex vector space (spinor space), with basis states |↑⟩ and |↓⟩ (spin-up and spin-down along the z-axis). A general spin state is |ψ⟩ = α|↑⟩ + β|↓⟩, where |α|² + |β|² = 1. Spin is quantized: for spin-½, the magnitude is |S| = √(s(s+1))ℏ = √(3/4)ℏ, but measurements along any axis yield only ±ℏ/2. This is the Stern-Gerlach experiment: a beam of silver atoms splits into two beams when passing through an inhomogeneous magnetic field, proving spin quantization. Spin is fundamental to the Pauli exclusion principle, which underlies the structure of atoms and the stability of matter.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Spin magnitude: |S| = √(s(s+1))ℏ = √(3/4)ℏ (for s=½)<br>
+                        Measurement outcomes: Sz = ±ℏ/2 (along any axis)<br>
+                        General state: |ψ⟩ = α|↑⟩ + β|↓⟩, |α|² + |β|² = 1
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Pauli Matrices and Spin Operators</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The spin operators Ŝx, Ŝy, Ŝz are represented by the Pauli matrices σx, σy, σz: Ŝi = (ℏ/2)σi. The Pauli matrices are 2×2 Hermitian matrices: σx = [[0,1],[1,0]], σy = [[0,-i],[i,0]], σz = [[1,0],[0,-1]]. They satisfy the commutation relations [σi, σj] = 2iεijkσk, where εijk is the Levi-Civita symbol. This means spin components don't commute: measuring Sx disturbs Sz, embodying the uncertainty principle ΔSxΔSz ≥ ℏ²/4. The Pauli matrices also satisfy σi² = I (identity) and {σi, σj} = 2δijI (anticommutation). The eigenstates of σz are |↑⟩ = [1,0]ᵀ and |↓⟩ = [0,1]ᵀ with eigenvalues ±1. For σx, the eigenstates are |→⟩ = (|↑⟩ + |↓⟩)/√2 and |←⟩ = (|↑⟩ - |↓⟩)/√2. Any spin state can be visualized on the Bloch sphere: |ψ⟩ = cos(θ/2)|↑⟩ + e^(iφ)sin(θ/2)|↓⟩, where θ and φ are spherical coordinates.
                     </p>
+                    <div class="formula-box">
+                        Pauli matrices: σx = [[0,1],[1,0]], σy = [[0,-i],[i,0]], σz = [[1,0],[0,-1]]<br>
+                        Spin operators: Ŝi = (ℏ/2)σi<br>
+                        Commutation: [Ŝi, Ŝj] = iℏεijkŜk<br>
+                        Bloch sphere: |ψ⟩ = cos(θ/2)|↑⟩ + e^(iφ)sin(θ/2)|↓⟩
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Measurement and Spin Precession</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Measuring spin along direction n̂ = (sin(θ)cos(φ), sin(θ)sin(φ), cos(θ)) is described by the operator Ŝ·n̂ = (ℏ/2)(σ·n̂). The eigenvalues are ±ℏ/2, and the probability of measuring +ℏ/2 for a state |ψ⟩ is P(+) = |⟨+n̂|ψ⟩|². For example, if |ψ⟩ = |↑⟩ (spin-up along z), measuring along x gives P(+x) = P(-x) = 1/2—complete uncertainty. This is complementarity: knowing Sz precisely means Sx is maximally uncertain. In a magnetic field B, spin precesses around B with Larmor frequency ωL = gμBB/ℏ, where g is the g-factor and μB is the Bohr magneton. The time evolution is |ψ(t)⟩ = e^(-iŜ·B̂t/ℏ)|ψ(0)⟩. For B along z, this gives |ψ(t)⟩ = e^(-iωLσzt/2)|ψ(0)⟩, causing the spin to precess around the z-axis. This is the basis for nuclear magnetic resonance (NMR) and magnetic resonance imaging (MRI).
                     </p>
+                    <div class="formula-box">
+                        Measurement operator: Ŝ·n̂ = (ℏ/2)(σxnx + σyny + σznz)<br>
+                        Probability: P(+n̂) = |⟨+n̂|ψ⟩|² = cos²(θ/2) (for |ψ⟩ along z)<br>
+                        Larmor precession: ωL = gμBB/ℏ<br>
+                        Time evolution: |ψ(t)⟩ = e^(-iŜ·B̂t/ℏ)|ψ(0)⟩
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Quantum Computing and Spin Systems</h3>
+                    <p>
+                        Spin-½ systems are the physical realization of qubits in quantum computing. The computational basis {|0⟩, |1⟩} corresponds to {|↑⟩, |↓⟩}. Single-qubit gates are rotations on the Bloch sphere: Pauli-X (bit flip) is a π rotation around x, Pauli-Z (phase flip) is a π rotation around z, and Hadamard creates superposition. The Pauli matrices generate all single-qubit unitaries: U = e^(iθn̂·σ) rotates by 2θ around n̂. Electron spin resonance (ESR) and NMR use spin manipulation for spectroscopy and imaging. Spintronics exploits electron spin (not just charge) for information processing—spin valves, magnetic tunnel junctions, and spin transistors. Quantum dots and nitrogen-vacancy (NV) centers in diamond are solid-state spin qubits for quantum computing and sensing. Spin chains (Heisenberg model) exhibit quantum phase transitions and entanglement. The spin-statistics theorem connects spin to particle statistics: fermions (half-integer spin) obey Pauli exclusion, while bosons (integer spin) can occupy the same state, explaining superfluidity and Bose-Einstein condensation.
+                    </p>
+                    <div class="formula-box">
+                        Qubit gates: X = σx, Z = σz, H = (σx + σz)/√2<br>
+                        Rotation: U(θ,n̂) = e^(iθn̂·σ) = cos(θ)I + i sin(θ)(n̂·σ)<br>
+                        Heisenberg model: H = J Σ_⟨i,j⟩ Ŝi·Ŝj (spin-spin interaction)
+                    </div>
                 </div>
             </section>
 
