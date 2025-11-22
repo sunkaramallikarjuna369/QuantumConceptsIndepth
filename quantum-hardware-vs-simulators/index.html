@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="platform-type">Platform Type</label>
+                    <select id="platform-type">
+                        <option value="hardware" selected>Real Quantum Hardware</option>
+                        <option value="ideal-simulator">Ideal Simulator</option>
+                        <option value="noisy-simulator">Noisy Simulator</option>
+                        <option value="tensor-network">Tensor Network Simulator</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="num-qubits-sim">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-sim-value">20</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-qubits-sim" min="5" max="50" step="1" value="20">
+                </div>
+
+                <div class="input-group">
+                    <label for="circuit-depth-sim">
+                        Circuit Depth
+                        <span class="value-display" id="circuit-depth-sim-value">50</span>
+                    </label>
+                    <input type="range" id="circuit-depth-sim" min="10" max="200" step="10" value="50">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('small-hardware')">Small Hardware (5q)</button>
+                    <button class="preset-btn" onclick="applyPreset('medium-sim')">Medium Simulator (30q)</button>
+                    <button class="preset-btn" onclick="applyPreset('large-sim')">Large Simulator (40q)</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Classical Simulation of Quantum Systems</h3>
                     <p>
-                        Quantum Hardware vs Simulators is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Classical computers can simulate quantum systems by explicitly representing quantum states and operations. State vector simulation: Store full quantum state |ψ⟩ = Σᵢ αᵢ|i⟩ as vector of 2ⁿ complex amplitudes (n qubits). Apply gates by matrix-vector multiplication. Memory: 2ⁿ × 16 bytes (8 bytes per complex number). For n=30 qubits: 2³⁰ × 16 ≈ 17 GB. For n=40: 2⁴⁰ × 16 ≈ 17 TB. For n=50: 2⁵⁰ × 16 ≈ 18 PB (petabytes). Computational cost: Single-qubit gate: O(2ⁿ) operations. Two-qubit gate: O(2ⁿ) operations. Full circuit with m gates: O(m × 2ⁿ). Classical simulation is exponentially hard: doubling qubits requires 4× memory and 2× time per gate. Current limits: State vector simulation feasible up to ~45-50 qubits on supercomputers (with optimizations). Beyond 50 qubits, memory becomes prohibitive. Quantum hardware advantage: Real quantum systems naturally represent 2ⁿ amplitudes in n qubits (exponential compression). Google's Sycamore (53 qubits) performed task estimated to take 10,000 years on classical supercomputer (disputed, but illustrates exponential gap). However, classical simulation has advantages: Perfect gates (no noise), arbitrary connectivity, easy debugging, deterministic results. Simulators are essential for algorithm development, debugging, and benchmarking before running on real hardware. Trade-off: Simulators are limited to ~30-50 qubits but perfect. Hardware scales to 100-1000+ qubits but noisy.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        State vector: 2ⁿ complex amplitudes, 2ⁿ × 16 bytes memory<br>
+                        n=30: 17 GB, n=40: 17 TB, n=50: 18 PB (exponential growth)<br>
+                        Gate cost: O(2ⁿ) per gate, O(m × 2ⁿ) for m-gate circuit<br>
+                        Limit: ~45-50 qubits on supercomputers (state vector)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Advanced Simulation Techniques - Tensor Networks and Clifford Simulation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Beyond brute-force state vector simulation, advanced techniques exploit structure to simulate larger systems. Tensor network simulation: Represent quantum state as tensor network (e.g., Matrix Product State, PEPS). Exploit entanglement structure: low-entanglement states have efficient tensor representations. Computational cost depends on entanglement (bond dimension χ), not just qubit count. Can simulate 100+ qubits for low-entanglement circuits. Used to challenge Google's quantum supremacy claim (IBM argued 2.5 days vs. 10,000 years). Limitation: Only efficient for low-entanglement circuits. High-entanglement circuits (like random circuits) still exponentially hard. Clifford simulation (Gottesman-Knill theorem): Circuits with only Clifford gates (H, S, CNOT) + Pauli measurements can be simulated efficiently in O(n²) time and O(n²) space. Stabilizer formalism: Track stabilizer generators (n Pauli operators) instead of 2ⁿ amplitudes. Can simulate 1000+ qubits efficiently. Limitation: Only Clifford circuits (no T gate, no universal quantum computing). Adding non-Clifford gates (T gate) makes simulation hard. Noisy simulation: Add noise models (depolarizing, amplitude damping, etc.) to simulate real hardware. Increases computational cost but provides realistic predictions. Qiskit Aer, Cirq: Popular quantum simulators with noise models. Hybrid simulation: Combine classical and quantum resources. Simulate part of circuit classically, rest on quantum hardware. Useful for large circuits beyond full classical simulation. Classical simulation remains essential tool for quantum algorithm development, even as hardware scales beyond simulation limits.
                     </p>
+                    <div class="formula-box">
+                        Tensor networks: Efficient for low-entanglement (bond dimension χ)<br>
+                        Clifford simulation: O(n²) time/space (Gottesman-Knill theorem)<br>
+                        Stabilizer: Track n Pauli operators, not 2ⁿ amplitudes<br>
+                        Noisy simulation: Add noise models (depolarizing, damping, etc.)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Real Quantum Hardware - NISQ Devices and Challenges</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Real quantum hardware operates on physical qubits (superconducting, trapped ion, etc.) with inherent noise and imperfections. NISQ (Noisy Intermediate-Scale Quantum) devices: 50-1000 qubits, no error correction, limited coherence. Challenges: (1) Gate errors: Single-qubit gates ~99.9% fidelity, two-qubit gates ~99% fidelity. Errors accumulate: circuit with 100 gates has ~90% fidelity (0.999^100 ≈ 0.90). Deep circuits (1000+ gates) have negligible fidelity without error correction. (2) Decoherence: T₁ ≈ 50-100 μs (superconducting), T₂ ≈ 50-150 μs. Limits circuit depth to ~100-1000 gates. (3) Limited connectivity: Superconducting qubits have nearest-neighbor connectivity. Long-range gates require SWAP chains (adds depth and errors). (4) Measurement errors: Readout fidelity ~95-99%. Errors in final measurement corrupt results. (5) Crosstalk: Operations on one qubit affect neighbors. (6) Calibration drift: Hardware parameters drift over time, requiring frequent recalibration. Mitigation strategies: Error mitigation (zero-noise extrapolation, probabilistic error cancellation), circuit optimization (reduce depth, use native gates), noise-aware compilation. Quantum hardware advantages: Scales beyond classical simulation (100-1000 qubits), potential for quantum advantage on specific problems. Disadvantages: Noisy, limited connectivity, expensive, requires cryogenics (superconducting), complex control systems. Current state: NISQ devices demonstrate quantum effects but limited practical utility. Fault-tolerant quantum computing (with error correction) needed for transformative applications.
                     </p>
+                    <div class="formula-box">
+                        NISQ: 50-1000 qubits, no error correction, limited coherence<br>
+                        Gate fidelity: ~99.9% (1q), ~99% (2q). 100 gates: ~90% fidelity<br>
+                        Coherence: T₁, T₂ ≈ 50-150 μs (limits depth to 100-1000 gates)<br>
+                        Challenges: Errors, decoherence, connectivity, crosstalk, calibration
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: When to Use Hardware vs. Simulators</h3>
+                    <p>
+                        Choosing between quantum hardware and simulators depends on problem size, accuracy requirements, and research goals. Use simulators when: (1) Small problems (≤30 qubits): Simulators are faster, more accurate, and easier to use. (2) Algorithm development: Debug and optimize algorithms without hardware noise. (3) Exact results needed: Simulators provide perfect gates and deterministic outcomes. (4) Exploring parameter space: Simulators allow rapid iteration (no queue times, no calibration). (5) Educational purposes: Learn quantum computing without hardware access. Use hardware when: (1) Large problems (>30 qubits): Beyond classical simulation limits. (2) Demonstrating quantum advantage: Show quantum hardware outperforms classical computers. (3) Noise characterization: Study real hardware noise and develop error mitigation. (4) Hardware-specific research: Optimize for specific qubit topology, gate set. (5) Preparing for fault-tolerant era: Gain experience with real quantum systems. Hybrid approach: Develop and debug on simulators, then run on hardware for final results. Use simulators for small-scale testing, hardware for large-scale experiments. Cloud quantum computing: IBM Quantum, Amazon Braket, Azure Quantum, Google Quantum AI provide access to both simulators and hardware. Users can seamlessly switch between platforms. Future: As hardware improves (more qubits, lower errors, error correction), hardware will become preferred for more applications. Simulators will remain essential for algorithm development, education, and benchmarking. The quantum computing ecosystem requires both simulators and hardware, each serving complementary roles in advancing the field.
+                    </p>
+                    <div class="formula-box">
+                        Simulators: ≤30 qubits, perfect gates, fast iteration, debugging<br>
+                        Hardware: >30 qubits, quantum advantage, noise studies, real systems<br>
+                        Hybrid: Develop on simulators, run on hardware for final results<br>
+                        Cloud: IBM, Amazon, Azure, Google (access to both platforms)
+                    </div>
                 </div>
             </section>
 
