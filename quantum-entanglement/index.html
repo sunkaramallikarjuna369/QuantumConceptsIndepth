@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Entanglement - In Depth</title>
+    <link rel="stylesheet" href="../common/css/common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to All Concepts</a>
+        
+        <header>
+            <h1>Quantum Entanglement</h1>
+            <p>Explore Bell states and correlations between entangled particles</p>
+        </header>
+
+        <div class="content-grid">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Input</h2>
+                
+                <div class="input-group">
+                    <label for="bell-state">
+                        Bell State
+                    </label>
+                    <select id="bell-state">
+                        <option value="phi-plus">|Φ⁺⟩ = (|00⟩ + |11⟩)/√2</option>
+                        <option value="phi-minus">|Φ⁻⟩ = (|00⟩ − |11⟩)/√2</option>
+                        <option value="psi-plus">|Ψ⁺⟩ = (|01⟩ + |10⟩)/√2</option>
+                        <option value="psi-minus">|Ψ⁻⟩ = (|01⟩ − |10⟩)/√2</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="measurement-basis-a">
+                        Measurement Basis (Qubit A)
+                    </label>
+                    <select id="measurement-basis-a">
+                        <option value="z">Z-basis (|0⟩, |1⟩)</option>
+                        <option value="x">X-basis (|+⟩, |−⟩)</option>
+                        <option value="y">Y-basis (|↻⟩, |↺⟩)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="measurement-basis-b">
+                        Measurement Basis (Qubit B)
+                    </label>
+                    <select id="measurement-basis-b">
+                        <option value="z">Z-basis (|0⟩, |1⟩)</option>
+                        <option value="x">X-basis (|+⟩, |−⟩)</option>
+                        <option value="y">Y-basis (|↻⟩, |↺⟩)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <input type="checkbox" id="show-correlations" checked>
+                        Show Measurement Correlations
+                    </label>
+                </div>
+
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="phi-plus">|Φ⁺⟩</button>
+                    <button class="preset-btn" data-preset="phi-minus">|Φ⁻⟩</button>
+                    <button class="preset-btn" data-preset="psi-plus">|Ψ⁺⟩</button>
+                    <button class="preset-btn" data-preset="psi-minus">|Ψ⁻⟩</button>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="process-section">
+                <h2>Process</h2>
+                
+                <div class="process-step">
+                    <h3>Step 1: Bell States</h3>
+                    <p>
+                        Bell states are maximally entangled two-qubit states that form an orthonormal basis:
+                    </p>
+                    <div class="formula-box">
+                        |Φ⁺⟩ = (|00⟩ + |11⟩)/√2<br>
+                        |Φ⁻⟩ = (|00⟩ − |11⟩)/√2<br>
+                        |Ψ⁺⟩ = (|01⟩ + |10⟩)/√2<br>
+                        |Ψ⁻⟩ = (|01⟩ − |10⟩)/√2
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 2: Entanglement Properties</h3>
+                    <p>
+                        Entangled states cannot be written as a product of individual qubit states:
+                    </p>
+                    <div class="formula-box">
+                        |Φ⁺⟩ ≠ |ψ_A⟩ ⊗ |ψ_B⟩
+                    </div>
+                    <p>
+                        This means the qubits are fundamentally correlated and cannot be described independently.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 3: Measurement Correlations</h3>
+                    <p>
+                        When measuring entangled qubits, the outcomes are correlated. For |Φ⁺⟩ in the Z-basis:
+                    </p>
+                    <div class="formula-box">
+                        P(00) = 1/2, P(11) = 1/2<br>
+                        P(01) = 0, P(10) = 0
+                    </div>
+                    <p>
+                        The qubits always give the same result (both 0 or both 1).
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Bell's Theorem</h3>
+                    <p>
+                        Bell's theorem shows that quantum entanglement produces correlations that cannot 
+                        be explained by local hidden variables. The CHSH inequality:
+                    </p>
+                    <div class="formula-box">
+                        |⟨AB⟩ + ⟨AB'⟩ + ⟨A'B⟩ − ⟨A'B'⟩| ≤ 2 (classical)<br>
+                        Can reach 2√2 ≈ 2.828 (quantum)
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <h2>Output</h2>
+                
+                <div class="output-info">
+                    <div class="state-display">
+                        <h3>Current Bell State</h3>
+                        <div id="bell-state-display" class="formula-display">|Φ⁺⟩ = (|00⟩ + |11⟩)/√2</div>
+                    </div>
+                    
+                    <div class="state-display">
+                        <h3>Entanglement Measure</h3>
+                        <div id="entanglement-measure" class="formula-display">Concurrence: 1.000</div>
+                    </div>
+                </div>
+
+                <div class="visualization-container">
+                    <h3>Measurement Outcome Probabilities</h3>
+                    <div class="probability-grid">
+                        <div class="prob-item">
+                            <div class="prob-label">|00⟩</div>
+                            <div class="prob-bar-container">
+                                <div id="prob-00" class="prob-bar"></div>
+                            </div>
+                            <div id="prob-00-value" class="prob-value">50.0%</div>
+                        </div>
+                        <div class="prob-item">
+                            <div class="prob-label">|01⟩</div>
+                            <div class="prob-bar-container">
+                                <div id="prob-01" class="prob-bar"></div>
+                            </div>
+                            <div id="prob-01-value" class="prob-value">0.0%</div>
+                        </div>
+                        <div class="prob-item">
+                            <div class="prob-label">|10⟩</div>
+                            <div class="prob-bar-container">
+                                <div id="prob-10" class="prob-bar"></div>
+                            </div>
+                            <div id="prob-10-value" class="prob-value">0.0%</div>
+                        </div>
+                        <div class="prob-item">
+                            <div class="prob-label">|11⟩</div>
+                            <div class="prob-bar-container">
+                                <div id="prob-11" class="prob-bar"></div>
+                            </div>
+                            <div id="prob-11-value" class="prob-value">50.0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visualization-container">
+                    <h3>Correlation Coefficient</h3>
+                    <div id="correlation-display" class="correlation-meter">
+                        <div class="correlation-bar">
+                            <div id="correlation-indicator" class="correlation-indicator"></div>
+                        </div>
+                        <div class="correlation-labels">
+                            <span>-1</span>
+                            <span>0</span>
+                            <span>+1</span>
+                        </div>
+                        <div id="correlation-value" class="correlation-value">Correlation: +1.000</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
