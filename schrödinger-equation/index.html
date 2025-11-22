@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="potential-type">Potential Type</label>
+                    <select id="potential-type">
+                        <option value="free">Free Particle (V=0)</option>
+                        <option value="step">Step Potential</option>
+                        <option value="barrier">Barrier Potential</option>
+                        <option value="well">Infinite Square Well</option>
+                        <option value="harmonic">Harmonic Oscillator</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="energy">
+                        Energy E (eV)
+                        <span class="value-display" id="energy-value">1.0</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="energy" min="0.1" max="5" step="0.1" value="1.0">
+                </div>
+
+                <div class="input-group">
+                    <label for="time">
+                        Time t (arbitrary units)
+                        <span class="value-display" id="time-value">0.0</span>
+                    </label>
+                    <input type="range" id="time" min="0" max="10" step="0.1" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('free-particle')">Free Particle</button>
+                    <button class="preset-btn" onclick="applyPreset('square-well')">Square Well</button>
+                    <button class="preset-btn" onclick="applyPreset('harmonic')">Harmonic</button>
                 </div>
             </section>
 
@@ -49,34 +60,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Time-Dependent Schrödinger Equation</h3>
                     <p>
-                        Schrödinger Equation is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The Schrödinger equation is the fundamental equation of quantum mechanics, analogous to Newton's F=ma in classical mechanics. The time-dependent Schrödinger equation (TDSE) describes how quantum states evolve over time: iℏ∂|ψ⟩/∂t = Ĥ|ψ⟩, where Ĥ is the Hamiltonian operator (total energy operator), ℏ is the reduced Planck constant, and |ψ(t)⟩ is the state at time t. For a particle in a potential V(x), the Hamiltonian is Ĥ = -ℏ²/(2m)∇² + V(x), where the first term is kinetic energy and the second is potential energy. The TDSE is a linear partial differential equation—solutions can be superposed, which is the origin of quantum interference. This equation is deterministic: given |ψ(0)⟩, it uniquely determines |ψ(t)⟩ for all future times.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Time-dependent: iℏ∂ψ/∂t = Ĥψ = [-ℏ²/(2m)∇² + V(x)]ψ<br>
+                        Hamiltonian: Ĥ = T̂ + V̂ (kinetic + potential energy)<br>
+                        Solution: |ψ(t)⟩ = e^(-iĤt/ℏ)|ψ(0)⟩ (unitary time evolution)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: The Time-Independent Schrödinger Equation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        For time-independent potentials V(x), we can separate variables: ψ(x,t) = φ(x)e^(-iEt/ℏ), where E is energy. Substituting into the TDSE gives the time-independent Schrödinger equation (TISE): Ĥφ(x) = Eφ(x). This is an eigenvalue problem: φ(x) are eigenstates (stationary states) with eigenvalues E (allowed energies). For bound states (particle confined to a region), E is quantized—only discrete energy levels are allowed. For example, in an infinite square well of width L, the allowed energies are Eₙ = n²π²ℏ²/(2mL²) for n=1,2,3,... The TISE is the foundation for understanding atomic spectra, molecular structure, and quantum chemistry. Solving it for different potentials V(x) reveals the quantum behavior of particles.
                     </p>
+                    <div class="formula-box">
+                        Time-independent: Ĥφ = Eφ (eigenvalue equation)<br>
+                        Stationary states: ψ(x,t) = φ(x)e^(-iEt/ℏ)<br>
+                        Energy quantization: E₁, E₂, E₃, ... (discrete for bound states)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Physical Interpretation and Probability</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The wavefunction ψ(x,t) itself is not directly observable—it's a complex-valued probability amplitude. The Born rule states that |ψ(x,t)|² gives the probability density of finding the particle at position x at time t. The total probability must be 1: ∫|ψ(x,t)|²dx = 1 (normalization condition). The Schrödinger equation preserves normalization: if ψ is normalized at t=0, it remains normalized for all t. This is because the equation is unitary (Ĥ is Hermitian). The wavefunction can spread, contract, or oscillate, but the total probability is conserved. Expectation values of observables are computed as ⟨Â⟩ = ⟨ψ|Â|ψ⟩. For example, the average position is ⟨x⟩ = ∫x|ψ(x)|²dx. The Schrödinger equation determines how these expectation values evolve in time.
                     </p>
+                    <div class="formula-box">
+                        Probability density: P(x,t) = |ψ(x,t)|²<br>
+                        Normalization: ∫|ψ(x,t)|²dx = 1 (conserved by TDSE)<br>
+                        Expectation value: ⟨Â⟩ = ∫ψ*Âψ dx
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Solutions for Common Potentials</h3>
+                    <p>
+                        Different potentials V(x) lead to different physical phenomena. Free particle (V=0): plane waves ψ(x) = e^(ikx) with continuous energy E = ℏ²k²/(2m). Step potential: partial reflection and transmission, even when E > V (quantum reflection). Barrier potential: quantum tunneling—particle can penetrate classically forbidden regions where E < V. Infinite square well: discrete energy levels Eₙ ∝ n², standing wave solutions. Harmonic oscillator V = ½mω²x²: equally spaced energy levels Eₙ = ℏω(n+½), Gaussian-like wavefunctions (Hermite polynomials). Hydrogen atom V = -e²/(4πε₀r): discrete bound states (n,l,m quantum numbers), explains atomic spectra. These solutions form the basis for understanding chemistry, solid-state physics, and quantum devices.
+                    </p>
+                    <div class="formula-box">
+                        Free particle: E = ℏ²k²/(2m) (continuous spectrum)<br>
+                        Square well: Eₙ = n²π²ℏ²/(2mL²) (discrete, n=1,2,3,...)<br>
+                        Harmonic oscillator: Eₙ = ℏω(n+½) (equally spaced)
+                    </div>
                 </div>
             </section>
 
