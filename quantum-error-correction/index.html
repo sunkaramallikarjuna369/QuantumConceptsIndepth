@@ -22,25 +22,37 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="error-type">Error Type</label>
+                    <select id="error-type">
+                        <option value="bit-flip" selected>Bit Flip (X error)</option>
+                        <option value="phase-flip">Phase Flip (Z error)</option>
+                        <option value="both">Both (Y error)</option>
+                        <option value="none">No Error</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="error-rate">
+                        Physical Error Rate
+                        <span class="value-display" id="error-rate-value">0.01</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="error-rate" min="0" max="0.1" step="0.001" value="0.01">
+                </div>
+
+                <div class="input-group">
+                    <label for="code-type">Error Correction Code</label>
+                    <select id="code-type">
+                        <option value="3-qubit">3-Qubit Bit Flip Code</option>
+                        <option value="shor" selected>Shor's 9-Qubit Code</option>
+                        <option value="steane">Steane 7-Qubit Code</option>
+                        <option value="surface">Surface Code</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('bit-flip-demo')">Bit Flip Demo</button>
+                    <button class="preset-btn" onclick="applyPreset('phase-flip-demo')">Phase Flip Demo</button>
+                    <button class="preset-btn" onclick="applyPreset('full-correction')">Full Correction</button>
                 </div>
             </section>
 
@@ -49,34 +61,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Need for Quantum Error Correction</h3>
                     <p>
-                        Quantum Error Correction is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum computers are extremely fragile: qubits decohere due to environmental noise, losing quantum information within microseconds to milliseconds. Unlike classical bits (which suffer only bit flips), qubits face continuous errors—any rotation on the Bloch sphere. The three fundamental error types are bit flip (X: |0⟩↔|1⟩), phase flip (Z: |+⟩↔|-⟩), and both (Y = iXZ). Decoherence causes superposition states to decay into mixed states, destroying quantum advantage. Naively, you might try to copy qubits for redundancy, but the no-cloning theorem forbids this. Classical error correction (majority voting: 0→000, 1→111) doesn't work for superpositions: you can't measure without collapsing the state. Quantum error correction (QEC) solves this by encoding logical qubits into entangled states of multiple physical qubits, allowing error detection and correction without measuring the logical state. The key insight: measure the error syndrome (which error occurred) without measuring the data. This enables fault-tolerant quantum computing, where logical error rates decrease exponentially with code distance.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Error types: X (bit flip), Z (phase flip), Y = iXZ (both)<br>
+                        Decoherence time: T₁ (relaxation), T₂ (dephasing), typically μs-ms<br>
+                        Logical qubit: |0⟩_L, |1⟩_L encoded in n physical qubits<br>
+                        Syndrome measurement: Detect error without measuring data
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Simple Codes - 3-Qubit and Shor's 9-Qubit</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The 3-qubit bit flip code encodes |0⟩_L = |000⟩ and |1⟩_L = |111⟩. A general state α|0⟩+β|1⟩ becomes α|000⟩+β|111⟩. If one qubit flips (e.g., |000⟩→|100⟩), measuring parity Z₁Z₂ and Z₂Z₃ (without measuring individual qubits) reveals which qubit flipped, allowing correction. This protects against single bit flips but not phase flips. The 3-qubit phase flip code encodes |0⟩_L = |+++⟩ and |1⟩_L = |---⟩, protecting against phase flips. Shor's 9-qubit code combines both: encode each qubit of the phase flip code using the bit flip code. This gives |0⟩_L = (|000⟩+|111⟩)⊗3/√8 and |1⟩_L = (|000⟩-|111⟩)⊗3/√8. Shor's code corrects any single-qubit error (X, Y, or Z on any of 9 qubits). The syndrome measurement uses 8 ancilla qubits to detect errors without collapsing the logical state. After identifying the error, apply the inverse operation to correct it. Shor's code was the first demonstration that quantum information can be protected.
                     </p>
+                    <div class="formula-box">
+                        3-qubit bit flip: |0⟩_L = |000⟩, |1⟩_L = |111⟩<br>
+                        Syndrome: Z₁Z₂, Z₂Z₃ (parity checks)<br>
+                        Shor's 9-qubit: |0⟩_L = (|000⟩+|111⟩)⊗3/√8<br>
+                        Corrects: Any single X, Y, or Z error on 9 qubits
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Stabilizer Codes and Fault Tolerance</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Stabilizer codes are a general framework for QEC. A stabilizer is a set of commuting Pauli operators that leave the code space invariant. For example, the 3-qubit code has stabilizers Z₁Z₂ and Z₂Z₃ (both have eigenvalue +1 for |000⟩ and |111⟩). Measuring stabilizers detects errors: if Z₁Z₂ = -1, an error occurred on qubit 1 or 2. The Steane 7-qubit code encodes 1 logical qubit into 7 physical qubits, correcting any single error. It's a CSS (Calderbank-Shor-Steane) code, meaning it corrects both X and Z errors independently. The code distance d is the minimum weight of a logical operator: for Steane code, d=3 (corrects ⌊(d-1)/2⌋ = 1 error). Surface codes are topological codes defined on a 2D lattice, with distance d = √n for n physical qubits. They have high thresholds (~1% physical error rate) and local interactions, making them practical for hardware. Fault tolerance requires that errors during error correction don't propagate catastrophically. Transversal gates (applying the same gate to each physical qubit) are fault-tolerant. The threshold theorem states that if physical error rate < threshold (~10⁻⁴ to 10⁻²), logical error rate decreases exponentially with code distance.
                     </p>
+                    <div class="formula-box">
+                        Stabilizer: S|ψ⟩ = |ψ⟩ for all S in stabilizer group<br>
+                        Code distance: d = min weight of logical operator<br>
+                        Corrects: ⌊(d-1)/2⌋ errors<br>
+                        Threshold theorem: p_phys < p_th ⟹ p_log → 0 exponentially
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Practical Implementation and Challenges</h3>
+                    <p>
+                        Implementing QEC in hardware is challenging. Current quantum computers (IBM, Google, IonQ) have physical error rates ~10⁻³ to 10⁻², near the threshold for surface codes. Google's 2021 experiment demonstrated logical error suppression with a distance-5 surface code (49 qubits). IBM's heavy-hex architecture is optimized for surface codes. The overhead is enormous: a single logical qubit requires hundreds to thousands of physical qubits, and fault-tolerant algorithms need millions. Syndrome extraction must be faster than decoherence (real-time feedback). Measurement errors (~1%) are as problematic as gate errors, requiring repeated syndrome measurements and classical decoding algorithms (minimum-weight perfect matching). Magic state distillation enables universal gate sets (T gate) for fault-tolerant computing. Quantum LDPC (low-density parity-check) codes promise better scaling than surface codes. Bosonic codes (cat codes, GKP codes) encode logical qubits into oscillator modes, reducing overhead. Achieving fault-tolerant quantum computing with 10⁶-10⁹ physical qubits is the grand challenge for the 2030s. Applications include Shor's algorithm for cryptography, quantum simulation for drug discovery, and quantum optimization.
+                    </p>
+                    <div class="formula-box">
+                        Physical error rate: ~10⁻³ to 10⁻² (current hardware)<br>
+                        Surface code threshold: ~1% (with perfect measurements)<br>
+                        Overhead: 1 logical qubit ≈ 10³-10⁴ physical qubits<br>
+                        Goal: 10⁶-10⁹ physical qubits for useful algorithms (2030s)
+                    </div>
                 </div>
             </section>
 
