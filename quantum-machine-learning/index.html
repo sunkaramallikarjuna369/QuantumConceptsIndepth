@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="qml-algorithm">QML Algorithm</label>
+                    <select id="qml-algorithm">
+                        <option value="vqc" selected>Variational Quantum Classifier</option>
+                        <option value="qsvm">Quantum Support Vector Machine</option>
+                        <option value="qnn">Quantum Neural Network</option>
+                        <option value="qgan">Quantum GAN</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="num-qubits-ml">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-ml-value">8</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-qubits-ml" min="4" max="20" step="1" value="8">
+                </div>
+
+                <div class="input-group">
+                    <label for="num-layers">
+                        Circuit Layers
+                        <span class="value-display" id="num-layers-value">3</span>
+                    </label>
+                    <input type="range" id="num-layers" min="1" max="10" step="1" value="3">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('shallow')">Shallow (4q, 2 layers)</button>
+                    <button class="preset-btn" onclick="applyPreset('medium')">Medium (8q, 4 layers)</button>
+                    <button class="preset-btn" onclick="applyPreset('deep')">Deep (12q, 8 layers)</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Machine Learning - Motivation and Paradigms</h3>
                     <p>
-                        Quantum Machine Learning is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum Machine Learning (QML) explores using quantum computers to enhance machine learning tasks. Motivation: Quantum computers can process exponentially large Hilbert spaces (2ⁿ dimensions for n qubits), potentially enabling faster training, better generalization, or novel model architectures. Three paradigms: (1) Quantum-enhanced classical ML: Use quantum algorithms to speed up classical ML tasks (e.g., HHL algorithm for linear systems, Grover's for database search). Requires fault-tolerant quantum computers, limited near-term applicability. (2) Variational quantum algorithms (VQA): Hybrid quantum-classical approach. Parameterized quantum circuit |ψ(θ)⟩ prepares quantum state, measure observable ⟨O⟩, optimize θ classically to minimize loss. NISQ-friendly (short circuits, robust to noise). Examples: VQC (Variational Quantum Classifier), QAOA (optimization). (3) Quantum data: ML on quantum data (e.g., quantum states from experiments). Natural for quantum simulation, chemistry, materials science. Quantum advantage sources: Exponential Hilbert space (2ⁿ features), quantum interference (constructive/destructive), entanglement (non-local correlations). Challenges: (1) Data loading bottleneck: Encoding classical data into quantum states is expensive (O(N) for N data points). (2) Measurement overhead: Extracting information requires many measurements (statistical sampling). (3) Barren plateaus: Gradients vanish exponentially for deep random circuits, hindering optimization. (4) Classical ML is highly optimized: Quantum advantage requires significant speedup to overcome overhead. Current status: QML is exploratory. Small-scale demonstrations on NISQ devices, but no clear quantum advantage for practical ML tasks yet.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        QML paradigms: Quantum-enhanced classical, VQA, quantum data<br>
+                        VQA: |ψ(θ)⟩ → measure ⟨O⟩ → optimize θ (hybrid quantum-classical)<br>
+                        Advantages: 2ⁿ Hilbert space, interference, entanglement<br>
+                        Challenges: Data loading, measurement, barren plateaus, classical competition
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Variational Quantum Classifiers and Quantum Neural Networks</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Variational Quantum Classifier (VQC): Quantum analog of classical neural network. Architecture: (1) Data encoding: Map classical input x to quantum state |ψ(x)⟩ using encoding circuit U_enc(x). Common encodings: amplitude encoding (x → amplitudes), angle encoding (x → rotation angles), basis encoding (x → computational basis). (2) Variational circuit: Apply parameterized gates U(θ) = Π_l U_l(θ_l) where U_l is layer l with parameters θ_l. Typical layer: single-qubit rotations (RY, RZ) + entangling gates (CNOT). (3) Measurement: Measure observable O (e.g., Pauli-Z on output qubit), compute ⟨O⟩ = ⟨ψ(x)|U†(θ)OU(θ)|ψ(x)⟩. (4) Loss function: L(θ) = Σᵢ loss(⟨O⟩ᵢ, yᵢ) where yᵢ is true label. (5) Optimization: Update θ using gradient descent (parameter shift rule for gradients). Quantum Neural Network (QNN): Generalization of VQC with multiple layers and measurements. Can have intermediate measurements, classical post-processing, feedback. Expressivity: QNNs can represent complex functions due to exponential Hilbert space. Universal approximation: With sufficient depth, QNNs can approximate any function (similar to classical NNs). Training challenges: Barren plateaus (gradients vanish for deep circuits), local minima, noise. Empirical results: VQCs/QNNs perform comparably to classical NNs on small datasets (MNIST, Iris), but no clear advantage. Classical NNs scale better (millions of parameters, GPUs). QML may excel for quantum data or specific structured problems.
                     </p>
+                    <div class="formula-box">
+                        VQC: U_enc(x) → U(θ) → measure ⟨O⟩ → optimize θ<br>
+                        Encoding: Amplitude (x → amplitudes), angle (x → rotations), basis<br>
+                        Variational circuit: Rotations + entangling gates (RY, RZ, CNOT)<br>
+                        Training: Gradient descent with parameter shift rule
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Quantum Kernel Methods and QSVM</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Quantum kernel methods use quantum computers to compute kernel functions for classical ML algorithms. Kernel trick: Map data to high-dimensional feature space Φ(x), compute inner products K(x, x') = ⟨Φ(x)|Φ(x')⟩ (kernel). Support Vector Machine (SVM) uses kernels for classification. Quantum kernel: Use quantum state |ψ(x)⟩ = U(x)|0⟩ as feature map. Quantum kernel: K(x, x') = |⟨ψ(x)|ψ(x')⟩|² = |⟨0|U†(x)U(x')|0⟩|². Compute by preparing |ψ(x)⟩ and |ψ(x')⟩, measuring overlap (SWAP test or direct measurement). Quantum advantage: Quantum feature space is exponentially large (2ⁿ dimensions), potentially enabling better separation of data. Quantum SVM (QSVM): Use quantum kernel in classical SVM. Steps: (1) Compute kernel matrix K_ij = K(xᵢ, xⱼ) for all training pairs (requires O(N²) quantum circuits). (2) Train classical SVM with kernel matrix. (3) Classify new point x by computing K(x, xᵢ) for all training points, apply SVM decision function. Challenges: (1) Kernel matrix computation is expensive (O(N²) quantum circuits). (2) Quantum kernels may not provide advantage over classical kernels (RBF, polynomial). (3) Measurement overhead (many samples to estimate overlap). Empirical results: QSVM shows promise on small datasets with specific structure (e.g., quantum data, synthetic problems). No clear advantage on standard ML benchmarks. Quantum kernels are active research area, with potential for advantage on problems with quantum structure or exponential feature spaces.
                     </p>
+                    <div class="formula-box">
+                        Quantum kernel: K(x, x') = |⟨ψ(x)|ψ(x')⟩|² = |⟨0|U†(x)U(x')|0⟩|²<br>
+                        QSVM: Compute K_ij (O(N²) circuits) → train classical SVM<br>
+                        Advantage: Exponential feature space (2ⁿ dimensions)<br>
+                        Challenges: O(N²) cost, measurement overhead, classical competition
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Quantum Generative Models and Future of QML</h3>
+                    <p>
+                        Quantum generative models learn probability distributions using quantum circuits. Quantum Generative Adversarial Network (QGAN): Quantum analog of classical GAN. Generator: Parameterized quantum circuit G(θ) produces quantum state |ψ_G(θ)⟩ approximating target distribution. Discriminator: Classical or quantum network distinguishes real data from generated data. Training: Adversarial optimization (generator tries to fool discriminator, discriminator tries to detect fakes). Applications: Generate quantum states (e.g., ground states for chemistry), sample from complex distributions. Quantum Boltzmann Machine (QBM): Quantum version of Boltzmann machine (probabilistic graphical model). Uses quantum annealing or variational circuits to sample from Boltzmann distribution. Applications: Unsupervised learning, feature learning, sampling. Challenges: Training instability (GANs), barren plateaus, measurement overhead. Future of QML: (1) Near-term (NISQ): Explore VQAs, quantum kernels, small-scale demonstrations. Focus on quantum data (chemistry, materials, quantum simulation). (2) Medium-term (early fault tolerance): Quantum-enhanced classical ML (HHL for linear systems, Grover for search). Hybrid algorithms combining quantum and classical resources. (3) Long-term (large-scale fault tolerance): Transformative QML applications (drug discovery, financial modeling, optimization). Quantum advantage for general ML tasks. Open questions: When does quantum provide advantage? What problems are best suited for QML? How to overcome barren plateaus and data loading bottlenecks? QML is nascent field with exciting potential but significant challenges. Continued research on algorithms, hardware, and theory will determine whether quantum computers revolutionize machine learning.
+                    </p>
+                    <div class="formula-box">
+                        QGAN: Generator G(θ) → |ψ_G(θ)⟩, discriminator (real vs. fake)<br>
+                        QBM: Sample from Boltzmann distribution (quantum annealing/VQA)<br>
+                        Future: NISQ (VQAs, quantum data) → early FT (HHL, Grover) → large-scale FT<br>
+                        Open questions: When quantum advantage? Best problems? Overcome plateaus?
+                    </div>
                 </div>
             </section>
 
