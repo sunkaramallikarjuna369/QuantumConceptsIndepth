@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="operator-select">Select Operator</label>
+                    <select id="operator-select">
+                        <option value="pauli-z">Pauli Z (σ_z)</option>
+                        <option value="pauli-x">Pauli X (σ_x)</option>
+                        <option value="pauli-y">Pauli Y (σ_y)</option>
+                        <option value="hadamard">Hadamard (H)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="state-alpha">
+                        State α (|0⟩ component)
+                        <span class="value-display" id="state-alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="state-alpha" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="state-phase">
+                        State Phase φ (radians)
+                        <span class="value-display" id="state-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="state-phase" min="0" max="6.28" step="0.01" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('eigenstate-plus')">Eigenstate |+⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('eigenstate-minus')">Eigenstate |-⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('superposition')">Superposition</button>
+                    <button class="preset-btn" onclick="measureState()">Measure State</button>
                 </div>
             </section>
 
@@ -49,34 +60,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Eigenvalue Equation</h3>
                     <p>
-                        Eigenstates and Eigenvalues is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        An eigenstate |ψ⟩ of an operator Â satisfies the eigenvalue equation: Â|ψ⟩ = λ|ψ⟩, where λ is the eigenvalue. This means applying the operator to the eigenstate simply multiplies it by a scalar (the eigenvalue) without changing its direction. Eigenstates are the special states where measurement outcomes are deterministic—measuring the observable Â always yields the eigenvalue λ with 100% probability.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Â|ψ⟩ = λ|ψ⟩<br>
+                        Â: operator (observable)<br>
+                        |ψ⟩: eigenstate<br>
+                        λ: eigenvalue (measurement outcome)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Finding Eigenstates and Eigenvalues</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        To find eigenstates and eigenvalues, we solve the characteristic equation det(Â - λI) = 0. For a 2×2 matrix operator, this gives a quadratic equation with two eigenvalues. The corresponding eigenvectors are found by solving (Â - λI)|ψ⟩ = 0. For Hermitian operators (observables), eigenvalues are always real numbers, and eigenstates corresponding to different eigenvalues are orthogonal.
                     </p>
+                    <div class="formula-box">
+                        det(Â - λI) = 0 (characteristic equation)<br>
+                        For Hermitian Â: λ ∈ ℝ (eigenvalues are real)<br>
+                        ⟨ψ_i|ψ_j⟩ = δ_ij (eigenstates are orthonormal)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Measurement in the Eigenbasis</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        When you measure an observable Â on a quantum state, the measurement outcomes are always eigenvalues of Â. If the state is already an eigenstate, you get that eigenvalue with certainty. If the state is a superposition of eigenstates |ψ⟩ = Σ c_i|ψ_i⟩, the probability of measuring eigenvalue λ_i is |c_i|². After measurement, the state collapses to the corresponding eigenstate |ψ_i⟩.
                     </p>
+                    <div class="formula-box">
+                        |ψ⟩ = Σ c_i|ψ_i⟩ (expand in eigenbasis)<br>
+                        P(λ_i) = |c_i|² (Born rule)<br>
+                        After measurement: |ψ⟩ → |ψ_i⟩
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Spectral Decomposition</h3>
+                    <p>
+                        Any Hermitian operator can be written in spectral form: Â = Σ λ_i|ψ_i⟩⟨ψ_i|, where {|ψ_i⟩} are the eigenstates and {λ_i} are the eigenvalues. This decomposition is fundamental to quantum mechanics—it shows that operators are completely characterized by their eigenvalues and eigenstates. The expectation value of Â in any state |φ⟩ is ⟨Â⟩ = Σ λ_i|⟨ψ_i|φ⟩|².
+                    </p>
+                    <div class="formula-box">
+                        Â = Σ λ_i|ψ_i⟩⟨ψ_i| (spectral decomposition)<br>
+                        ⟨Â⟩ = ⟨φ|Â|φ⟩ = Σ λ_i|⟨ψ_i|φ⟩|²
+                    </div>
                 </div>
             </section>
 
