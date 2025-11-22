@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="measurement-type">POVM Type</label>
+                    <select id="measurement-type">
+                        <option value="sic-povm" selected>SIC-POVM (4 outcomes)</option>
+                        <option value="trine">Trine POVM (3 outcomes)</option>
+                        <option value="projective">Projective (PVM)</option>
+                        <option value="unambiguous">Unambiguous State Discrimination</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="num-outcomes">
+                        Number of Outcomes
+                        <span class="value-display" id="num-outcomes-value">4</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-outcomes" min="2" max="8" step="1" value="4">
+                </div>
+
+                <div class="input-group">
+                    <label for="measurement-strength">
+                        Measurement Strength
+                        <span class="value-display" id="measurement-strength-value">1.0</span>
+                    </label>
+                    <input type="range" id="measurement-strength" min="0" max="1" step="0.1" value="1.0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('optimal')">Optimal POVM</button>
+                    <button class="preset-btn" onclick="applyPreset('weak')">Weak Measurement</button>
+                    <button class="preset-btn" onclick="applyPreset('projective')">Projective</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: From Projective Measurements to POVMs</h3>
                     <p>
-                        POVMs (Positive Operator-Valued Measures) is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        POVMs (Positive Operator-Valued Measures) generalize projective measurements (PVMs) to describe the most general quantum measurements. A projective measurement is described by orthogonal projectors {Pₘ} satisfying Pₘ² = Pₘ, Pₘ†= Pₘ, PₘPₙ = δₘₙPₘ, and Σₘ Pₘ = I. Measurement outcome m occurs with probability P(m) = Tr(ρPₘ), and the post-measurement state is ρₘ = PₘρPₘ/P(m). However, projective measurements are restrictive: they require orthogonal outcomes and disturb the state maximally. POVMs relax these constraints. A POVM is a set of positive operators {Eₘ} satisfying Eₘ ≥ 0 (positive semidefinite) and Σₘ Eₘ = I (completeness). Measurement outcome m occurs with probability P(m) = Tr(ρEₘ). POVM elements Eₘ need not be orthogonal or projectors. POVMs enable: (1) More than d outcomes for d-dimensional systems (informationally overcomplete). (2) Unambiguous state discrimination (distinguish non-orthogonal states with some probability). (3) Weak measurements (minimal disturbance). (4) Optimal state estimation (minimize error). Every POVM can be realized by a projective measurement on a larger system (Naimark dilation): extend system to system + ancilla, apply projective measurement on joint system, trace out ancilla. POVMs are the most general measurements allowed by quantum mechanics, encompassing all possible ways to extract classical information from quantum states.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        POVM: {Eₘ} with Eₘ ≥ 0, Σₘ Eₘ = I<br>
+                        Probability: P(m) = Tr(ρEₘ)<br>
+                        PVM: Eₘ = Pₘ (projectors, orthogonal)<br>
+                        Naimark dilation: POVM = projective on larger system
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Examples of POVMs - SIC-POVM and Trine</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Important POVM examples: (1) SIC-POVM (Symmetric Informationally Complete): For qubits, 4 POVM elements Eₘ = (1/2)|ψₘ⟩⟨ψₘ| where |ψₘ⟩ are equiangular: |⟨ψₘ|ψₙ⟩|² = 1/3 for m ≠ n. SIC-POVMs are optimal for quantum state tomography: 4 outcomes suffice to reconstruct any qubit state (vs. 6 for Pauli measurements). They form a regular tetrahedron on the Bloch sphere. SIC-POVMs exist in all dimensions (conjectured), providing minimal informationally complete measurements. (2) Trine POVM: 3 outcomes for qubits, Eₘ = (2/3)|ψₘ⟩⟨ψₘ| where |ψₘ⟩ are 120° apart on the equator of the Bloch sphere. Trine is optimal for estimating the azimuthal angle φ. (3) Square-root measurement: For distinguishing two non-orthogonal states ρ₁, ρ₂, the optimal POVM minimizes error probability. Helstrom bound: P_error ≥ (1/2)(1 - √(1 - F²)) where F = Tr(√(√ρ₁ ρ₂ √ρ₁)). (4) Unambiguous state discrimination (USD): Distinguish |ψ₁⟩, |ψ₂⟩ with zero error but some inconclusive outcomes. POVM: E₁ ∝ I - |ψ₂⟩⟨ψ₂|, E₂ ∝ I - |ψ₁⟩⟨ψ₁|, E? = I - E₁ - E₂. Success probability P_success = 1 - |⟨ψ₁|ψ₂⟩|. (5) Weak measurements: Eₘ ≈ I + εAₘ (small ε), minimal disturbance, extract partial information. POVMs enable optimal strategies for quantum state discrimination, estimation, and tomography.
                     </p>
+                    <div class="formula-box">
+                        SIC-POVM: Eₘ = (1/2)|ψₘ⟩⟨ψₘ|, |⟨ψₘ|ψₙ⟩|² = 1/3<br>
+                        Trine: 3 outcomes, 120° apart (optimal for φ estimation)<br>
+                        Helstrom: P_error ≥ (1/2)(1 - √(1 - F²))<br>
+                        USD: P_success = 1 - |⟨ψ₁|ψ₂⟩| (zero error, some inconclusive)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Naimark Dilation and Physical Implementation</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Naimark's dilation theorem states that any POVM on system S can be realized by: (1) Coupling S to an ancilla A in a fixed state |0⟩_A. (2) Applying a unitary U on S+A. (3) Performing a projective measurement {Pₘ} on S+A. (4) Tracing out A. The POVM elements are Eₘ = Tr_A(U†(I ⊗ Pₘ)U(ρ ⊗ |0⟩⟨0|)). This shows POVMs are physically realizable using standard projective measurements on larger systems. Example: Trine POVM on a qubit. Couple qubit to a qutrit ancilla, apply unitary, measure ancilla in computational basis {|0⟩, |1⟩, |2⟩}. The three outcomes correspond to the Trine POVM elements. Physical implementations: (1) Photon detection: Photodetectors implement POVMs (not projective) because they absorb photons (irreversible). (2) Homodyne/heterodyne detection: Measure field quadratures, POVM on infinite-dimensional Hilbert space. (3) Weak measurements: Couple system weakly to meter, measure meter (POVM on system). (4) Quantum state tomography: Measure in multiple bases (overcomplete POVM). (5) Quantum communication: Optimal receiver for discriminating quantum signals uses POVMs (e.g., Kennedy receiver for coherent states). POVMs are ubiquitous in quantum optics, quantum communication, and quantum metrology. They provide the most general framework for quantum measurements, enabling optimal information extraction from quantum systems.
                     </p>
+                    <div class="formula-box">
+                        Naimark dilation: POVM = projective on S+A, trace out A<br>
+                        Eₘ = Tr_A(U†(I ⊗ Pₘ)U(ρ ⊗ |0⟩⟨0|))<br>
+                        Physical: Photodetectors, homodyne, weak measurements<br>
+                        Applications: State discrimination, tomography, communication
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: POVMs in Quantum Information and Metrology</h3>
+                    <p>
+                        POVMs are central to quantum information theory. Quantum state discrimination: Given ensemble {pᵢ, ρᵢ}, find POVM {Eₘ} to minimize error or maximize information gain. Minimum error: Helstrom measurement (square-root measurement). Maximum confidence: Unambiguous state discrimination (USD). Maximum mutual information: Holevo bound χ = S(Σᵢ pᵢρᵢ) - Σᵢ pᵢS(ρᵢ) achieved by optimal POVM. Quantum state tomography: Reconstruct ρ from measurement outcomes. Informationally complete POVMs (IC-POVMs) enable full reconstruction. SIC-POVMs are optimal (minimal number of outcomes, uniform noise amplification). Quantum metrology: Estimate parameter θ encoded in ρ(θ). Quantum Cramér-Rao bound: Δθ ≥ 1/(√ν F_Q(θ)) where ν is number of measurements, F_Q is quantum Fisher information. Optimal POVM saturates bound. Example: phase estimation θ in |ψ(θ)⟩ = e^(-iθH)|ψ₀⟩. F_Q = 4(ΔH)² (Heisenberg limit with entanglement). Adaptive measurements: Perform POVM, update estimate, choose next POVM based on outcome (Bayesian). Achieves better precision than fixed POVMs. Quantum hypothesis testing: Distinguish H₀: ρ₀ vs. H₁: ρ₁. Quantum Chernoff bound: P_error ≈ e^(-nξ) where ξ = -log min₀≤s≤₁ Tr(ρ₀^s ρ₁^(1-s)). POVMs are the foundation of quantum measurement theory, enabling optimal strategies for information extraction, state discrimination, and parameter estimation in quantum systems.
+                    </p>
+                    <div class="formula-box">
+                        Holevo bound: χ = S(Σᵢ pᵢρᵢ) - Σᵢ pᵢS(ρᵢ)<br>
+                        Quantum Cramér-Rao: Δθ ≥ 1/(√ν F_Q(θ))<br>
+                        Quantum Fisher information: F_Q = 4(ΔH)²<br>
+                        Quantum Chernoff: P_error ≈ e^(-nξ) (hypothesis testing)
+                    </div>
                 </div>
             </section>
 
