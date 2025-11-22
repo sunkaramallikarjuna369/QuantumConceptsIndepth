@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="vector-x">
+                        Vector v₁ (x component)
+                        <span class="value-display" id="vector-x-value">1.0</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="vector-x" min="-2" max="2" step="0.1" value="1.0">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="vector-y">
+                        Vector v₁ (y component)
+                        <span class="value-display" id="vector-y-value">0.5</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="vector-y" min="-2" max="2" step="0.1" value="0.5">
+                </div>
+
+                <div class="input-group">
+                    <label for="operation">Select Operation</label>
+                    <select id="operation">
+                        <option value="norm">Vector Norm ||v||</option>
+                        <option value="normalize">Normalize v/||v||</option>
+                        <option value="inner-product">Inner Product ⟨v₁|v₂⟩</option>
+                        <option value="matrix-transform">Matrix Transform Av</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('unit-vector')">Unit Vector</button>
+                    <button class="preset-btn" onclick="applyPreset('orthogonal')">Orthogonal Vectors</button>
+                    <button class="preset-btn" onclick="applyPreset('basis')">Basis Vectors</button>
                 </div>
             </section>
 
@@ -49,34 +59,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Vectors and Vector Spaces</h3>
                     <p>
-                        Linear Algebra Basics is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        A vector is an element of a vector space—a mathematical structure where you can add vectors and multiply them by scalars. In quantum mechanics, quantum states are vectors in a complex vector space (Hilbert space). A vector can be written as |v⟩ = (v₁, v₂, ..., vₙ) or in Dirac notation as |v⟩ = Σ vᵢ|i⟩. Vectors have magnitude (length) and direction. Two fundamental operations are vector addition |v⟩ + |w⟩ and scalar multiplication c|v⟩ where c is a complex number.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Vector: |v⟩ = (v₁, v₂, ..., vₙ) where vᵢ ∈ ℂ<br>
+                        Addition: |v⟩ + |w⟩ = (v₁+w₁, v₂+w₂, ..., vₙ+wₙ)<br>
+                        Scalar multiplication: c|v⟩ = (cv₁, cv₂, ..., cvₙ)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Inner Products and Norms</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The inner product ⟨v|w⟩ = Σ vᵢ*wᵢ (where * denotes complex conjugate) measures the "overlap" between two vectors. It's a complex number that generalizes the dot product. The norm ||v|| = √⟨v|v⟩ = √(Σ |vᵢ|²) is the length of the vector. A unit vector has ||v|| = 1. Two vectors are orthogonal if ⟨v|w⟩ = 0. In quantum mechanics, orthogonal states represent distinguishable states, and the inner product ⟨φ|ψ⟩ gives the probability amplitude for transitioning from |ψ⟩ to |φ⟩.
                     </p>
+                    <div class="formula-box">
+                        Inner product: ⟨v|w⟩ = Σ vᵢ*wᵢ ∈ ℂ<br>
+                        Norm: ||v|| = √⟨v|v⟩ = √(Σ |vᵢ|²) ∈ ℝ<br>
+                        Orthogonality: ⟨v|w⟩ = 0 ⟺ v ⊥ w
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Matrices and Linear Transformations</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        A matrix A is a rectangular array of numbers that represents a linear transformation—a function that maps vectors to vectors while preserving addition and scalar multiplication. Matrix-vector multiplication Av transforms vector v into a new vector. In quantum mechanics, matrices represent operators (observables and gates). An n×n matrix has n² entries. Matrix multiplication (AB)v = A(Bv) represents composition of transformations. The identity matrix I satisfies Iv = v for all v.
                     </p>
+                    <div class="formula-box">
+                        Matrix: A = [aᵢⱼ] where aᵢⱼ ∈ ℂ<br>
+                        Matrix-vector product: (Av)ᵢ = Σⱼ aᵢⱼvⱼ<br>
+                        Linear transformation: A(c₁v₁ + c₂v₂) = c₁Av₁ + c₂Av₂
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Basis and Dimensionality</h3>
+                    <p>
+                        A basis is a set of linearly independent vectors that span the entire vector space—every vector can be written as a unique linear combination of basis vectors. For a 2D qubit, the computational basis is {|0⟩, |1⟩}, so any state is |ψ⟩ = α|0⟩ + β|1⟩. The dimension of a space is the number of basis vectors needed. An n-qubit system lives in a 2ⁿ-dimensional complex vector space. Changing basis is like changing perspective—the same quantum state looks different in different bases (e.g., computational vs. Hadamard basis).
+                    </p>
+                    <div class="formula-box">
+                        Basis: {|e₁⟩, |e₂⟩, ..., |eₙ⟩} linearly independent and spanning<br>
+                        Any vector: |v⟩ = Σ cᵢ|eᵢ⟩ (unique coefficients cᵢ)<br>
+                        Dimension: dim(V) = n (number of basis vectors)
+                    </div>
                 </div>
             </section>
 
