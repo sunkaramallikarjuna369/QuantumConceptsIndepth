@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum States and State Vectors - In Depth</title>
+    <link rel="stylesheet" href="../common/css/common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to All Concepts</a>
+        
+        <header>
+            <h1>Quantum States and State Vectors</h1>
+            <p>Explore Dirac notation, bra-ket representation, and quantum state vectors</p>
+        </header>
+
+        <div class="content-grid">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Input</h2>
+                
+                <div class="input-group">
+                    <label for="state-type">
+                        State Representation
+                    </label>
+                    <select id="state-type">
+                        <option value="ket">Ket |ψ⟩</option>
+                        <option value="bra">Bra ⟨ψ|</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="basis">
+                        Basis
+                    </label>
+                    <select id="basis">
+                        <option value="computational">Computational (|0⟩, |1⟩)</option>
+                        <option value="hadamard">Hadamard (|+⟩, |−⟩)</option>
+                        <option value="circular">Circular (|R⟩, |L⟩)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="alpha-mag">
+                        Coefficient α
+                        <span class="value-display" id="alpha-value">0.707</span>
+                    </label>
+                    <input type="range" id="alpha-mag" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="beta-mag">
+                        Coefficient β
+                        <span class="value-display" id="beta-value">0.707</span>
+                    </label>
+                    <input type="range" id="beta-mag" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="phase">
+                        Relative Phase (radians)
+                        <span class="value-display" id="phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="phase" min="0" max="6.28" step="0.1" value="0">
+                </div>
+
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="zero">|0⟩</button>
+                    <button class="preset-btn" data-preset="one">|1⟩</button>
+                    <button class="preset-btn" data-preset="plus">|+⟩</button>
+                    <button class="preset-btn" data-preset="minus">|−⟩</button>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="process-section">
+                <h2>Process</h2>
+                
+                <div class="process-step">
+                    <h3>Step 1: Dirac Notation</h3>
+                    <p>
+                        Quantum states are represented using Dirac notation (bra-ket notation):
+                    </p>
+                    <div class="formula-box">
+                        |ψ⟩ = α|0⟩ + β|1⟩  (ket vector)<br>
+                        ⟨ψ| = α*⟨0| + β*⟨1|  (bra vector)
+                    </div>
+                    <p>
+                        Where |ψ⟩ is a ket (column vector) and ⟨ψ| is a bra (row vector, complex conjugate transpose).
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 2: State Vector Representation</h3>
+                    <p>
+                        In the computational basis, a quantum state can be written as a column vector:
+                    </p>
+                    <div class="formula-box">
+                        |ψ⟩ = [α]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[β]
+                    </div>
+                    <p>
+                        This is a vector in a 2-dimensional complex Hilbert space.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 3: Normalization</h3>
+                    <p>
+                        For a valid quantum state, the norm must equal 1:
+                    </p>
+                    <div class="formula-box">
+                        ⟨ψ|ψ⟩ = |α|² + |β|² = 1
+                    </div>
+                    <p>
+                        This ensures that probabilities sum to 1.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Basis Transformations</h3>
+                    <p>
+                        The same quantum state can be expressed in different bases. For example, 
+                        the Hadamard basis relates to the computational basis by:
+                    </p>
+                    <div class="formula-box">
+                        |+⟩ = (|0⟩ + |1⟩)/√2<br>
+                        |−⟩ = (|0⟩ − |1⟩)/√2
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <h2>Output</h2>
+                
+                <div class="output-info">
+                    <div class="state-display">
+                        <h3>Ket Notation</h3>
+                        <div id="ket-display" class="formula-display">|ψ⟩ = 0.707|0⟩ + 0.707|1⟩</div>
+                    </div>
+                    
+                    <div class="state-display">
+                        <h3>Bra Notation</h3>
+                        <div id="bra-display" class="formula-display">⟨ψ| = 0.707⟨0| + 0.707⟨1|</div>
+                    </div>
+                    
+                    <div class="state-display">
+                        <h3>Vector Form</h3>
+                        <div id="vector-display" class="formula-display">
+                            [0.707]<br>
+                            [0.707]
+                        </div>
+                    </div>
+                    
+                    <div class="state-display">
+                        <h3>Inner Product</h3>
+                        <div id="inner-product" class="formula-display">⟨ψ|ψ⟩ = 1.000</div>
+                    </div>
+                </div>
+
+                <div class="visualization-container">
+                    <h3>Bloch Sphere Representation</h3>
+                    <div id="bloch-sphere"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="../common/js/blochSphere.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
