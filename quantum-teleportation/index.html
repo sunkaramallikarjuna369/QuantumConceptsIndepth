@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="qubit-state">Qubit to Teleport</label>
+                    <select id="qubit-state">
+                        <option value="0">|0⟩ state</option>
+                        <option value="1">|1⟩ state</option>
+                        <option value="plus">|+⟩ state</option>
+                        <option value="minus">|-⟩ state</option>
+                        <option value="custom" selected>Custom state</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="alpha">
+                        Amplitude α (for |0⟩)
+                        <span class="value-display" id="alpha-value">0.71</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="alpha" min="0" max="1" step="0.01" value="0.71">
+                </div>
+
+                <div class="input-group">
+                    <label for="phase">
+                        Relative Phase φ (degrees)
+                        <span class="value-display" id="phase-value">45</span>
+                    </label>
+                    <input type="range" id="phase" min="0" max="360" step="5" value="45">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('state-0')">Teleport |0⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('state-plus')">Teleport |+⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('superposition')">Superposition</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Teleportation Protocol</h3>
                     <p>
-                        Quantum Teleportation is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum teleportation transfers an unknown quantum state |ψ⟩ = α|0⟩ + β|1⟩ from Alice to Bob using entanglement and classical communication—crucially, without physically moving the particle or measuring |ψ⟩ (which would destroy it). Alice and Bob share a Bell state |Φ⁺⟩ = (|00⟩+|11⟩)/√2 (qubits 2 and 3). Alice has the unknown state |ψ⟩ (qubit 1). The initial three-qubit state is |ψ⟩⊗|Φ⁺⟩ = (α|0⟩+β|1⟩)⊗(|00⟩+|11⟩)/√2. Alice performs a Bell measurement on qubits 1 and 2, projecting them onto one of four Bell states. This measurement yields two classical bits and collapses Bob's qubit 3 into a state related to |ψ⟩. Alice sends her two measurement bits to Bob via classical channel. Bob applies a unitary correction (I, X, Z, or ZX) based on Alice's bits, recovering the exact state |ψ⟩. Remarkably, Alice never learns |ψ⟩, and no information travels faster than light (classical bits are needed). The no-cloning theorem is respected: Alice's original qubit is destroyed by measurement.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Initial state: |ψ⟩₁⊗|Φ⁺⟩₂₃ = (α|0⟩+β|1⟩)₁⊗(|00⟩+|11⟩)₂₃/√2<br>
+                        After Bell measurement: One of |Φ±⟩, |Ψ±⟩ on qubits 1,2<br>
+                        Bob's correction: I, X, Z, or XZ depending on Alice's bits<br>
+                        Final state: |ψ⟩₃ = α|0⟩+β|1⟩ (exact copy at Bob's location)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Mathematical Details and Bell Basis</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        To understand teleportation, rewrite the initial state in the Bell basis for qubits 1 and 2. The four Bell states are |Φ⁺⟩ = (|00⟩+|11⟩)/√2, |Φ⁻⟩ = (|00⟩-|11⟩)/√2, |Ψ⁺⟩ = (|01⟩+|10⟩)/√2, |Ψ⁻⟩ = (|01⟩-|10⟩)/√2. Expanding |ψ⟩₁⊗|Φ⁺⟩₂₃ in this basis gives: (1/2)[|Φ⁺⟩₁₂(α|0⟩+β|1⟩)₃ + |Φ⁻⟩₁₂(α|0⟩-β|1⟩)₃ + |Ψ⁺⟩₁₂(α|1⟩+β|0⟩)₃ + |Ψ⁻⟩₁₂(α|1⟩-β|0⟩)₃]. Alice's Bell measurement projects onto one of these four terms with equal probability 1/4. If Alice measures |Φ⁺⟩, Bob has α|0⟩+β|1⟩ (apply I). If |Φ⁻⟩, Bob has α|0⟩-β|1⟩ (apply Z). If |Ψ⁺⟩, Bob has α|1⟩+β|0⟩ (apply X). If |Ψ⁻⟩, Bob has α|1⟩-β|0⟩ (apply XZ). The protocol succeeds with 100% fidelity—Bob always recovers the exact state |ψ⟩. The entanglement resource is consumed: the Bell pair is destroyed by Alice's measurement.
                     </p>
+                    <div class="formula-box">
+                        Bell basis expansion: |ψ⟩⊗|Φ⁺⟩ = (1/2)Σᵢ|Bellᵢ⟩₁₂⊗|ψᵢ⟩₃<br>
+                        Measurement outcomes: P(each Bell state) = 1/4<br>
+                        Bob's operations: I (00), Z (01), X (10), XZ (11)<br>
+                        Fidelity: F = |⟨ψ|ψ_final⟩|² = 1 (perfect teleportation)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: No Faster-Than-Light Communication</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Quantum teleportation does not violate relativity. Although Alice's measurement instantly affects Bob's qubit (quantum nonlocality), Bob cannot extract information without Alice's classical bits. Before receiving Alice's message, Bob's reduced density matrix is ρ_Bob = (1/2)I—maximally mixed, containing no information about |ψ⟩. Only after Alice sends her two classical bits (at light speed or slower) can Bob apply the correct unitary and recover |ψ⟩. This resolves the EPR paradox: entanglement allows correlations stronger than classical (violating Bell inequalities), but no superluminal signaling. The protocol also respects the no-cloning theorem: Alice's original qubit is destroyed by the Bell measurement, so no copy exists. Teleportation is fundamentally different from classical communication: the quantum state |ψ⟩ is transferred without being measured or transmitted through space. It's a quantum channel, not a classical one. Teleportation has been demonstrated experimentally with photons, atoms, and ions over distances up to 1400 km (satellite-based).
                     </p>
+                    <div class="formula-box">
+                        Bob's state before classical info: ρ_Bob = (1/2)I (no info)<br>
+                        Classical channel required: 2 bits from Alice to Bob<br>
+                        No-cloning respected: Alice's qubit destroyed<br>
+                        Experimental record: 1400 km (Micius satellite, 2017)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications and Quantum Networks</h3>
+                    <p>
+                        Quantum teleportation is a building block for quantum networks and distributed quantum computing. Quantum repeaters use teleportation to extend entanglement over long distances, overcoming photon loss in optical fibers. A quantum internet would enable secure communication (QKD), distributed quantum computing (cloud quantum processors), and quantum sensor networks. Teleportation-based quantum gates allow operations between distant qubits without direct interaction—crucial for modular quantum computers. Quantum error correction uses teleportation to move logical qubits between code spaces. Measurement-based quantum computing (one-way quantum computing) uses teleportation as the fundamental operation: prepare a cluster state, then teleport through it via measurements. Teleportation has been used to transfer quantum states between different physical systems (e.g., photon to atom), enabling hybrid quantum systems. Future applications include quantum blockchain, quantum machine learning across distributed nodes, and quantum-enhanced GPS. The first quantum network (DARPA, 2003) and quantum satellites (Micius, 2016) demonstrate the technology's maturity.
+                    </p>
+                    <div class="formula-box">
+                        Quantum repeater: Extend entanglement via teleportation<br>
+                        Quantum internet: QKD + distributed computing + sensors<br>
+                        Gate teleportation: Remote operations between qubits<br>
+                        Measurement-based QC: Teleport through cluster states
+                    </div>
                 </div>
             </section>
 
