@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="state-type">State Type</label>
+                    <select id="state-type">
+                        <option value="pure" selected>Pure State (|ψ⟩⟨ψ|)</option>
+                        <option value="mixed">Mixed State (Statistical Mixture)</option>
+                        <option value="maximally-mixed">Maximally Mixed (I/2)</option>
+                        <option value="werner">Werner State</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="purity">
+                        Purity (Tr(ρ²))
+                        <span class="value-display" id="purity-value">1.0</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="purity" min="0.5" max="1" step="0.05" value="1.0">
+                </div>
+
+                <div class="input-group">
+                    <label for="mixing-parameter">
+                        Mixing Parameter (p)
+                        <span class="value-display" id="mixing-parameter-value">0.5</span>
+                    </label>
+                    <input type="range" id="mixing-parameter" min="0" max="1" step="0.05" value="0.5">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('pure-state')">Pure State</button>
+                    <button class="preset-btn" onclick="applyPreset('equal-mixture')">Equal Mixture</button>
+                    <button class="preset-btn" onclick="applyPreset('thermal')">Thermal State</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: From Pure States to Mixed States</h3>
                     <p>
-                        Density Matrices and Mixed States is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Density matrices generalize quantum states to describe both pure states (definite quantum states) and mixed states (statistical mixtures). A pure state |ψ⟩ = α|0⟩ + β|1⟩ is represented by the density matrix ρ = |ψ⟩⟨ψ| = [[|α|², αβ*], [α*β, |β|²]]. This is a rank-1 projection operator with Tr(ρ) = 1 and Tr(ρ²) = 1 (purity). A mixed state represents classical uncertainty about which quantum state the system is in: ρ = Σᵢ pᵢ|ψᵢ⟩⟨ψᵢ| where pᵢ are classical probabilities (pᵢ ≥ 0, Σpᵢ = 1). Example: equal mixture of |0⟩ and |1⟩ is ρ = (1/2)|0⟩⟨0| + (1/2)|1⟩⟨1| = [[1/2, 0], [0, 1/2]]. This is diagonal (no coherence) and has Tr(ρ²) = 1/2 < 1 (impure). The maximally mixed state ρ = I/2 = [[1/2, 0], [0, 1/2]] represents complete ignorance. Density matrices satisfy: (1) ρ† = ρ (Hermitian), (2) ρ ≥ 0 (positive semidefinite), (3) Tr(ρ) = 1 (normalized). Expectation values: ⟨A⟩ = Tr(ρA). Measurement probabilities: P(m) = Tr(ρPₘ) where Pₘ are projectors. Density matrices are essential for describing open quantum systems, decoherence, and quantum information.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Pure state: ρ = |ψ⟩⟨ψ|, Tr(ρ²) = 1 (rank-1)<br>
+                        Mixed state: ρ = Σᵢ pᵢ|ψᵢ⟩⟨ψᵢ|, Tr(ρ²) < 1<br>
+                        Properties: ρ† = ρ, ρ ≥ 0, Tr(ρ) = 1<br>
+                        Expectation: ⟨A⟩ = Tr(ρA), Probability: P(m) = Tr(ρPₘ)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Purity, Entropy, and Bloch Sphere</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Purity Tr(ρ²) quantifies how "pure" a state is: Tr(ρ²) = 1 for pure states, Tr(ρ²) < 1 for mixed states. For qubits, Tr(ρ²) = (1 + r²)/2 where r is the Bloch vector length (0 ≤ r ≤ 1). Pure states have r = 1 (on Bloch sphere surface), mixed states have r < 1 (inside Bloch sphere), maximally mixed has r = 0 (center). Von Neumann entropy S(ρ) = -Tr(ρ log ρ) measures mixedness: S = 0 for pure states, S > 0 for mixed states, S = log d for maximally mixed (d = dimension). For qubits, S = -λ₁ log λ₁ - λ₂ log λ₂ where λ₁, λ₂ are eigenvalues. Entropy is concave: S(Σᵢ pᵢρᵢ) ≥ Σᵢ pᵢS(ρᵢ) (mixing increases entropy). Subadditivity: S(ρ_AB) ≤ S(ρ_A) + S(ρ_B) (correlations reduce entropy). Entanglement entropy: for pure bipartite state |ψ⟩_AB, S(ρ_A) = S(ρ_B) quantifies entanglement (S = 0 for product states, S = log d for maximally entangled). Density matrices enable quantum thermodynamics: thermal state ρ_thermal = e^(-βH)/Z where β = 1/(kT), Z = Tr(e^(-βH)). At high temperature (β → 0), ρ → I/d (maximally mixed). At zero temperature (β → ∞), ρ → |ground⟩⟨ground| (pure ground state).
                     </p>
+                    <div class="formula-box">
+                        Purity: Tr(ρ²) = 1 (pure), < 1 (mixed)<br>
+                        Von Neumann entropy: S(ρ) = -Tr(ρ log ρ)<br>
+                        Bloch sphere: ρ = (I + r⃗·σ⃗)/2, r = √Tr(ρ²) - 1/2<br>
+                        Thermal state: ρ = e^(-βH)/Z (β = 1/(kT))
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Partial Trace and Reduced Density Matrices</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        For composite systems AB, the reduced density matrix describes subsystem A by tracing out B: ρ_A = Tr_B(ρ_AB) = Σᵢ ⟨i|_B ρ_AB |i⟩_B. Example: Bell state |Φ⁺⟩ = (|00⟩+|11⟩)/√2 has ρ_AB = |Φ⁺⟩⟨Φ⁺|. Tracing out B: ρ_A = Tr_B(ρ_AB) = (1/2)|0⟩⟨0| + (1/2)|1⟩⟨1| = I/2 (maximally mixed). This shows entanglement: the global state is pure (Tr(ρ_AB²) = 1), but subsystems are mixed (Tr(ρ_A²) = 1/2). Reduced density matrices enable studying open quantum systems: system S interacts with environment E, total state ρ_SE evolves unitarily, but ρ_S = Tr_E(ρ_SE) evolves non-unitarily (decoherence). Schmidt decomposition: any pure bipartite state |ψ⟩_AB = Σᵢ √λᵢ |i⟩_A |i⟩_B where λᵢ are Schmidt coefficients (eigenvalues of ρ_A = ρ_B). Number of non-zero λᵢ is Schmidt rank (1 for product states, > 1 for entangled). Entanglement entropy S(ρ_A) = -Σᵢ λᵢ log λᵢ. Partial trace is essential for quantum channels, quantum error correction, and quantum thermodynamics. It connects global pure states to local mixed states, explaining why subsystems of entangled systems appear classical.
                     </p>
+                    <div class="formula-box">
+                        Partial trace: ρ_A = Tr_B(ρ_AB) = Σᵢ ⟨i|_B ρ_AB |i⟩_B<br>
+                        Bell state: ρ_A = I/2 (maximally mixed from pure entangled)<br>
+                        Schmidt decomposition: |ψ⟩_AB = Σᵢ √λᵢ |i⟩_A |i⟩_B<br>
+                        Entanglement entropy: S(ρ_A) = -Σᵢ λᵢ log λᵢ
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications in Quantum Information</h3>
+                    <p>
+                        Density matrices are fundamental to quantum information theory. Quantum channels (CPTP maps) transform density matrices: ρ → ε(ρ). Kraus representation: ε(ρ) = Σₖ KₖρKₖ† with Σₖ Kₖ†Kₖ = I. Example: depolarizing channel ε(ρ) = (1-p)ρ + p(I/2) (noise). Fidelity F(ρ, σ) = Tr(√(√ρ σ √ρ)) measures distinguishability (F = 1 for identical states, F < 1 for different). For pure states, F = |⟨ψ|φ⟩|. Trace distance D(ρ, σ) = (1/2)Tr(|ρ - σ|) is another measure (D = 0 for identical, D ≤ 1). Quantum state tomography reconstructs ρ from measurements: measure ⟨Aᵢ⟩ = Tr(ρAᵢ) for informationally complete set {Aᵢ}, then solve for ρ. For qubits, measure X, Y, Z to get Bloch vector. Quantum error correction encodes logical qubits in physical qubits to protect against noise: ρ_logical → ε(ρ_logical) → recovery → ρ_logical. Density matrices enable quantum cryptography (QKD security proofs), quantum computing (NISQ devices with noise), and quantum foundations (measurement problem, decoherence). They unify pure and mixed states, providing a complete description of quantum systems in realistic (noisy) environments. Future quantum technologies will rely on precise control and characterization of density matrices.
+                    </p>
+                    <div class="formula-box">
+                        Quantum channel: ε(ρ) = Σₖ KₖρKₖ† (Kraus operators)<br>
+                        Fidelity: F(ρ, σ) = Tr(√(√ρ σ √ρ)) (distinguishability)<br>
+                        Trace distance: D(ρ, σ) = (1/2)Tr(|ρ - σ|)<br>
+                        State tomography: Reconstruct ρ from measurements ⟨Aᵢ⟩
+                    </div>
                 </div>
             </section>
 
