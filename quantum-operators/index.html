@@ -22,25 +22,38 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="operator-select">Select Operator</label>
+                    <select id="operator-select">
+                        <option value="pauli-x">Pauli X (σ_x)</option>
+                        <option value="pauli-y">Pauli Y (σ_y)</option>
+                        <option value="pauli-z">Pauli Z (σ_z)</option>
+                        <option value="hadamard">Hadamard (H)</option>
+                        <option value="identity">Identity (I)</option>
+                        <option value="phase">Phase (S)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="state-alpha">
+                        State α (|0⟩ component)
+                        <span class="value-display" id="state-alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="state-alpha" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="state-phase">
+                        State Phase φ (radians)
+                        <span class="value-display" id="state-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="state-phase" min="0" max="6.28" step="0.01" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('superposition')">Superposition</button>
+                    <button class="preset-btn" onclick="applyPreset('ground')">Ground State</button>
+                    <button class="preset-btn" onclick="applyPreset('excited')">Excited State</button>
+                    <button class="preset-btn" onclick="applyOperator()">Apply Operator</button>
                 </div>
             </section>
 
@@ -49,34 +62,47 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: What are Quantum Operators?</h3>
                     <p>
-                        Quantum Operators is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum operators are mathematical objects that act on quantum states to produce new quantum states or extract information. They represent physical observables (like position, momentum, energy) and transformations (like rotations, gates). Operators are represented as matrices that act on state vectors: Â|ψ⟩ = |ψ'⟩.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Â|ψ⟩ = |ψ'⟩<br>
+                        where  is an operator and |ψ⟩ is a state vector
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Hermitian Operators (Observables)</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Physical observables are represented by Hermitian (self-adjoint) operators, which satisfy † = Â. Hermitian operators have real eigenvalues (measurement outcomes) and orthogonal eigenstates. Examples include position (x̂), momentum (p̂), energy (Ĥ), and the Pauli matrices (σ_x, σ_y, σ_z).
                     </p>
+                    <div class="formula-box">
+                        † = Â (Hermitian condition)<br>
+                        Eigenvalues are real: λ ∈ ℝ
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Unitary Operators (Transformations)</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Quantum evolution and gates are represented by unitary operators, which preserve the norm of states: Û†Û = I. Unitary operators describe reversible transformations like time evolution, rotations, and quantum gates. They have eigenvalues with magnitude 1 (pure phases).
                     </p>
+                    <div class="formula-box">
+                        Û†Û = I (Unitary condition)<br>
+                        |Û|ψ⟩| = ||ψ⟩| (norm preservation)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Operator Action on States</h3>
+                    <p>
+                        When an operator acts on a quantum state, it transforms the state according to its matrix representation. For a qubit, operators are 2×2 matrices. The Pauli operators (X, Y, Z) are fundamental: X flips |0⟩↔|1⟩, Z adds a phase to |1⟩, and Y does both. These form the basis for all single-qubit operations.
+                    </p>
+                    <div class="formula-box">
+                        X|0⟩ = |1⟩, X|1⟩ = |0⟩ (bit flip)<br>
+                        Z|0⟩ = |0⟩, Z|1⟩ = -|1⟩ (phase flip)
+                    </div>
                 </div>
             </section>
 
