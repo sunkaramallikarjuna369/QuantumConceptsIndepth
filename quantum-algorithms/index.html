@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="algorithm-type">Algorithm Type</label>
+                    <select id="algorithm-type">
+                        <option value="grover" selected>Grover's Search</option>
+                        <option value="shor">Shor's Factoring</option>
+                        <option value="deutsch-jozsa">Deutsch-Jozsa</option>
+                        <option value="simon">Simon's Algorithm</option>
+                        <option value="vqe">VQE (Variational)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="problem-size">
+                        Problem Size (N)
+                        <span class="value-display" id="problem-size-value">16</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="problem-size" min="4" max="64" step="4" value="16">
+                </div>
+
+                <div class="input-group">
+                    <label for="iterations">
+                        Grover Iterations
+                        <span class="value-display" id="iterations-value">3</span>
+                    </label>
+                    <input type="range" id="iterations" min="1" max="10" step="1" value="3">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('grover-demo')">Grover Demo</button>
+                    <button class="preset-btn" onclick="applyPreset('shor-demo')">Shor Demo</button>
+                    <button class="preset-btn" onclick="applyPreset('vqe-demo')">VQE Demo</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Grover's Search Algorithm</h3>
                     <p>
-                        Quantum Algorithms is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Grover's algorithm (1996) searches an unsorted database of N items in O(√N) steps, providing a quadratic speedup over classical O(N). Given a function f:{0,1}ⁿ→{0,1} with exactly one x₀ such that f(x₀)=1 (the "marked item"), Grover finds x₀. The algorithm: prepare uniform superposition |ψ⟩ = (1/√N)Σₓ|x⟩ using Hadamards. Repeat ~π√N/4 times: (1) Apply oracle Oₓ₀|x⟩ = (-1)^f(x)|x⟩ (flips phase of |x₀⟩). (2) Apply diffusion operator D = 2|ψ⟩⟨ψ| - I (inverts amplitudes about mean). This is amplitude amplification: each iteration increases amplitude of |x₀⟩ and decreases others. After optimal iterations, measuring gives x₀ with high probability (~1). The speedup is quadratic, not exponential: searching 10⁶ items takes ~10³ steps (classical: 10⁶). Grover is optimal for unstructured search (proven by lower bounds). Applications: database search, SAT solving (quadratic speedup), collision finding (birthday problem), and breaking symmetric cryptography (AES-128 → 64-bit security, AES-256 → 128-bit). Grover requires O(log N) qubits and O(√N) oracle calls, making it practical for NISQ devices with small N.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Grover: Search N items in O(√N) steps (classical: O(N))<br>
+                        Iterations: ~π√N/4 (optimal)<br>
+                        Oracle: Oₓ₀|x⟩ = (-1)^f(x)|x⟩ (phase flip)<br>
+                        Diffusion: D = 2|ψ⟩⟨ψ| - I (amplitude amplification)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Shor's Factoring Algorithm</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Shor's algorithm (1994) factors integers in polynomial time O((log N)³), exponentially faster than classical algorithms (~O(e^((log N)^(1/3)})). This breaks RSA cryptography. Given N = pq (product of primes), Shor reduces factoring to period finding: pick random a < N, find period r of f(x) = a^x mod N (i.e., a^r ≡ 1 mod N). If r is even and a^(r/2) ≢ -1 mod N, then gcd(a^(r/2)±1, N) gives a factor. Period finding uses quantum phase estimation: prepare |+⟩ⁿ|1⟩, apply controlled-U^(2^k) where U|y⟩ = |ay mod N⟩, then inverse QFT. Measuring gives j/2ⁿ ≈ s/r, so r is extracted via continued fractions. The quantum Fourier transform enables extracting the period from superposition. Shor's algorithm requires ~10⁶ logical qubits (10⁹ physical qubits with error correction) to factor 2048-bit RSA, estimated for 2030s-2040s. Current record: factoring 21 = 3×7 (2012, 4 qubits). Shor also solves discrete log (breaking ECC, Diffie-Hellman) and hidden subgroup problems. Post-quantum cryptography (lattice-based, hash-based) resists Shor's algorithm.
                     </p>
+                    <div class="formula-box">
+                        Shor: Factor N in O((log N)³) time (exponential speedup)<br>
+                        Period finding: Find r such that a^r ≡ 1 mod N<br>
+                        QFT: Extract period from superposition<br>
+                        Threat: Breaks RSA, ECC, DH (2030s-2040s, 10⁹ qubits)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Variational Quantum Algorithms (VQE, QAOA)</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Variational quantum eigensolver (VQE) finds the ground state energy of a Hamiltonian H, crucial for quantum chemistry (molecular energies, drug discovery). VQE is a hybrid quantum-classical algorithm: prepare a parameterized quantum state |ψ(θ)⟩ (ansatz), measure energy ⟨ψ(θ)|H|ψ(θ)⟩ on quantum hardware, use classical optimizer to update θ to minimize energy. Repeat until convergence. VQE is noise-resilient (short circuits) and practical for NISQ devices. It has been used to compute molecular energies (H₂, LiH, BeH₂) on IBM and Google quantum computers. Quantum approximate optimization algorithm (QAOA) solves combinatorial optimization (MaxCut, TSP, portfolio optimization). QAOA prepares |+⟩ⁿ, applies alternating layers of problem Hamiltonian e^(-iγH_C) and mixer Hamiltonian e^(-iβH_M), then measures. Classical optimizer tunes γ, β to maximize objective. QAOA with p layers has depth O(p), enabling shallow circuits for NISQ. Both VQE and QAOA are leading candidates for near-term quantum advantage. Challenges: barren plateaus (gradients vanish exponentially), ansatz design, and classical optimization overhead. Applications: drug discovery, materials science, finance, logistics.
                     </p>
+                    <div class="formula-box">
+                        VQE: Find ground state energy ⟨ψ(θ)|H|ψ(θ)⟩<br>
+                        Hybrid: Quantum measurement + classical optimization<br>
+                        QAOA: Combinatorial optimization (MaxCut, TSP)<br>
+                        NISQ-friendly: Short circuits, noise-resilient
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Quantum Simulation and HHL Algorithm</h3>
+                    <p>
+                        Quantum simulation is a killer app: simulating quantum systems (molecules, materials, condensed matter) that are intractable classically. Feynman (1982) proposed quantum computers for this. Simulating n qubits requires 2ⁿ classical variables (exponential), but n quantum qubits suffice. Applications: drug discovery (protein folding, enzyme catalysis), materials science (superconductors, batteries), high-energy physics (lattice QCD). Algorithms: Trotter-Suzuki decomposition (approximate time evolution e^(-iHt) ≈ (e^(-iH₁Δt)e^(-iH₂Δt))^(t/Δt)), quantum phase estimation (find eigenvalues), and variational methods (VQE). Google's 2020 Hartree-Fock simulation and IBM's 2021 chemistry experiments demonstrate progress. The HHL algorithm (Harrow-Hassidim-Lloyd, 2009) solves linear systems Ax=b exponentially faster than classical (O(log N) vs O(N) for N×N matrix). However, HHL requires quantum RAM (loading x, reading output) and only provides ⟨x|M|x⟩ (not full x), limiting practical use. HHL inspires quantum machine learning (linear regression, PCA, SVM). Quantum algorithms also include quantum walks (graph problems), quantum annealing (optimization), and quantum machine learning (classification, clustering). The field is rapidly evolving with new algorithms discovered regularly.
+                    </p>
+                    <div class="formula-box">
+                        Quantum simulation: n qubits simulate n-qubit systems (exponential)<br>
+                        Applications: Drug discovery, materials, high-energy physics<br>
+                        HHL: Solve Ax=b in O(log N) time (classical: O(N))<br>
+                        Quantum ML: Classification, clustering, PCA, SVM
+                    </div>
                 </div>
             </section>
 
