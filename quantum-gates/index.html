@@ -22,25 +22,39 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="gate-type">Quantum Gate Type</label>
+                    <select id="gate-type">
+                        <option value="hadamard" selected>Hadamard (H)</option>
+                        <option value="pauli-x">Pauli-X (NOT)</option>
+                        <option value="pauli-y">Pauli-Y</option>
+                        <option value="pauli-z">Pauli-Z</option>
+                        <option value="cnot">CNOT (Controlled-NOT)</option>
+                        <option value="toffoli">Toffoli (CCNOT)</option>
+                        <option value="swap">SWAP</option>
+                        <option value="phase">Phase (S, T)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="rotation-angle">
+                        Rotation Angle (θ, radians)
+                        <span class="value-display" id="rotation-angle-value">1.57</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="rotation-angle" min="0" max="6.28" step="0.01" value="1.57">
+                </div>
+
+                <div class="input-group">
+                    <label for="num-qubits-gate">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-gate-value">2</span>
+                    </label>
+                    <input type="range" id="num-qubits-gate" min="1" max="3" step="1" value="2">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('hadamard')">Hadamard</button>
+                    <button class="preset-btn" onclick="applyPreset('cnot')">CNOT</button>
+                    <button class="preset-btn" onclick="applyPreset('toffoli')">Toffoli</button>
                 </div>
             </section>
 
@@ -49,34 +63,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Single-Qubit Gates - Pauli and Hadamard Gates</h3>
                     <p>
-                        Quantum Gates is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum gates are unitary operators that manipulate qubits, analogous to classical logic gates but reversible. Single-qubit gates act on one qubit: |ψ⟩ → U|ψ⟩ where U is 2×2 unitary matrix (U†U = I). Pauli gates: X (bit-flip), Y (bit+phase flip), Z (phase-flip). Pauli-X: X|0⟩ = |1⟩, X|1⟩ = |0⟩ (quantum NOT). Matrix: X = [[0,1],[1,0]]. Pauli-Y: Y = [[0,-i],[i,0]]. Rotates Bloch sphere around Y-axis by π. Pauli-Z: Z|0⟩ = |0⟩, Z|1⟩ = -|1⟩ (phase flip). Matrix: Z = [[1,0],[0,-1]]. Hadamard gate (H): Creates superposition. H|0⟩ = (|0⟩+|1⟩)/√2 = |+⟩, H|1⟩ = (|0⟩-|1⟩)/√2 = |-⟩. Matrix: H = (1/√2)[[1,1],[1,-1]]. H is self-inverse: H² = I. Geometric interpretation: H rotates Bloch sphere by π around axis (X+Z)/√2. Rotation gates: R_x(θ), R_y(θ), R_z(θ) rotate Bloch sphere by angle θ around X, Y, Z axes. R_z(θ) = [[e^(-iθ/2), 0], [0, e^(iθ/2)]]. Phase gates: S = R_z(π/2) = [[1,0],[0,i]], T = R_z(π/4) = [[1,0],[0,e^(iπ/4)]]. T gate is non-Clifford (enables universal quantum computing). Universal gate set: Any single-qubit unitary can be decomposed as U = e^(iα) R_z(β)R_y(γ)R_z(δ) (Euler angles). Typically use {H, S, T} or {R_x, R_y, R_z} as universal single-qubit gate set. Physical implementation: Microwave pulses (superconducting qubits), laser pulses (trapped ions), magnetic fields (spin qubits). Gate fidelity: ~99.9% for single-qubit gates on modern hardware.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Pauli-X: [[0,1],[1,0]] (bit-flip), Pauli-Z: [[1,0],[0,-1]] (phase-flip)<br>
+                        Hadamard: H = (1/√2)[[1,1],[1,-1]] (superposition), H² = I<br>
+                        Rotation: R_z(θ) = [[e^(-iθ/2), 0], [0, e^(iθ/2)]]<br>
+                        Universal: Any U = e^(iα) R_z(β)R_y(γ)R_z(δ) (Euler decomposition)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Two-Qubit Gates - CNOT, CZ, and Entangling Gates</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Two-qubit gates create entanglement, enabling quantum parallelism and quantum algorithms. CNOT (Controlled-NOT): Flips target qubit if control qubit is |1⟩. CNOT|00⟩ = |00⟩, CNOT|01⟩ = |01⟩, CNOT|10⟩ = |11⟩, CNOT|11⟩ = |10⟩. Matrix (4×4): CNOT = [[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]]. Creates entanglement: CNOT(H⊗I)|00⟩ = (|00⟩+|11⟩)/√2 (Bell state). CNOT is self-inverse: CNOT² = I. Controlled-Z (CZ): Applies Z to target if control is |1⟩. CZ = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,-1]]. CZ is symmetric (control and target interchangeable). SWAP gate: Exchanges two qubits. SWAP|01⟩ = |10⟩. Matrix: SWAP = [[1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]]. SWAP = CNOT₁₂ CNOT₂₁ CNOT₁₂ (three CNOTs). √SWAP: Square root of SWAP, used in some quantum algorithms. iSWAP: SWAP with phase. Universal gate set: {CNOT, H, T} is universal (can implement any quantum circuit). Alternative: {CZ, R_x, R_y, R_z}. Two-qubit gate fidelity: ~99% (superconducting), >99.9% (trapped ions). Challenges: Two-qubit gates are slower and noisier than single-qubit gates. Crosstalk: Operations on one qubit pair affect nearby qubits. Native gates: Hardware-specific two-qubit gates (e.g., cross-resonance for superconducting, Mølmer-Sørensen for ions). Compiling circuits to native gates reduces errors. Entangling power: Measure of how much entanglement a gate creates. CNOT has maximal entangling power (can create maximally entangled states from product states).
                     </p>
+                    <div class="formula-box">
+                        CNOT: [[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]] (flip target if control=1)<br>
+                        CZ: [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,-1]] (symmetric)<br>
+                        SWAP: [[1,0,0,0],[0,0,1,0],[0,1,0,0],[0,0,0,1]] (exchange qubits)<br>
+                        Universal: {CNOT, H, T} or {CZ, R_x, R_y, R_z}
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Multi-Qubit Gates - Toffoli, Fredkin, and Controlled Gates</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Multi-qubit gates act on 3+ qubits, enabling complex quantum operations. Toffoli gate (CCNOT): Controlled-controlled-NOT. Flips target if both controls are |1⟩. Toffoli|110⟩ = |111⟩, Toffoli|111⟩ = |110⟩. Matrix: 8×8 (flips last two bits of |11x⟩). Universal for classical reversible computing: Toffoli + NOT is universal for classical logic. Quantum universality: {Toffoli, H} is universal for quantum computing. Decomposition: Toffoli = 6 CNOTs + 9 single-qubit gates (expensive on NISQ devices). Fredkin gate (CSWAP): Controlled-SWAP. Swaps two qubits if control is |1⟩. Used in quantum algorithms (e.g., quantum fingerprinting). Controlled-U gates: Apply arbitrary unitary U to target if control is |1⟩. Controlled-U = [[I, 0], [0, U]] (block matrix). Examples: Controlled-H, Controlled-R_z(θ). Multi-controlled gates: C^n-U (n control qubits). Used in quantum algorithms (Grover's, Shor's). Decomposition: C^n-U can be decomposed into O(n²) single and two-qubit gates using ancilla qubits. Challenges: Multi-qubit gates are difficult to implement directly on hardware. Require decomposition into native gates (CNOT, single-qubit). Decomposition adds circuit depth and errors. Ancilla qubits: Extra qubits used to simplify gate decomposition. Trade-off: fewer gates but more qubits. Gate synthesis: Finding optimal decomposition of target unitary into native gates. NP-hard problem, heuristic algorithms used. Quantum compilers: Qiskit, Cirq, Q# compile high-level circuits to hardware-specific gate sets, optimizing for depth, gate count, and fidelity.
                     </p>
+                    <div class="formula-box">
+                        Toffoli (CCNOT): Flip target if both controls = 1 (8×8 matrix)<br>
+                        Fredkin (CSWAP): Swap two qubits if control = 1<br>
+                        Controlled-U: [[I, 0], [0, U]] (apply U if control = 1)<br>
+                        Decomposition: Toffoli = 6 CNOTs + 9 single-qubit gates
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Gate Universality and Quantum Circuit Compilation</h3>
+                    <p>
+                        Universal gate set: A set of gates that can approximate any unitary operation to arbitrary precision. Solovay-Kitaev theorem: Any single-qubit unitary can be approximated to precision ε using O(log^c(1/ε)) gates from universal set (c ≈ 2). Efficient approximation enables fault-tolerant quantum computing. Common universal sets: (1) {H, T, CNOT}: Clifford gates (H, S, CNOT) + non-Clifford (T). Clifford gates alone are efficiently simulable (Gottesman-Knill), T gate enables quantum advantage. (2) {R_x, R_y, R_z, CNOT}: Continuous rotations + entangling gate. (3) {U3, CNOT}: U3(θ, φ, λ) is arbitrary single-qubit rotation. Used in IBM Quantum. Gate compilation: Translating high-level quantum circuit to hardware-specific native gates. Steps: (1) Gate decomposition: Break multi-qubit gates into single and two-qubit gates. (2) Basis translation: Convert to native gate set (e.g., {R_x, R_y, CZ} for trapped ions). (3) Qubit routing: Map logical qubits to physical qubits, insert SWAP gates for connectivity. (4) Optimization: Reduce circuit depth, cancel redundant gates, merge rotations. Challenges: (1) SWAP overhead: Limited connectivity requires SWAP chains, increasing depth and errors. (2) Gate fidelity: More gates = more errors. Trade-off between exact decomposition and approximate (fewer gates). (3) Crosstalk: Simultaneous gates on nearby qubits interfere. Compiler must schedule gates carefully. Quantum compilers: Qiskit (IBM), Cirq (Google), Q# (Microsoft), PyQuil (Rigetti). Provide high-level abstractions, automatic compilation, noise-aware optimization. Future: Machine learning for gate synthesis, topology-aware compilation, error-aware optimization. Efficient compilation is critical for scaling quantum computers to useful applications.
+                    </p>
+                    <div class="formula-box">
+                        Universal sets: {H, T, CNOT}, {R_x, R_y, R_z, CNOT}, {U3, CNOT}<br>
+                        Solovay-Kitaev: Approximate any U to ε using O(log^c(1/ε)) gates<br>
+                        Compilation: Decompose → basis translate → route → optimize<br>
+                        Challenges: SWAP overhead, gate fidelity, crosstalk, connectivity
+                    </div>
                 </div>
             </section>
 
