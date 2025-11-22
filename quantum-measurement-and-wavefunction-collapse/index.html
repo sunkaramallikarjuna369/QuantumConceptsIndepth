@@ -22,25 +22,43 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="alpha">
+                        Amplitude α (|0⟩ component)
+                        <span class="value-display" id="alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="alpha" min="0" max="1" step="0.01" value="0.707">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="phase">
+                        Phase φ (radians)
+                        <span class="value-display" id="phase-value">0.00</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="phase" min="0" max="6.28" step="0.01" value="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="measurement-basis">Measurement Basis</label>
+                    <select id="measurement-basis">
+                        <option value="z">Z-basis (|0⟩, |1⟩)</option>
+                        <option value="x">X-basis (|+⟩, |−⟩)</option>
+                        <option value="y">Y-basis (|↻⟩, |↺⟩)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="num-measurements">
+                        Number of Measurements
+                        <span class="value-display" id="num-measurements-value">100</span>
+                    </label>
+                    <input type="range" id="num-measurements" min="10" max="1000" step="10" value="100">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('superposition')">Equal Superposition</button>
+                    <button class="preset-btn" onclick="applyPreset('ground')">Ground State |0⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('excited')">Excited State |1⟩</button>
+                    <button class="preset-btn" onclick="performMeasurement()">Perform Measurement</button>
                 </div>
             </section>
 
@@ -49,34 +67,47 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum State Before Measurement</h3>
                     <p>
-                        Quantum Measurement and Wavefunction Collapse is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Before measurement, a quantum system exists in a superposition of basis states. For a qubit, this is represented as |ψ⟩ = α|0⟩ + βe<sup>iφ</sup>|1⟩, where α and β are complex probability amplitudes satisfying |α|² + |β|² = 1. The state exists in all possible configurations simultaneously until measured.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        |ψ⟩ = α|0⟩ + βe<sup>iφ</sup>|1⟩<br>
+                        where |α|² + |β|² = 1
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Born Rule and Measurement Probabilities</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The Born rule states that the probability of measuring a particular eigenstate is the squared magnitude of its amplitude. For measuring in the computational basis {|0⟩, |1⟩}: P(0) = |α|² and P(1) = |β|². These probabilities are intrinsic to quantum mechanics and cannot be predicted with certainty for individual measurements.
                     </p>
+                    <div class="formula-box">
+                        P(0) = |α|² = |⟨0|ψ⟩|²<br>
+                        P(1) = |β|² = |⟨1|ψ⟩|²
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Wavefunction Collapse</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Upon measurement, the quantum state instantaneously "collapses" to one of the measurement basis eigenstates. This is a non-unitary, irreversible process that fundamentally distinguishes quantum measurement from unitary evolution. The superposition is destroyed, and the system is left in a definite state corresponding to the measurement outcome.
                     </p>
+                    <div class="formula-box">
+                        Before: |ψ⟩ = α|0⟩ + β|1⟩ (superposition)<br>
+                        After: |0⟩ or |1⟩ (definite state)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Measurement in Different Bases</h3>
+                    <p>
+                        The measurement outcome depends on the choice of measurement basis. Measuring in the X-basis {|+⟩, |−⟩} or Y-basis {|↻⟩, |↺⟩} gives different probabilities than the Z-basis. This demonstrates that measurement is not simply revealing pre-existing properties, but actively affecting the quantum state.
+                    </p>
+                    <div class="formula-box">
+                        X-basis: |+⟩ = (|0⟩ + |1⟩)/√2, |−⟩ = (|0⟩ − |1⟩)/√2<br>
+                        Y-basis: |↻⟩ = (|0⟩ + i|1⟩)/√2, |↺⟩ = (|0⟩ − i|1⟩)/√2
+                    </div>
                 </div>
             </section>
 
