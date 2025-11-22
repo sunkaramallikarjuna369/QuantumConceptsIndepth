@@ -22,25 +22,42 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="alpha-real">
+                        α (real part)
+                        <span class="value-display" id="alpha-real-value">0.707</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="alpha-real" min="-1" max="1" step="0.01" value="0.707">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="alpha-imag">
+                        α (imaginary part)
+                        <span class="value-display" id="alpha-imag-value">0.00</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="alpha-imag" min="-1" max="1" step="0.01" value="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="beta-real">
+                        β (real part)
+                        <span class="value-display" id="beta-real-value">0.707</span>
+                    </label>
+                    <input type="range" id="beta-real" min="-1" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="beta-imag">
+                        β (imaginary part)
+                        <span class="value-display" id="beta-imag-value">0.00</span>
+                    </label>
+                    <input type="range" id="beta-imag" min="-1" max="1" step="0.01" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('normalized')">Normalized State</button>
+                    <button class="preset-btn" onclick="applyPreset('complex')">Complex Amplitudes</button>
+                    <button class="preset-btn" onclick="applyPreset('real')">Real Amplitudes</button>
+                    <button class="preset-btn" onclick="normalizeState()">Normalize</button>
                 </div>
             </section>
 
@@ -49,34 +66,48 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Complex Probability Amplitudes</h3>
                     <p>
-                        Probability Amplitudes and Born Rule is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        In quantum mechanics, states are described by complex probability amplitudes. For a qubit: |ψ⟩ = α|0⟩ + β|1⟩, where α and β are complex numbers. The normalization condition requires |α|² + |β|² = 1. Unlike classical probabilities, these amplitudes can be negative or complex, enabling quantum interference.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        |ψ⟩ = (α<sub>r</sub> + iα<sub>i</sub>)|0⟩ + (β<sub>r</sub> + iβ<sub>i</sub>)|1⟩<br>
+                        Normalization: |α|² + |β|² = 1
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: The Born Rule</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The Born rule is the fundamental postulate that connects quantum amplitudes to classical probabilities. The probability of measuring outcome k is given by the squared magnitude of the amplitude: P(k) = |⟨k|ψ⟩|². This rule was proposed by Max Born in 1926 and is one of the core axioms of quantum mechanics.
                     </p>
+                    <div class="formula-box">
+                        P(k) = |c<sub>k</sub>|² = |⟨k|ψ⟩|²<br>
+                        where c<sub>k</sub> is the amplitude for state |k⟩
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: From Amplitudes to Probabilities</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        For complex amplitudes α = α<sub>r</sub> + iα<sub>i</sub>, the probability is calculated as |α|² = α<sub>r</sub>² + α<sub>i</sub>². This converts complex amplitudes to real, non-negative probabilities that sum to 1. The complex phase of the amplitude affects interference but not individual measurement probabilities.
                     </p>
+                    <div class="formula-box">
+                        |α|² = (α<sub>r</sub>)² + (α<sub>i</sub>)²<br>
+                        P(0) = |α|², P(1) = |β|²<br>
+                        P(0) + P(1) = 1
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Quantum Interference</h3>
+                    <p>
+                        Probability amplitudes can interfere (constructively or destructively) due to their complex nature, leading to quantum interference effects. This is fundamentally different from classical probability: |α + β|² ≠ |α|² + |β|² in general. Only when we measure do we get classical probabilities via the Born rule.
+                    </p>
+                    <div class="formula-box">
+                        Interference: |α + β|² ≠ |α|² + |β|²<br>
+                        Measurement: P = |amplitude|²
+                    </div>
                 </div>
             </section>
 
