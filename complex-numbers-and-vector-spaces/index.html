@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="real-part">
+                        Real Part (Re)
+                        <span class="value-display" id="real-part-value">0.5</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="real-part" min="-2" max="2" step="0.1" value="0.5">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="imag-part">
+                        Imaginary Part (Im)
+                        <span class="value-display" id="imag-part-value">0.5</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="imag-part" min="-2" max="2" step="0.1" value="0.5">
+                </div>
+
+                <div class="input-group">
+                    <label for="operation">Select Operation</label>
+                    <select id="operation">
+                        <option value="magnitude">Magnitude |z|</option>
+                        <option value="phase">Phase arg(z)</option>
+                        <option value="conjugate">Complex Conjugate z*</option>
+                        <option value="square">Square z²</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('unit-circle')">Unit Circle</button>
+                    <button class="preset-btn" onclick="applyPreset('real-axis')">Real Axis</button>
+                    <button class="preset-btn" onclick="applyPreset('imag-axis')">Imaginary Axis</button>
+                    <button class="preset-btn" onclick="applyPreset('euler')">Euler's Formula</button>
                 </div>
             </section>
 
@@ -49,34 +60,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Complex Numbers Basics</h3>
                     <p>
-                        Complex Numbers and Vector Spaces is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        A complex number z = a + bi has a real part a and an imaginary part b, where i = √(-1) is the imaginary unit satisfying i² = -1. Complex numbers extend the real number line into a two-dimensional complex plane, where the horizontal axis represents real parts and the vertical axis represents imaginary parts. Every complex number can be represented as a point or vector in this plane. Complex numbers are essential in quantum mechanics because probability amplitudes are complex-valued, allowing for interference effects that have no classical analog.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        z = a + bi where a, b ∈ ℝ and i² = -1<br>
+                        Re(z) = a (real part)<br>
+                        Im(z) = b (imaginary part)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Polar Form and Euler's Formula</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Any complex number can be written in polar form: z = r·e^(iθ) = r(cos θ + i sin θ), where r = |z| = √(a² + b²) is the magnitude (modulus) and θ = arg(z) = arctan(b/a) is the phase (argument). Euler's formula e^(iθ) = cos θ + i sin θ is one of the most beautiful equations in mathematics and is fundamental to quantum mechanics. The polar form makes multiplication and division of complex numbers geometrically intuitive: multiplying by e^(iθ) rotates by angle θ in the complex plane.
                     </p>
+                    <div class="formula-box">
+                        z = r·e^(iθ) = r(cos θ + i sin θ) (polar form)<br>
+                        |z| = √(a² + b²) (magnitude)<br>
+                        arg(z) = arctan(b/a) (phase)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Complex Conjugate and Operations</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The complex conjugate of z = a + bi is z* = a - bi (flip the sign of the imaginary part). The conjugate is crucial in quantum mechanics: the probability of measuring a state |ψ⟩ is |⟨φ|ψ⟩|² = ⟨φ|ψ⟩*⟨φ|ψ⟩. Key properties: |z|² = z·z*, (z*)* = z, and (z₁ + z₂)* = z₁* + z₂*. Operations on complex numbers follow algebraic rules: addition is component-wise, multiplication uses i² = -1, and division requires multiplying by the conjugate.
                     </p>
+                    <div class="formula-box">
+                        z* = a - bi (complex conjugate)<br>
+                        |z|² = z·z* = a² + b²<br>
+                        z₁·z₂ = (a₁ + ib₁)(a₂ + ib₂) = (a₁a₂ - b₁b₂) + i(a₁b₂ + a₂b₁)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Vector Spaces in Quantum Mechanics</h3>
+                    <p>
+                        Quantum states live in a complex vector space called Hilbert space. A vector space over complex numbers is a set where you can add vectors and multiply them by complex scalars, satisfying axioms like associativity and distributivity. The quantum state |ψ⟩ = α|0⟩ + β|1⟩ is a vector in a 2D complex vector space (4 real dimensions!). Inner products ⟨φ|ψ⟩ are complex-valued and satisfy ⟨φ|ψ⟩* = ⟨ψ|φ⟩. The complex structure enables quantum interference: amplitudes can add constructively or destructively, unlike classical probabilities.
+                    </p>
+                    <div class="formula-box">
+                        Vector space: V over ℂ with addition and scalar multiplication<br>
+                        Inner product: ⟨φ|ψ⟩ ∈ ℂ with ⟨φ|ψ⟩* = ⟨ψ|φ⟩<br>
+                        Quantum state: |ψ⟩ = Σ c_i|i⟩ where c_i ∈ ℂ
+                    </div>
                 </div>
             </section>
 
