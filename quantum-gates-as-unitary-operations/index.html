@@ -22,25 +22,38 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="gate-select">Select Quantum Gate</label>
+                    <select id="gate-select">
+                        <option value="hadamard">Hadamard (H)</option>
+                        <option value="pauli-x">Pauli-X (NOT)</option>
+                        <option value="pauli-y">Pauli-Y</option>
+                        <option value="pauli-z">Pauli-Z</option>
+                        <option value="phase">Phase (S)</option>
+                        <option value="t-gate">T Gate</option>
+                        <option value="cnot">CNOT (2-qubit)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="input-state-alpha">
+                        Input State α (|0⟩ component)
+                        <span class="value-display" id="input-state-alpha-value">1.000</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="input-state-alpha" min="0" max="1" step="0.01" value="1.0">
+                </div>
+
+                <div class="input-group">
+                    <label for="input-state-phase">
+                        Input State Phase φ (radians)
+                        <span class="value-display" id="input-state-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="input-state-phase" min="0" max="6.28" step="0.01" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('hadamard-ground')">H on |0⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('not-ground')">X on |0⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('hadamard-superposition')">H on |+⟩</button>
                 </div>
             </section>
 
@@ -49,34 +62,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Gates as Unitary Matrices</h3>
                     <p>
-                        Quantum Gates as Unitary Operations is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum gates are the building blocks of quantum circuits, analogous to classical logic gates (AND, OR, NOT). However, quantum gates must be reversible and preserve quantum information, which means they are represented by unitary matrices. A unitary matrix Û satisfies Û†Û = I, ensuring that applying the gate preserves the norm of the state vector: ||Û|ψ⟩|| = ||ψ⟩||. This guarantees that probabilities sum to 1 before and after the gate. Single-qubit gates act on one qubit (2×2 matrices), while multi-qubit gates like CNOT act on multiple qubits (4×4 for two qubits, 8×8 for three, etc.). Every quantum algorithm is built from sequences of unitary gates.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Gate action: |ψ_out⟩ = Û|ψ_in⟩<br>
+                        Unitary property: Û†Û = I (reversible)<br>
+                        Norm preservation: ⟨ψ_out|ψ_out⟩ = ⟨ψ_in|ψ_in⟩ = 1
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Common Single-Qubit Gates</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The Pauli gates (X, Y, Z) are fundamental single-qubit gates. Pauli-X (NOT gate) flips |0⟩ ↔ |1⟩, analogous to classical NOT. Pauli-Z adds a phase: Z|0⟩ = |0⟩, Z|1⟩ = -|1⟩. The Hadamard gate H creates superposition: H|0⟩ = (|0⟩ + |1⟩)/√2 = |+⟩, H|1⟩ = (|0⟩ - |1⟩)/√2 = |-⟩. Phase gates (S, T) add complex phases without changing probabilities. Rotation gates Rx(θ), Ry(θ), Rz(θ) rotate the Bloch sphere by angle θ around x, y, z axes. These gates form a universal set—any single-qubit unitary can be decomposed into sequences of H, S, T gates. This is the foundation of quantum circuit compilation.
                     </p>
+                    <div class="formula-box">
+                        Pauli-X: X = [[0, 1], [1, 0]] (bit flip)<br>
+                        Hadamard: H = (1/√2)[[1, 1], [1, -1]] (superposition)<br>
+                        Phase: S = [[1, 0], [0, i]] (π/2 phase shift)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Multi-Qubit Gates and Entanglement</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Multi-qubit gates create entanglement, which cannot be achieved by single-qubit gates alone. The CNOT (Controlled-NOT) gate is the most important two-qubit gate: it flips the target qubit if and only if the control qubit is |1⟩. CNOT|00⟩ = |00⟩, CNOT|01⟩ = |01⟩, CNOT|10⟩ = |11⟩, CNOT|11⟩ = |10⟩. Starting from |+⟩⊗|0⟩ = (|00⟩ + |10⟩)/√2, applying CNOT produces (|00⟩ + |11⟩)/√2, a Bell state (maximally entangled). Other important gates: CZ (Controlled-Z), SWAP, Toffoli (CCNOT, 3-qubit). Any multi-qubit unitary can be decomposed into single-qubit gates plus CNOT gates—this is the Solovay-Kitaev theorem, the basis for quantum circuit synthesis.
                     </p>
+                    <div class="formula-box">
+                        CNOT: |control, target⟩ → |control, control ⊕ target⟩<br>
+                        Creates entanglement: (|0⟩ + |1⟩)⊗|0⟩ → (|00⟩ + |11⟩)/√2<br>
+                        Universal: Any unitary = sequence of single-qubit gates + CNOTs
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Gate Composition and Circuits</h3>
+                    <p>
+                        Quantum circuits are sequences of gates applied to qubits, read left-to-right (or top-to-bottom). Gates compose by matrix multiplication: applying gate Û₁ then Û₂ gives Û₂Û₁|ψ⟩ (note the reverse order—rightmost gate acts first). Since all gates are unitary, the composition is also unitary: (Û₂Û₁)†(Û₂Û₁) = Û₁†Û₂†Û₂Û₁ = Û₁†Û₁ = I. This means any quantum circuit is reversible—you can "undo" it by applying gates in reverse order with their adjoints. Quantum algorithms (Shor's, Grover's, QFT) are built by carefully composing gates to interfere amplitudes constructively for desired outcomes and destructively for undesired ones.
+                    </p>
+                    <div class="formula-box">
+                        Gate composition: Û₂(Û₁|ψ⟩) = (Û₂Û₁)|ψ⟩<br>
+                        Reversibility: (Û₂Û₁)⁻¹ = Û₁⁻¹Û₂⁻¹ = Û₁†Û₂†<br>
+                        Circuit: |ψ_out⟩ = Ûₙ...Û₂Û₁|ψ_in⟩
+                    </div>
                 </div>
             </section>
 
