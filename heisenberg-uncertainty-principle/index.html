@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="position-width">
+                        Position Uncertainty Δx (nm)
+                        <span class="value-display" id="position-width-value">1.00</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="position-width" min="0.1" max="10" step="0.1" value="1.0">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="hbar">
+                        ℏ (reduced Planck constant)
+                        <span class="value-display" id="hbar-value">1.055</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="hbar" min="0.5" max="2" step="0.01" value="1.055">
+                    <small style="color: #888;">×10⁻³⁴ J·s</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="observable-pair">Observable Pair</label>
+                    <select id="observable-pair">
+                        <option value="position-momentum">Position-Momentum (x, p)</option>
+                        <option value="energy-time">Energy-Time (E, t)</option>
+                        <option value="angular">Angular Position-Momentum (θ, L)</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('narrow')">Narrow Wavepacket</button>
+                    <button class="preset-btn" onclick="applyPreset('wide')">Wide Wavepacket</button>
+                    <button class="preset-btn" onclick="applyPreset('minimum')">Minimum Uncertainty</button>
                 </div>
             </section>
 
@@ -49,34 +59,47 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Uncertainty Relation</h3>
                     <p>
-                        Heisenberg Uncertainty Principle is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The Heisenberg Uncertainty Principle states that certain pairs of physical properties (called complementary variables or conjugate observables) cannot both be known to arbitrary precision simultaneously. The most famous form relates position and momentum: ΔxΔp ≥ ℏ/2, where Δx is the uncertainty in position, Δp is the uncertainty in momentum, and ℏ is the reduced Planck constant.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        ΔxΔp ≥ ℏ/2<br>
+                        where ℏ = h/2π ≈ 1.055 × 10⁻³⁴ J·s
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Physical Interpretation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        This is not a statement about measurement precision or experimental limitations—it's a fundamental property of quantum systems. A particle doesn't have a definite position and momentum simultaneously; these properties are intrinsically fuzzy. The more precisely you know one, the less precisely you can know the other. This arises from the wave nature of quantum particles.
                     </p>
+                    <div class="formula-box">
+                        If Δx → 0 (precise position)<br>
+                        then Δp → ∞ (completely uncertain momentum)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Other Uncertainty Relations</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The uncertainty principle applies to any pair of non-commuting observables. Other important examples include energy-time uncertainty (ΔEΔt ≥ ℏ/2) and angular position-momentum uncertainty (ΔθΔL ≥ ℏ/2). These relations have profound implications for quantum systems, from atomic stability to virtual particles in quantum field theory.
                     </p>
+                    <div class="formula-box">
+                        ΔEΔt ≥ ℏ/2 (Energy-Time)<br>
+                        ΔθΔL<sub>z</sub> ≥ ℏ/2 (Angular)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Minimum Uncertainty States</h3>
+                    <p>
+                        Some quantum states achieve the minimum possible uncertainty product ΔxΔp = ℏ/2. These are called minimum uncertainty states or coherent states. The most common example is a Gaussian wavepacket, which is used extensively in quantum optics and quantum information. Most states have ΔxΔp > ℏ/2.
+                    </p>
+                    <div class="formula-box">
+                        Gaussian wavepacket: ΔxΔp = ℏ/2<br>
+                        (minimum uncertainty state)
+                    </div>
                 </div>
             </section>
 
