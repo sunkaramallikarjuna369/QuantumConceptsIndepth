@@ -22,25 +22,32 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="qubit1-alpha">
+                        Qubit 1: α₁ (|0⟩ component)
+                        <span class="value-display" id="qubit1-alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="qubit1-alpha" min="0" max="1" step="0.01" value="0.707">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="qubit2-alpha">
+                        Qubit 2: α₂ (|0⟩ component)
+                        <span class="value-display" id="qubit2-alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="qubit2-alpha" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="entangled">
+                        <input type="checkbox" id="entangled" style="width: auto; margin-right: 10px;">
+                        Show Entangled State (Bell State)
+                    </label>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('separable')">Separable |++⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('product')">Product |01⟩</button>
+                    <button class="preset-btn" onclick="applyPreset('bell')">Bell State |Φ⁺⟩</button>
                 </div>
             </section>
 
@@ -49,34 +56,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: What is a Tensor Product?</h3>
                     <p>
-                        Tensor Products is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The tensor product (⊗) is a mathematical operation that combines two vector spaces into a larger vector space. For quantum systems, if qubit 1 is in state |ψ₁⟩ in space ℋ₁ and qubit 2 is in state |ψ₂⟩ in space ℋ₂, the combined two-qubit system lives in the tensor product space ℋ₁ ⊗ ℋ₂. If |ψ₁⟩ = α₁|0⟩ + β₁|1⟩ and |ψ₂⟩ = α₂|0⟩ + β₂|1⟩, then |ψ₁⟩ ⊗ |ψ₂⟩ = α₁α₂|00⟩ + α₁β₂|01⟩ + β₁α₂|10⟩ + β₁β₂|11⟩. The tensor product is how we mathematically describe composite quantum systems—it's the foundation for multi-qubit quantum computing.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Tensor product: |ψ₁⟩ ⊗ |ψ₂⟩ (combines two systems)<br>
+                        Dimension: dim(ℋ₁ ⊗ ℋ₂) = dim(ℋ₁) × dim(ℋ₂)<br>
+                        Two qubits: ℂ² ⊗ ℂ² = ℂ⁴ (4-dimensional space)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Separable vs Entangled States</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        A two-qubit state is separable (or product state) if it can be written as |ψ⟩ = |ψ₁⟩ ⊗ |ψ₂⟩ for some single-qubit states |ψ₁⟩ and |ψ₂⟩. For example, |+⟩ ⊗ |0⟩ = (1/√2)(|0⟩ + |1⟩) ⊗ |0⟩ = (1/√2)(|00⟩ + |10⟩) is separable. However, the Bell state |Φ⁺⟩ = (1/√2)(|00⟩ + |11⟩) cannot be written as a tensor product of two single-qubit states—it's entangled. Entangled states exhibit quantum correlations that have no classical analog. Most states in ℋ₁ ⊗ ℋ₂ are entangled; separable states are a tiny subset.
                     </p>
+                    <div class="formula-box">
+                        Separable: |ψ⟩ = |ψ₁⟩ ⊗ |ψ₂⟩ (can factor into single-qubit states)<br>
+                        Entangled: |ψ⟩ ≠ |ψ₁⟩ ⊗ |ψ₂⟩ for any |ψ₁⟩, |ψ₂⟩<br>
+                        Bell state: |Φ⁺⟩ = (|00⟩ + |11⟩)/√2 (maximally entangled)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Computing Tensor Products</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        To compute |ψ₁⟩ ⊗ |ψ₂⟩, multiply each component of |ψ₁⟩ by each component of |ψ₂⟩. If |ψ₁⟩ = (a, b)ᵀ and |ψ₂⟩ = (c, d)ᵀ, then |ψ₁⟩ ⊗ |ψ₂⟩ = (ac, ad, bc, bd)ᵀ. For basis states: |0⟩ ⊗ |0⟩ = |00⟩, |0⟩ ⊗ |1⟩ = |01⟩, |1⟩ ⊗ |0⟩ = |10⟩, |1⟩ ⊗ |1⟩ = |11⟩. The tensor product is bilinear: (c|ψ₁⟩) ⊗ |ψ₂⟩ = c(|ψ₁⟩ ⊗ |ψ₂⟩) and (|ψ₁⟩ + |φ₁⟩) ⊗ |ψ₂⟩ = |ψ₁⟩ ⊗ |ψ₂⟩ + |φ₁⟩ ⊗ |ψ₂⟩. This linearity is crucial for quantum computation.
                     </p>
+                    <div class="formula-box">
+                        Component-wise: (a|0⟩ + b|1⟩) ⊗ (c|0⟩ + d|1⟩) = ac|00⟩ + ad|01⟩ + bc|10⟩ + bd|11⟩<br>
+                        Bilinearity: (c|ψ⟩) ⊗ |φ⟩ = c(|ψ⟩ ⊗ |φ⟩)<br>
+                        Distributivity: (|ψ⟩ + |φ⟩) ⊗ |χ⟩ = |ψ⟩⊗|χ⟩ + |φ⟩⊗|χ⟩
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Operators on Tensor Product Spaces</h3>
+                    <p>
+                        Operators on composite systems are also tensor products. A single-qubit gate Û acting on qubit 1 only is represented as Û ⊗ I (identity on qubit 2). For example, the Hadamard on qubit 1 is H ⊗ I. Two-qubit gates like CNOT cannot be written as tensor products—they create entanglement. The action of Â ⊗ B̂ on |ψ⟩ ⊗ |φ⟩ is (Â ⊗ B̂)(|ψ⟩ ⊗ |φ⟩) = (Â|ψ⟩) ⊗ (B̂|φ⟩). This structure allows us to build complex quantum circuits from simple gates acting on individual qubits or pairs of qubits.
+                    </p>
+                    <div class="formula-box">
+                        Single-qubit gate on qubit 1: Û ⊗ I<br>
+                        Action: (Â ⊗ B̂)(|ψ⟩ ⊗ |φ⟩) = (Â|ψ⟩) ⊗ (B̂|φ⟩)<br>
+                        Two-qubit gates (CNOT, CZ): Cannot be written as Û ⊗ V̂
+                    </div>
                 </div>
             </section>
 
