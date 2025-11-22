@@ -22,25 +22,33 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="num-qubits">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-value">53</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-qubits" min="20" max="100" step="1" value="53">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="circuit-depth">
+                        Circuit Depth (cycles)
+                        <span class="value-display" id="circuit-depth-value">20</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="circuit-depth" min="10" max="50" step="5" value="20">
+                </div>
+
+                <div class="input-group">
+                    <label for="gate-fidelity">
+                        Gate Fidelity
+                        <span class="value-display" id="gate-fidelity-value">0.995</span>
+                    </label>
+                    <input type="range" id="gate-fidelity" min="0.95" max="0.999" step="0.001" value="0.995">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('google-sycamore')">Google Sycamore</button>
+                    <button class="preset-btn" onclick="applyPreset('ibm-eagle')">IBM Eagle</button>
+                    <button class="preset-btn" onclick="applyPreset('future')">Future (1000q)</button>
                 </div>
             </section>
 
@@ -49,34 +57,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Supremacy - Definition and Significance</h3>
                     <p>
-                        Quantum Supremacy is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum supremacy (now often called "quantum advantage") is the milestone where a quantum computer performs a task that is practically impossible for classical computers. Coined by John Preskill (2012), it marks the transition from "quantum computers are theoretically faster" to "quantum computers demonstrably outperform classical computers." Key criteria: (1) The quantum device solves a well-defined computational problem. (2) The best classical algorithm would take prohibitively long (years to millennia). (3) The quantum result can be verified (at least probabilistically). Quantum supremacy doesn't require useful applications—it's a proof-of-principle that quantum mechanics enables computational advantages. The first claimed demonstration: Google's Sycamore processor (2019) performed random circuit sampling on 53 qubits in 200 seconds, estimated to take 10,000 years on Summit supercomputer (later disputed: IBM claimed 2.5 days with improved classical algorithm). Subsequent claims: USTC's Jiuzhang photonic computer (2020, Gaussian boson sampling, 76 photons), Zuchongzhi superconducting processor (2021, 56 qubits). Significance: Quantum supremacy validates decades of quantum computing theory, demonstrates engineering progress, and motivates investment. However, it's not the end goal—useful quantum advantage (solving practical problems faster) remains the ultimate target. Quantum supremacy is a stepping stone toward fault-tolerant quantum computers that will revolutionize chemistry, cryptography, optimization, and machine learning.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Quantum supremacy: Quantum device outperforms best classical<br>
+                        Google Sycamore (2019): 53 qubits, 200s vs. 10,000 years (claimed)<br>
+                        Random circuit sampling: Sample from distribution P(x) = |⟨x|ψ⟩|²<br>
+                        Verification: Cross-entropy benchmarking, linear XEB fidelity
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Random Circuit Sampling and Google's Sycamore Experiment</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Random circuit sampling (RCS) is the task used for Google's quantum supremacy demonstration. Problem: Apply a random quantum circuit (random single-qubit and two-qubit gates) to |0⟩^⊗n, measure in computational basis, sample from output distribution P(x) = |⟨x|U|0⟩|². For n = 53 qubits, there are 2^53 ≈ 10^16 possible outcomes. Classical simulation requires computing amplitudes ⟨x|U|0⟩ for all x, which is #P-hard (believed intractable). Google's Sycamore: 53 superconducting qubits arranged in 2D grid, nearest-neighbor connectivity. Circuit: 20 cycles of single-qubit rotations + two-qubit CZ gates (random pattern). Total gates: ~1000. Execution time: 200 seconds (including 1 million samples). Classical simulation: Schrödinger-Feynman algorithm (simulate full state vector) requires 2^53 complex amplitudes × circuit depth, estimated 10,000 years on Summit (200 petaflops). Verification: Cross-entropy benchmarking. Compute linear XEB fidelity F_XEB = 2^n ⟨P_quantum(x)⟩ - 1 where average is over measured bitstrings x. F_XEB = 1 for perfect quantum computer, F_XEB = 0 for random guessing. Sycamore achieved F_XEB ≈ 0.002 (above classical threshold). Controversy: IBM argued classical simulation could be done in 2.5 days using secondary storage (hard drives) and improved tensor network methods. Debate continues on exact classical cost. Nonetheless, Sycamore demonstrated quantum device outperforming practical classical simulation, marking a historic milestone.
                     </p>
+                    <div class="formula-box">
+                        RCS: Sample from P(x) = |⟨x|U|0⟩|² (random circuit U)<br>
+                        Sycamore: 53 qubits, 20 cycles, ~1000 gates, 200s<br>
+                        Classical: 2^53 amplitudes, estimated 10,000 years (disputed)<br>
+                        Verification: F_XEB = 2^n ⟨P_quantum(x)⟩ - 1 (linear XEB fidelity)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Alternative Approaches - Boson Sampling and IQP Circuits</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Beyond random circuit sampling, other problems demonstrate quantum supremacy. Boson Sampling (Aaronson & Arkhipov 2011): n photons enter linear optical network (beam splitters, phase shifters), measure output modes. Probability of outcome x is |Perm(A_x)|² where A_x is submatrix of unitary U. Computing permanents is #P-hard (no known efficient classical algorithm). USTC's Jiuzhang (2020): 76-photon Gaussian boson sampling, 200 seconds vs. 2.5 billion years (claimed) on classical supercomputer. Advantage: photonic systems have low noise, room temperature operation. Disadvantage: probabilistic photon sources, detection inefficiency. Jiuzhang 2.0 (2021): 113 photons, further improved. IQP circuits (Instantaneous Quantum Polynomial-time): Circuits with only diagonal gates (commuting gates), believed hard to simulate classically. Advantage: simpler gates, easier to implement. Used in some quantum supremacy proposals. Challenges to quantum supremacy: (1) Classical algorithm improvements: Tensor network methods, GPU acceleration, better heuristics reduce classical simulation cost. (2) Verification difficulty: For large systems, verifying quantum output is hard (can't compute exact probabilities classically). (3) Noise and errors: Real quantum devices have imperfect gates, limiting circuit depth and fidelity. (4) Practical utility: Supremacy tasks are artificial (no known applications). True goal is useful quantum advantage for real-world problems. Despite challenges, quantum supremacy experiments validate quantum computing principles and demonstrate engineering progress toward fault-tolerant quantum computers.
                     </p>
+                    <div class="formula-box">
+                        Boson Sampling: P(x) = |Perm(A_x)|² (permanent is #P-hard)<br>
+                        Jiuzhang (2020): 76 photons, 200s vs. 2.5 billion years (claimed)<br>
+                        IQP circuits: Diagonal gates only (commuting, simpler)<br>
+                        Challenges: Classical improvements, verification, noise, utility
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Path to Useful Quantum Advantage</h3>
+                    <p>
+                        Quantum supremacy is a milestone, not the destination. The ultimate goal is useful quantum advantage: solving practical problems faster than classical computers. Candidates: (1) Quantum chemistry: Simulate molecules for drug discovery, catalyst design, materials science. VQE on NISQ devices demonstrated for small molecules (H₂, LiH). Scaling to useful molecules (100-1000 atoms) requires fault-tolerant quantum computers with ~1000 logical qubits. (2) Optimization: Solve combinatorial optimization (TSP, MaxCut, portfolio optimization) using QAOA, quantum annealing. Current results show modest speedups, not yet surpassing classical solvers. (3) Machine learning: Quantum algorithms for linear algebra (HHL), quantum neural networks, quantum kernel methods. Potential speedups for specific tasks, but classical ML is highly optimized. (4) Cryptography: Shor's algorithm breaks RSA, ECC (requires ~1000 logical qubits, millions of physical qubits with error correction). Post-quantum cryptography being deployed to counter this threat. (5) Simulation: Quantum simulation of condensed matter, high-energy physics, cosmology. Near-term applications on NISQ devices, long-term transformative impact. Timeline: Useful quantum advantage for chemistry, optimization likely within 5-10 years (requires error correction). Cryptanalysis (Shor's) within 10-20 years (requires large-scale fault-tolerant QC). Quantum supremacy experiments pave the way, demonstrating quantum devices can outperform classical computers. The next decade will determine whether quantum computers deliver on their promise to revolutionize science, industry, and society.
+                    </p>
+                    <div class="formula-box">
+                        Useful quantum advantage: Solve practical problems faster<br>
+                        Chemistry: ~1000 logical qubits for drug discovery (5-10 years)<br>
+                        Cryptanalysis: Shor's algorithm, millions of physical qubits (10-20 years)<br>
+                        Path: NISQ → error correction → fault-tolerant → transformative impact
+                    </div>
                 </div>
             </section>
 
