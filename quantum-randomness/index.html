@@ -22,25 +22,37 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="measurement-basis">Measurement Basis</label>
+                    <select id="measurement-basis">
+                        <option value="z" selected>Z-basis (|0⟩, |1⟩)</option>
+                        <option value="x">X-basis (|+⟩, |-⟩)</option>
+                        <option value="y">Y-basis (|⊙⟩, |⊗⟩)</option>
+                        <option value="random">Random Basis</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="num-measurements">
+                        Number of Measurements
+                        <span class="value-display" id="num-measurements-value">100</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-measurements" min="10" max="1000" step="10" value="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="initial-state">Initial State</label>
+                    <select id="initial-state">
+                        <option value="plus" selected>|+⟩ (equal superposition)</option>
+                        <option value="0">|0⟩ state</option>
+                        <option value="1">|1⟩ state</option>
+                        <option value="custom">Custom superposition</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('true-random')">True Random</button>
+                    <button class="preset-btn" onclick="applyPreset('deterministic')">Deterministic</button>
+                    <button class="preset-btn" onclick="applyPreset('bell-test')">Bell Test</button>
                 </div>
             </section>
 
@@ -49,34 +61,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: True Randomness vs Pseudorandomness</h3>
                     <p>
-                        Quantum Randomness is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum mechanics provides true randomness, unlike classical pseudorandom number generators (PRNGs) which are deterministic algorithms that produce sequences appearing random but are fully predictable given the seed. Classical randomness sources (thermal noise, radioactive decay) are also deterministic in principle—given complete knowledge of the system, outcomes are predictable. Quantum randomness is fundamentally different: measuring a qubit in superposition |ψ⟩ = α|0⟩ + β|1⟩ yields |0⟩ with probability |α|² and |1⟩ with probability |β|², and this outcome is intrinsically unpredictable—not due to ignorance, but due to the nature of quantum mechanics. The Born rule states that measurement outcomes are probabilistic, with no hidden variables determining the result (Bell's theorem rules out local hidden variable theories). For example, measuring |+⟩ = (|0⟩+|1⟩)/√2 in the Z-basis gives 0 or 1 with equal probability 50%, and no information exists (even in principle) to predict which outcome will occur. This is certified randomness: provably unpredictable even to an adversary with unlimited computational power.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Born rule: P(outcome i) = |⟨i|ψ⟩|²<br>
+                        Superposition: |+⟩ measured in Z-basis → 0 or 1 (50% each)<br>
+                        Bell's theorem: No local hidden variables<br>
+                        True randomness: Unpredictable even with complete knowledge
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Quantum Random Number Generators (QRNGs)</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Quantum random number generators (QRNGs) exploit quantum measurement to produce true random bits. The simplest QRNG: prepare |+⟩, measure in Z-basis, output the result (0 or 1). Each measurement gives an unbiased random bit. Commercial QRNGs use photon arrival times, beam splitters (photon takes path A or B with 50% probability), or vacuum fluctuations. ID Quantique, Quintessence Labs, and others sell QRNGs with Gb/s rates. QRNGs pass all statistical randomness tests (NIST, Diehard) that PRNGs can fail. However, implementation flaws (detector bias, side channels) can compromise randomness—device-independent QRNGs (DI-QRNGs) use Bell inequality violations to certify randomness without trusting the devices. The CHSH inequality S ≤ 2 (classical) is violated by quantum systems (S ≈ 2.828), proving the randomness is quantum. DI-QRNGs are slower but provide cryptographic security even if the hardware is untrusted. Randomness extraction (via hash functions) removes residual correlations, producing uniform random bits.
                     </p>
+                    <div class="formula-box">
+                        Simple QRNG: Prepare |+⟩, measure Z, output bit<br>
+                        Photon QRNG: Beam splitter → detector A or B (50/50)<br>
+                        CHSH inequality: S_quantum ≈ 2.828 > 2 = S_classical<br>
+                        DI-QRNG: Certify randomness via Bell violation
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Randomness Certification and Bell Tests</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Certifying that a random number generator produces true randomness (not pseudorandom or biased) is crucial for cryptography. Device-independent certification uses Bell tests: Alice and Bob share entangled pairs and measure in random bases. If CHSH inequality is violated, the outcomes are certifiably random—no local hidden variable model can explain the correlations. The randomness is quantified by min-entropy H_min, which bounds the probability an adversary can guess the outcome. For maximal Bell violation (S = 2√2), H_min ≈ 1 bit per measurement (perfect randomness). Loophole-free Bell tests (2015) closed all experimental loopholes (locality, detection, freedom-of-choice), proving quantum randomness beyond doubt. Randomness expansion protocols start with a short random seed and generate arbitrarily long certified random strings using quantum measurements. This is impossible classically: you cannot expand randomness deterministically. Quantum randomness is also used in randomness beacons (NIST beacon) for public verifiable randomness, ensuring fairness in lotteries, audits, and blockchain protocols.
                     </p>
+                    <div class="formula-box">
+                        Min-entropy: H_min = -log₂(P_guess) (bits of randomness)<br>
+                        Maximal Bell violation: S = 2√2 ⟹ H_min ≈ 1 bit<br>
+                        Randomness expansion: Short seed → long certified random string<br>
+                        Loophole-free Bell test: Proved quantum randomness (2015)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications in Cryptography and Beyond</h3>
+                    <p>
+                        Quantum randomness is essential for cryptography: key generation (AES, RSA), nonces (number used once), initialization vectors, and secure protocols all require high-quality randomness. Weak randomness has caused real-world security breaches (Debian OpenSSL bug 2008, PlayStation 3 ECDSA fail 2010). QRNGs provide provably secure randomness, immune to algorithmic attacks on PRNGs. Quantum key distribution (QKD) uses quantum randomness for unconditional security. Monte Carlo simulations in finance, physics, and machine learning benefit from true randomness (though PRNGs often suffice). Gambling and lotteries use QRNGs for fairness. Quantum random walks (quantum algorithms using randomness) outperform classical random walks for certain problems. Randomness is also fundamental to quantum mechanics itself: the measurement postulate is inherently probabilistic. Philosophical implications: quantum randomness challenges determinism—the universe is fundamentally indeterministic at the quantum level. Einstein's "God does not play dice" objection was proven wrong by Bell's theorem and experiments. Quantum randomness is a resource, like entanglement, enabling protocols impossible classically.
+                    </p>
+                    <div class="formula-box">
+                        Cryptographic applications: Key gen, nonces, IVs, secure protocols<br>
+                        QKD security: Relies on quantum randomness<br>
+                        Real-world breaches: Weak PRNGs (Debian 2008, PS3 2010)<br>
+                        Philosophical: Universe is fundamentally indeterministic
+                    </div>
                 </div>
             </section>
 
