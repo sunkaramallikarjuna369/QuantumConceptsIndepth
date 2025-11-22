@@ -1,0 +1,20 @@
+/* Concept-specific styles */
+.visualization-container {
+    min-height: 300px;
+}
+
+#visualization {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 250px;
+}
+
+.formula-box {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid #667eea;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+}

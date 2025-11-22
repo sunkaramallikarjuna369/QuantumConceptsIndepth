@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Harmonic Oscillator - In Depth</title>
+    <link rel="stylesheet" href="../common/css/common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to All Concepts</a>
+        
+        <header>
+            <h1>Quantum Harmonic Oscillator</h1>
+            <p>Explore this quantum concept in depth</p>
+        </header>
+
+        <div class="content-grid">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Input</h2>
+                
+                <div class="input-group">
+                    <label for="param1">
+                        Parameter 1
+                        <span class="value-display" id="param1-value">0.5</span>
+                    </label>
+                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                </div>
+
+                <div class="input-group">
+                    <label for="param2">
+                        Parameter 2
+                        <span class="value-display" id="param2-value">0.5</span>
+                    </label>
+                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                </div>
+
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
+                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
+                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="process-section">
+                <h2>Process</h2>
+                
+                <div class="process-step">
+                    <h3>Step 1: Understanding the Concept</h3>
+                    <p>
+                        Quantum Harmonic Oscillator is a fundamental concept in quantum mechanics that describes...
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 2: Mathematical Framework</h3>
+                    <p>
+                        The mathematical description involves quantum operators and state vectors.
+                    </p>
+                    <div class="formula-box">
+                        Mathematical formulas and equations
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 3: Physical Interpretation</h3>
+                    <p>
+                        The physical meaning and implications of this concept in quantum systems.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications</h3>
+                    <p>
+                        How this concept is used in quantum computing, quantum information, and other applications.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <h2>Output</h2>
+                
+                <div class="visualization-container">
+                    <h3>Visualization</h3>
+                    <div id="visualization"></div>
+                </div>
+
+                <div class="output-info">
+                    <h3>Results</h3>
+                    <div id="results">
+                        <p>Adjust the input parameters to see the results.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="../common/js/blochSphere.js"></script>
+    <script src="../common/js/ui.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
