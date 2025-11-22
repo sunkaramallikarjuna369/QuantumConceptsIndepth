@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="system-type">System to Simulate</label>
+                    <select id="system-type">
+                        <option value="hubbard" selected>Hubbard Model</option>
+                        <option value="heisenberg">Heisenberg Spin Chain</option>
+                        <option value="molecular">Molecular Hamiltonian (H₂)</option>
+                        <option value="lattice">Lattice Gauge Theory</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="num-sites">
+                        Number of Sites/Qubits
+                        <span class="value-display" id="num-sites-value">4</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-sites" min="2" max="10" step="1" value="4">
+                </div>
+
+                <div class="input-group">
+                    <label for="evolution-time">
+                        Evolution Time (t)
+                        <span class="value-display" id="evolution-time-value">1.0</span>
+                    </label>
+                    <input type="range" id="evolution-time" min="0" max="5" step="0.5" value="1.0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('ground-state')">Ground State</button>
+                    <button class="preset-btn" onclick="applyPreset('dynamics')">Time Evolution</button>
+                    <button class="preset-btn" onclick="applyPreset('phase-transition')">Phase Transition</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Simulation - Feynman's Vision</h3>
                     <p>
-                        Quantum Simulation is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum simulation uses controllable quantum systems to simulate other quantum systems that are difficult to study classically. Feynman (1982) proposed: "Nature isn't classical, dammit, and if you want to make a simulation of nature, you'd better make it quantum mechanical." Classical computers struggle with quantum many-body systems: Hilbert space dimension grows exponentially (2^N for N qubits), making exact simulation intractable for N > 50. Example: simulating 300 spins requires 2^300 ≈ 10^90 complex numbers (more than atoms in the universe). Quantum simulators use N qubits to simulate N-qubit systems, achieving exponential speedup. Two types: (1) Analog quantum simulation: Engineer Hamiltonian H_sim to match target H_target, let system evolve naturally. Examples: ultracold atoms in optical lattices (Hubbard model), trapped ions (spin models), Rydberg atoms (Ising model). (2) Digital quantum simulation: Decompose time evolution e^(-iHt) into quantum gates using Trotter decomposition. Universal quantum computers can simulate any quantum system. Applications: condensed matter physics (high-Tc superconductivity, quantum magnetism), quantum chemistry (molecular energies, reaction dynamics), high-energy physics (lattice gauge theories, quark-gluon plasma), cosmology (early universe dynamics). Quantum simulation is a near-term application of NISQ devices, not requiring full error correction. It's one of the most promising applications of quantum computers.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Classical: 2^N complex numbers (exponential)<br>
+                        Quantum: N qubits (linear resources)<br>
+                        Analog: Engineer H_sim ≈ H_target, natural evolution<br>
+                        Digital: e^(-iHt) ≈ (e^(-iH₁Δt)e^(-iH₂Δt)...)^n (Trotter)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Analog Quantum Simulation - Ultracold Atoms and Trapped Ions</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Analog quantum simulators directly engineer target Hamiltonians using controllable quantum systems. Ultracold atoms in optical lattices: Laser beams create periodic potential (optical lattice), atoms hop between sites (tunneling) and interact (collisions). Bose-Hubbard model: H = -J Σ_{⟨i,j⟩} (b_i†b_j + h.c.) + (U/2) Σᵢ n_i(n_i-1) - μ Σᵢ n_i where J is hopping, U is interaction, μ is chemical potential. Superfluid-Mott insulator transition observed (Greiner et al. 2002): at U/J << 1, atoms delocalized (superfluid); at U/J >> 1, atoms localized (Mott insulator). Trapped ions: Ions in Paul trap, coupled via phonons (collective vibrations). Effective spin-spin interaction: H = Σᵢⱼ Jᵢⱼ σᵢˣσⱼˣ (transverse Ising model). Long-range interactions Jᵢⱼ ∝ 1/|i-j|^α tunable by laser parameters. Simulate frustrated magnetism, quantum phase transitions, many-body localization. Rydberg atoms: Atoms excited to high-n Rydberg states, strong dipole-dipole interactions. Rydberg blockade: nearby atoms cannot be excited simultaneously (constraint). Simulate Ising model, quantum optimization (QAOA), topological phases. Analog simulators achieve 10-1000 qubits, limited by decoherence and control precision. They excel at equilibrium properties (ground states, phase diagrams) but struggle with non-equilibrium dynamics (limited time scales). Analog simulation is a powerful tool for studying quantum many-body physics, complementing classical methods and digital quantum simulation.
                     </p>
+                    <div class="formula-box">
+                        Bose-Hubbard: H = -J Σ b_i†b_j + (U/2) Σ n_i(n_i-1)<br>
+                        Superfluid-Mott transition: U/J (interaction/hopping)<br>
+                        Trapped ions: H = Σᵢⱼ Jᵢⱼ σᵢˣσⱼˣ (long-range Ising)<br>
+                        Rydberg: Blockade radius r_b, simulate constraints
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Digital Quantum Simulation - Trotterization and VQE</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Digital quantum simulation uses gate-based quantum computers to simulate arbitrary Hamiltonians. Trotterization (Trotter-Suzuki decomposition): Decompose time evolution e^(-iHt) where H = Σₖ Hₖ. First-order Trotter: e^(-iHt) ≈ (e^(-iH₁Δt)e^(-iH₂Δt)...e^(-iHₙΔt))^(t/Δt) with error O(Δt²). Second-order: e^(-iHΔt) ≈ e^(-iH₁Δt/2)e^(-iH₂Δt/2)...e^(-iHₙΔt)...e^(-iH₂Δt/2)e^(-iH₁Δt/2) with error O(Δt³). Higher-order formulas reduce error at cost of more gates. Each e^(-iHₖΔt) is implemented as quantum gates. Example: Heisenberg model H = Σᵢ (XᵢXᵢ₊₁ + YᵢYᵢ₊₁ + ZᵢZᵢ₊₁). Each term e^(-iXᵢXᵢ₊₁Δt) = exp(-iΔt XX) implemented as CNOT-Rz-CNOT sequence. Variational Quantum Eigensolver (VQE): Find ground state energy E₀ = min_θ ⟨ψ(θ)|H|ψ(θ)⟩ where |ψ(θ)⟩ is parameterized ansatz (e.g., UCCSD for molecules). Measure ⟨H⟩ on quantum computer, optimize θ classically. VQE is hybrid quantum-classical, robust to noise (short circuits). Applications: molecular energies (H₂, LiH, H₂O), materials (strongly correlated electrons), optimization (MaxCut, TSP). Quantum Phase Estimation (QPE): Estimate eigenvalues of H using controlled-U^(2^k) gates and inverse QFT. Requires long coherence times (not NISQ-friendly). Digital simulation is universal but requires many gates (gate count ∝ t/Δt × poly(n)). NISQ devices limited to ~100 qubits, ~1000 gates, limiting simulation depth and accuracy.
                     </p>
+                    <div class="formula-box">
+                        Trotter: e^(-iHt) ≈ (∏ₖ e^(-iHₖΔt))^(t/Δt), error O(Δt²)<br>
+                        VQE: E₀ = min_θ ⟨ψ(θ)|H|ψ(θ)⟩ (hybrid quantum-classical)<br>
+                        QPE: Estimate eigenvalues using controlled-U and QFT<br>
+                        Gate count: O(t/Δt × poly(n)) (limits NISQ depth)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications and Future of Quantum Simulation</h3>
+                    <p>
+                        Quantum simulation targets problems intractable for classical computers. Quantum chemistry: Calculate molecular ground state energies, reaction barriers, excited states. VQE demonstrated for H₂, LiH, BeH₂ on NISQ devices. Goal: simulate drug molecules (100-1000 atoms), catalyst design, battery materials. Requires ~1000 logical qubits with error correction. Condensed matter: Simulate Hubbard model (high-Tc superconductivity), Fermi-Hubbard (cuprates), frustrated magnets (spin liquids), topological phases (Majorana fermions). Understand exotic quantum phases, design new materials. High-energy physics: Lattice QCD (quark confinement, hadron spectrum), Schwinger model (1+1D QED), gauge theories (non-Abelian). Classical lattice QCD limited by sign problem (fermion determinant complex). Quantum simulation avoids sign problem, enabling real-time dynamics. Quantum many-body localization (MBL): Simulate disordered systems, study thermalization breakdown, entanglement growth. Observed in trapped ions and Rydberg atoms. Quantum advantage: Google's Sycamore (2019) claimed quantum supremacy using random circuit sampling (53 qubits, 20 cycles). Debate on classical simulation difficulty. True quantum advantage for useful problems (chemistry, optimization) still pending. Future: Fault-tolerant quantum computers with ~1000 logical qubits will revolutionize quantum simulation, enabling accurate predictions for complex molecules, materials, and fundamental physics. Quantum simulation is the killer app for quantum computers, with near-term NISQ demonstrations and long-term transformative potential.
+                    </p>
+                    <div class="formula-box">
+                        Chemistry: VQE for molecules (H₂, LiH, drug design)<br>
+                        Condensed matter: Hubbard model, topological phases<br>
+                        High-energy: Lattice QCD, avoid sign problem<br>
+                        Future: ~1000 logical qubits for transformative impact
+                    </div>
                 </div>
             </section>
 
