@@ -22,25 +22,37 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="matrix-type">Matrix Type</label>
+                    <select id="matrix-type">
+                        <option value="unitary">Unitary (Quantum Gate)</option>
+                        <option value="hermitian">Hermitian (Observable)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="gate-select">Select Gate/Observable</label>
+                    <select id="gate-select">
+                        <option value="hadamard">Hadamard (H)</option>
+                        <option value="pauli-x">Pauli-X (σₓ)</option>
+                        <option value="pauli-y">Pauli-Y (σᵧ)</option>
+                        <option value="pauli-z">Pauli-Z (σᵤ)</option>
+                        <option value="phase">Phase (S)</option>
+                        <option value="t-gate">T Gate</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="rotation-angle">
+                        Rotation Angle θ (for parametric gates)
+                        <span class="value-display" id="rotation-angle-value">0.00</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="rotation-angle" min="0" max="6.28" step="0.01" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('hadamard')">Hadamard</button>
+                    <button class="preset-btn" onclick="applyPreset('pauli-x')">Pauli-X</button>
+                    <button class="preset-btn" onclick="applyPreset('pauli-z')">Pauli-Z</button>
                 </div>
             </section>
 
@@ -49,34 +61,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Hermitian Matrices (Observables)</h3>
                     <p>
-                        Unitary and Hermitian Matrices is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        A matrix Â is Hermitian if  = Â, where † denotes the conjugate transpose (also called adjoint). For a 2×2 matrix, this means A₁₁ and A₂₂ are real, and A₁₂ = A₂₁*. Hermitian matrices represent observables (measurable quantities) in quantum mechanics—position, momentum, energy, spin, etc. The key property: all eigenvalues of a Hermitian matrix are real, which is essential since measurement outcomes must be real numbers. The Pauli matrices σₓ, σᵧ, σᵤ are Hermitian and represent spin measurements along x, y, z axes. The spectral theorem guarantees that Hermitian matrices have orthonormal eigenvectors, forming a complete basis for measurement.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Hermitian: † = Â (conjugate transpose equals original)<br>
+                        Eigenvalues: All λᵢ ∈ ℝ (real numbers)<br>
+                        Pauli-Z: σᵤ = [[1, 0], [0, -1]] with eigenvalues ±1
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Unitary Matrices (Quantum Gates)</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        A matrix Û is unitary if Û†Û = I (identity matrix), equivalently Û† = Û⁻¹. Unitary matrices represent reversible quantum operations—quantum gates and time evolution. The key property: unitary matrices preserve the norm ||Û|ψ⟩|| = ||ψ⟩||, ensuring that normalized states remain normalized (probabilities sum to 1). All quantum gates (Hadamard, CNOT, Toffoli) are unitary. Time evolution under the Schrödinger equation is unitary: Û(t) = e^(-iĤt/ℏ). Unitary matrices have eigenvalues on the unit circle: |λᵢ| = 1, often written as λᵢ = e^(iθᵢ). This reversibility is fundamental to quantum computation.
                     </p>
+                    <div class="formula-box">
+                        Unitary: Û†Û = I (inverse equals conjugate transpose)<br>
+                        Norm preservation: ||Û|ψ⟩|| = ||ψ⟩||<br>
+                        Hadamard: H = (1/√2)[[1, 1], [1, -1]] with H† = H = H⁻¹
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Relationship Between Hermitian and Unitary</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Every Hermitian matrix  can generate a unitary matrix via exponentiation: Û = e^(iÂ). This is how observables (Hermitian) generate time evolution (unitary). For example, the Hamiltonian Ĥ (Hermitian, represents energy) generates time evolution Û(t) = e^(-iĤt/ℏ). Conversely, every unitary Û can be written as Û = e^(iĤ) for some Hermitian Ĥ. A matrix that is both Hermitian and unitary must satisfy  = Â and Â² = I, meaning its eigenvalues are ±1. The Pauli matrices σₓ, σᵧ, σᵤ are both Hermitian (observables) and unitary (self-inverse gates). This duality is central to quantum mechanics.
                     </p>
+                    <div class="formula-box">
+                        Hermitian → Unitary: Û = e^(iÂ) for Hermitian Â<br>
+                        Time evolution: Û(t) = e^(-iĤt/ℏ) where Ĥ is Hermitian<br>
+                        Both: Â = † and Â² = I ⟹ eigenvalues ∈ {-1, +1}
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Computing Properties</h3>
+                    <p>
+                        To check if a matrix is Hermitian: compute † (conjugate transpose) and verify  = Â. To check if unitary: compute Û†Û and verify it equals I. For eigenvalues: solve det(Â - λI) = 0. For a 2×2 matrix [[a, b], [c, d]], the conjugate transpose is [[a*, c*], [b*, d*]]. The determinant of a unitary matrix has |det(Û)| = 1 (often det(Û) = 1 for special unitary matrices like quantum gates). The trace of a Hermitian matrix is real: Tr(Â) ∈ ℝ. These computational checks verify whether a matrix can represent a valid quantum gate (unitary) or observable (Hermitian).
+                    </p>
+                    <div class="formula-box">
+                        Conjugate transpose: (Â†)ᵢⱼ = (Âⱼᵢ)*<br>
+                        Unitary check: Û†Û = I<br>
+                        Hermitian check:  = Â
+                    </div>
                 </div>
             </section>
 
