@@ -1,0 +1,56 @@
+/* Wave-Particle Duality specific styles */
+
+.visualization-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.visualization-container h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+#interference-canvas,
+#intensity-canvas {
+    width: 100%;
+    border-radius: 8px;
+    background: #0a0a0a;
+}
+
+.particle-counter {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.particle-counter span {
+    color: #667eea;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+select option {
+    background: #1a1a2e;
+    color: #e0e0e0;
+}

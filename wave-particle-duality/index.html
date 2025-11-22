@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave-Particle Duality - In Depth</title>
+    <link rel="stylesheet" href="../common/css/common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to All Concepts</a>
+        
+        <header>
+            <h1>Wave-Particle Duality</h1>
+            <p>Interactive exploration of the dual nature of quantum particles</p>
+        </header>
+
+        <div class="content-grid">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Input</h2>
+                
+                <div class="input-group">
+                    <label for="experiment-type">
+                        Experiment Type
+                    </label>
+                    <select id="experiment-type">
+                        <option value="single-slit">Single Slit</option>
+                        <option value="double-slit" selected>Double Slit</option>
+                        <option value="particle">Particle Detection</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="slit-separation">
+                        Slit Separation (λ)
+                        <span class="value-display" id="slit-separation-value">5.0</span>
+                    </label>
+                    <input type="range" id="slit-separation" min="1" max="10" step="0.5" value="5">
+                </div>
+
+                <div class="input-group">
+                    <label for="slit-width">
+                        Slit Width (λ)
+                        <span class="value-display" id="slit-width-value">1.0</span>
+                    </label>
+                    <input type="range" id="slit-width" min="0.5" max="3" step="0.1" value="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="wavelength">
+                        Wavelength (nm)
+                        <span class="value-display" id="wavelength-value">500</span>
+                    </label>
+                    <input type="range" id="wavelength" min="400" max="700" step="10" value="500">
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <input type="checkbox" id="show-particles" checked>
+                        Show Individual Particles
+                    </label>
+                </div>
+
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="wave">Wave Behavior</button>
+                    <button class="preset-btn" data-preset="particle">Particle Behavior</button>
+                    <button class="preset-btn" data-preset="interference">Strong Interference</button>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="process-section">
+                <h2>Process</h2>
+                
+                <div class="process-step">
+                    <h3>Step 1: Wave-Particle Duality Principle</h3>
+                    <p>
+                        Quantum objects exhibit both wave-like and particle-like properties. 
+                        The behavior observed depends on the experimental setup:
+                    </p>
+                    <div class="formula-box">
+                        E = hν = ℏω<br>
+                        p = h/λ = ℏk
+                    </div>
+                    <p>
+                        Where E is energy, p is momentum, λ is wavelength, and h is Planck's constant.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 2: Double-Slit Interference</h3>
+                    <p>
+                        When particles pass through two slits, they create an interference pattern 
+                        characteristic of waves. The intensity at position x on the screen is:
+                    </p>
+                    <div class="formula-box">
+                        I(x) = I₀ cos²(πdx/λL)
+                    </div>
+                    <p>
+                        Where d is slit separation, λ is wavelength, and L is screen distance.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 3: Single Particle Detection</h3>
+                    <p>
+                        Even when particles are sent one at a time, the interference pattern 
+                        emerges over time. Each particle arrives at a definite location (particle behavior), 
+                        but the distribution follows a wave pattern.
+                    </p>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Complementarity Principle</h3>
+                    <p>
+                        If we measure which slit the particle passes through, the interference 
+                        pattern disappears. We can observe either wave-like or particle-like 
+                        behavior, but not both simultaneously.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section">
+                <h2>Output</h2>
+                
+                <div class="output-info">
+                    <div class="info-item">
+                        <strong>Experiment:</strong> <span id="experiment-display">Double Slit</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Wavelength:</strong> <span id="wavelength-display">500 nm</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Fringe Spacing:</strong> <span id="fringe-spacing">0.5 λ</span>
+                    </div>
+                </div>
+
+                <div class="visualization-container">
+                    <h3>Interference Pattern</h3>
+                    <canvas id="interference-canvas"></canvas>
+                </div>
+
+                <div class="visualization-container">
+                    <h3>Intensity Distribution</h3>
+                    <canvas id="intensity-canvas"></canvas>
+                </div>
+
+                <div class="particle-counter">
+                    <strong>Particles Detected:</strong> <span id="particle-count">0</span>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
