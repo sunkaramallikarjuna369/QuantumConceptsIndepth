@@ -22,25 +22,42 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="bit-type">Select Bit Type</label>
+                    <select id="bit-type">
+                        <option value="classical">Classical Bit</option>
+                        <option value="quantum">Quantum Bit (Qubit)</option>
+                    </select>
                 </div>
 
-                <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                <div class="input-group" id="qubit-controls" style="display: none;">
+                    <label for="qubit-alpha">
+                        Qubit α (|0⟩ amplitude)
+                        <span class="value-display" id="qubit-alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="qubit-alpha" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group" id="qubit-phase-control" style="display: none;">
+                    <label for="qubit-phase">
+                        Qubit Phase φ (radians)
+                        <span class="value-display" id="qubit-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="qubit-phase" min="0" max="6.28" step="0.01" value="0">
+                </div>
+
+                <div class="input-group" id="classical-controls">
+                    <label for="classical-state">Classical Bit State</label>
+                    <select id="classical-state">
+                        <option value="0">0 (Off)</option>
+                        <option value="1">1 (On)</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('classical-0')">Classical 0</button>
+                    <button class="preset-btn" onclick="applyPreset('classical-1')">Classical 1</button>
+                    <button class="preset-btn" onclick="applyPreset('qubit-superposition')">Qubit Superposition</button>
+                    <button class="preset-btn" onclick="applyPreset('qubit-ground')">Qubit |0⟩</button>
                 </div>
             </section>
 
@@ -49,34 +66,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Classical Bits - Binary States</h3>
                     <p>
-                        Qubits vs Classical Bits is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        A classical bit is the fundamental unit of classical information. It can exist in exactly one of two definite states: 0 or 1 (off or on, false or true). At any given time, a classical bit has a definite value—there is no ambiguity. Classical bits are the foundation of all classical computing, where information is processed through deterministic logic gates (AND, OR, NOT, etc.). N classical bits can represent 2^N different states, but only one state at a time.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Classical bit: b ∈ {0, 1}<br>
+                        N bits can store one of 2^N values<br>
+                        Example: 3 bits → 000, 001, 010, ..., 111 (one at a time)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Qubits - Superposition States</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        A qubit (quantum bit) is the fundamental unit of quantum information. Unlike a classical bit, a qubit can exist in a superposition of both |0⟩ and |1⟩ states simultaneously: |ψ⟩ = α|0⟩ + β|1⟩, where α and β are complex probability amplitudes satisfying |α|² + |β|² = 1. This means a qubit can encode infinitely more information than a classical bit. However, when measured, a qubit collapses to either |0⟩ (with probability |α|²) or |1⟩ (with probability |β|²). N qubits can exist in a superposition of all 2^N states simultaneously.
                     </p>
+                    <div class="formula-box">
+                        Qubit: |ψ⟩ = α|0⟩ + β|1⟩<br>
+                        α, β ∈ ℂ with |α|² + |β|² = 1<br>
+                        N qubits → superposition of 2^N states simultaneously
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Key Differences</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The fundamental differences between classical bits and qubits are: (1) Superposition - qubits can be in multiple states at once, classical bits cannot. (2) Measurement - measuring a qubit destroys superposition and gives a probabilistic outcome; measuring a classical bit is deterministic. (3) Entanglement - qubits can be entangled with each other, creating correlations impossible with classical bits. (4) Information capacity - a qubit's state requires infinite classical information to fully describe (two complex numbers), while a classical bit needs just one binary digit. (5) Cloning - qubits cannot be copied (no-cloning theorem), but classical bits can be copied freely.
                     </p>
+                    <div class="formula-box">
+                        Classical: Definite state, deterministic, copyable<br>
+                        Quantum: Superposition, probabilistic, no-cloning<br>
+                        Entanglement: Quantum correlation with no classical analog
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Computational Power</h3>
+                    <p>
+                        The power of quantum computing comes from qubits' ability to exist in superposition and be entangled. While N classical bits can represent one of 2^N values at a time, N qubits can represent all 2^N values simultaneously through superposition. This enables quantum parallelism—a quantum algorithm can process all possible inputs at once. However, measurement collapses the superposition, so quantum algorithms must be cleverly designed to amplify correct answers and suppress wrong ones. This is why quantum computers excel at specific problems (factoring, search, simulation) but aren't universally faster than classical computers.
+                    </p>
+                    <div class="formula-box">
+                        Classical: Process one input at a time<br>
+                        Quantum: Process 2^N inputs simultaneously (quantum parallelism)<br>
+                        Challenge: Extract useful answer from superposition via measurement
+                    </div>
                 </div>
             </section>
 
