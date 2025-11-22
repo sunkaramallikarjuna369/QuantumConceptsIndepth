@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="num-qubits">Number of Qubits</label>
+                    <select id="num-qubits">
+                        <option value="2" selected>2 Qubits</option>
+                        <option value="3">3 Qubits</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="entanglement">
+                        Entanglement Strength
+                        <span class="value-display" id="entanglement-value">0.5</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="entanglement" min="0" max="1" step="0.05" value="0.5">
+                </div>
+
+                <div class="input-group">
+                    <label for="state-type">State Type</label>
+                    <select id="state-type">
+                        <option value="product">Product State |00⟩</option>
+                        <option value="bell" selected>Bell State (entangled)</option>
+                        <option value="ghz">GHZ State (3-qubit)</option>
+                        <option value="w">W State (3-qubit)</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('separable')">Separable</button>
+                    <button class="preset-btn" onclick="applyPreset('bell-state')">Bell State</button>
+                    <button class="preset-btn" onclick="applyPreset('ghz-state')">GHZ State</button>
                 </div>
             </section>
 
@@ -49,34 +59,54 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Tensor Product and Hilbert Space</h3>
                     <p>
-                        Multi-Qubit Systems is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Multi-qubit systems are described by the tensor product of individual qubit Hilbert spaces. For n qubits, the state space is H = H₁ ⊗ H₂ ⊗ ... ⊗ Hₙ, which has dimension 2ⁿ. A two-qubit system has basis states |00⟩, |01⟩, |10⟩, |11⟩, where |ij⟩ = |i⟩ ⊗ |j⟩. A general two-qubit state is |ψ⟩ = α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩, where |α|² + |β|² + |γ|² + |δ|² = 1. This exponential growth (2ⁿ dimensions for n qubits) is the source of quantum computational power—a classical n-bit register has 2ⁿ possible states, but only one is realized at a time, while a quantum n-qubit register can be in a superposition of all 2ⁿ basis states simultaneously. However, measurement collapses the state to one outcome, so extracting information requires clever algorithms. The tensor product structure means operators act on individual qubits: (A ⊗ B)|ψ⟩⊗|φ⟩ = A|ψ⟩ ⊗ B|φ⟩.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Hilbert space: H = H₁ ⊗ H₂ ⊗ ... ⊗ Hₙ, dim(H) = 2ⁿ<br>
+                        Two-qubit state: |ψ⟩ = Σᵢⱼ cᵢⱼ|ij⟩, Σ|cᵢⱼ|² = 1<br>
+                        Tensor product: |i⟩ ⊗ |j⟩ = |ij⟩
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Entanglement and Separability</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        A multi-qubit state is separable (product state) if it can be written as |ψ⟩ = |ψ₁⟩ ⊗ |ψ₂⟩ ⊗ ... ⊗ |ψₙ⟩. For example, |+⟩⊗|0⟩ = (|0⟩+|1⟩)/√2 ⊗ |0⟩ = (|00⟩+|10⟩)/√2 is separable. If a state cannot be written as a product, it is entangled. The Bell states are maximally entangled two-qubit states: |Φ⁺⟩ = (|00⟩+|11⟩)/√2, |Φ⁻⟩ = (|00⟩-|11⟩)/√2, |Ψ⁺⟩ = (|01⟩+|10⟩)/√2, |Ψ⁻⟩ = (|01⟩-|10⟩)/√2. Measuring one qubit of a Bell state instantly determines the other, regardless of distance—this is the EPR paradox and Bell's inequality violation. For three qubits, the GHZ state |GHZ⟩ = (|000⟩+|111⟩)/√2 and W state |W⟩ = (|001⟩+|010⟩+|100⟩)/√3 are inequivalent types of entanglement. Entanglement is a resource for quantum computing, quantum cryptography, and quantum teleportation. Quantifying entanglement uses measures like concurrence, entanglement entropy, and negativity.
                     </p>
+                    <div class="formula-box">
+                        Separable: |ψ⟩ = |ψ₁⟩ ⊗ |ψ₂⟩ (product state)<br>
+                        Bell state: |Φ⁺⟩ = (|00⟩+|11⟩)/√2 (maximally entangled)<br>
+                        GHZ state: |GHZ⟩ = (|000⟩+|111⟩)/√2<br>
+                        W state: |W⟩ = (|001⟩+|010⟩+|100⟩)/√3
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Multi-Qubit Gates and Circuits</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Multi-qubit gates create and manipulate entanglement. The CNOT (controlled-NOT) gate is the fundamental two-qubit gate: CNOT|control,target⟩ = |control, target ⊕ control⟩, where ⊕ is XOR. CNOT flips the target qubit if the control is |1⟩. Starting from |00⟩, applying H⊗I (Hadamard on first qubit) gives (|00⟩+|10⟩)/√2, then CNOT produces (|00⟩+|11⟩)/√2 = |Φ⁺⟩, a Bell state. The Toffoli gate (CCNOT) is a three-qubit gate that flips the target if both controls are |1⟩—it's universal for classical computation. The SWAP gate exchanges two qubits: SWAP|ij⟩ = |ji⟩. Any multi-qubit unitary can be decomposed into single-qubit gates and CNOTs (universal gate set). Quantum circuits are sequences of gates acting on qubits, read left-to-right. Parallelism arises from superposition: a quantum circuit on n qubits processes 2ⁿ inputs simultaneously, but measurement extracts only one output. Clever algorithms (Shor's, Grover's) exploit interference to amplify correct answers.
                     </p>
+                    <div class="formula-box">
+                        CNOT: |c,t⟩ → |c, t⊕c⟩<br>
+                        Bell state preparation: (H⊗I)CNOT|00⟩ = |Φ⁺⟩<br>
+                        Toffoli: |c₁,c₂,t⟩ → |c₁,c₂, t⊕(c₁∧c₂)⟩<br>
+                        Universal: Any U = (single-qubit gates) + CNOT
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications in Quantum Computing and Information</h3>
+                    <p>
+                        Multi-qubit systems enable quantum algorithms that outperform classical ones. Shor's algorithm factors integers in polynomial time using quantum Fourier transform on n qubits, threatening RSA cryptography. Grover's algorithm searches unsorted databases in O(√N) time (quadratic speedup). Quantum simulation uses multi-qubit systems to simulate other quantum systems (chemistry, materials science)—Feynman's original motivation for quantum computing. Quantum error correction encodes logical qubits into multiple physical qubits to protect against decoherence (e.g., Shor's 9-qubit code, surface codes). Quantum cryptography (QKD) uses entangled photon pairs for secure key distribution. Quantum teleportation transfers quantum states using entanglement and classical communication. Quantum metrology uses entangled states (GHZ, NOON states) for precision measurements beyond the standard quantum limit. Current quantum computers (IBM, Google, IonQ) have 50-1000 qubits, but decoherence and gate errors limit circuit depth. Achieving fault-tolerant quantum computing requires millions of physical qubits for error correction.
+                    </p>
+                    <div class="formula-box">
+                        Shor's algorithm: Factor N in O((log N)³) time<br>
+                        Grover's algorithm: Search N items in O(√N) queries<br>
+                        Error correction: Logical qubit = f(physical qubits)<br>
+                        Quantum supremacy: 53 qubits (Google, 2019) for specific task
+                    </div>
                 </div>
             </section>
 
