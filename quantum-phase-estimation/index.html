@@ -22,25 +22,33 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="eigenvalue">
+                        Target Eigenvalue (φ)
+                        <span class="value-display" id="eigenvalue-value">0.25</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="eigenvalue" min="0" max="1" step="0.01" value="0.25">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="precision-bits">
+                        Precision (n bits)
+                        <span class="value-display" id="precision-bits-value">8</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="precision-bits" min="4" max="16" step="1" value="8">
+                </div>
+
+                <div class="input-group">
+                    <label for="success-probability">
+                        Success Probability
+                        <span class="value-display" id="success-probability-value">0.95</span>
+                    </label>
+                    <input type="range" id="success-probability" min="0.5" max="0.99" step="0.01" value="0.95">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('simple')">Simple (φ=1/4)</button>
+                    <button class="preset-btn" onclick="applyPreset('high-precision')">High Precision</button>
+                    <button class="preset-btn" onclick="applyPreset('molecular')">Molecular Energy</button>
                 </div>
             </section>
 
@@ -49,34 +57,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Phase Estimation Algorithm</h3>
                     <p>
-                        Quantum Phase Estimation is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum Phase Estimation (QPE) is a fundamental quantum algorithm that estimates the eigenvalue (phase) of a unitary operator U. Given U|ψ⟩ = e^(2πiφ)|ψ⟩ where φ ∈ [0,1) is unknown, QPE estimates φ to n bits of precision using n ancilla qubits. The algorithm: (1) Prepare ancilla in |0⟩^⊗n and eigenstate |ψ⟩. (2) Apply Hadamard to all ancilla: H^⊗n|0⟩^⊗n = (1/√2^n) Σₖ |k⟩. (3) Apply controlled-U^(2^j) gates: |k⟩|ψ⟩ → |k⟩U^k|ψ⟩ = |k⟩e^(2πiφk)|ψ⟩. This creates phase kickback: |k⟩ → e^(2πiφk)|k⟩. (4) Apply inverse QFT to ancilla: QFT†|φ̃⟩ where φ̃ is n-bit approximation of φ. (5) Measure ancilla to obtain φ̃ ≈ φ with probability ≥ 4/π² ≈ 0.405 (exact if φ has n-bit binary representation). Precision: error |φ - φ̃| ≤ 2^(-n) with high probability. Success probability improved to 1-ε by repeating O(log(1/ε)) times. QPE is the core subroutine in Shor's algorithm (period finding), quantum simulation (energy estimation), and quantum chemistry (molecular energies). It requires coherent controlled-U^(2^j) operations, making it challenging for NISQ devices (needs long coherence times, many gates). QPE demonstrates quantum advantage: estimating eigenvalues of N×N matrices classically requires O(N) operations, but QPE uses O(log N) qubits and O(log² N) gates (exponential speedup for sparse matrices).
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        U|ψ⟩ = e^(2πiφ)|ψ⟩ (eigenvalue problem)<br>
+                        QPE: Estimate φ to n bits using n ancilla qubits<br>
+                        Precision: |φ - φ̃| ≤ 2^(-n) (exponential in n)<br>
+                        Success probability: ≥ 4/π² ≈ 0.405 (improved by repetition)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Circuit Implementation and Quantum Fourier Transform</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        QPE circuit structure: n ancilla qubits (counting register) and m system qubits (eigenstate |ψ⟩). Step-by-step: (1) Initialize: |0⟩^⊗n|ψ⟩. (2) Hadamard on ancilla: (1/√2^n) Σₖ₌₀^(2^n-1) |k⟩|ψ⟩. (3) Controlled-U gates: For ancilla qubit j (j=0 to n-1), apply controlled-U^(2^j). This creates |k⟩e^(2πiφk)|ψ⟩ = |k⟩|ψ⟩e^(2πiφk) (phase kickback). After all controlled-U: (1/√2^n) Σₖ e^(2πiφk)|k⟩|ψ⟩. (4) Inverse QFT on ancilla: QFT† transforms |φ̃⟩ (binary representation of φ) to computational basis. QFT|j⟩ = (1/√2^n) Σₖ e^(2πijk/2^n)|k⟩. Inverse QFT: QFT†|k⟩ = (1/√2^n) Σⱼ e^(-2πijk/2^n)|j⟩. After QFT†: state is |φ̃⟩|ψ⟩ where φ̃ = 0.φ₁φ₂...φₙ (binary) ≈ φ. (5) Measure ancilla: outcome φ̃ with probability |⟨φ̃|φ⟩|². If φ = 0.φ₁φ₂...φₙ exactly, measurement gives φ̃ = φ with probability 1. If φ has more than n bits, measurement gives best n-bit approximation with probability ≥ 4/π². Gate count: n Hadamards + Σⱼ₌₀^(n-1) (controlled-U^(2^j)) + QFT† (O(n²) gates). Total: O(n²) + cost of controlled-U. For sparse Hamiltonians, controlled-U can be implemented efficiently. QPE is the quantum analog of classical Fourier analysis for extracting frequencies (eigenvalues).
                     </p>
+                    <div class="formula-box">
+                        Circuit: H^⊗n → controlled-U^(2^j) → QFT† → measure<br>
+                        Phase kickback: |k⟩|ψ⟩ → e^(2πiφk)|k⟩|ψ⟩<br>
+                        QFT†: Transforms |k⟩ to (1/√2^n) Σⱼ e^(-2πijk/2^n)|j⟩<br>
+                        Gate count: O(n²) + controlled-U operations
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Applications in Shor's Algorithm and Quantum Chemistry</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        QPE is the key subroutine in Shor's factoring algorithm. Shor's algorithm factors N in polynomial time O(log³ N) on a quantum computer (vs. exponential for classical). Steps: (1) Reduce factoring to period finding: find period r of f(x) = a^x mod N. (2) Quantum period finding: Create superposition Σₓ |x⟩|a^x mod N⟩, measure second register (collapses to periodic state), apply QPE to estimate phase φ = s/r where s is random. (3) Extract r from φ using continued fractions. (4) Compute gcd(a^(r/2) ± 1, N) to find factors. QPE estimates φ = s/r with n bits of precision, enabling efficient period extraction. Shor's algorithm threatens RSA encryption (based on factoring hardness). Quantum chemistry: Estimate molecular ground state energy E₀. Prepare trial state |ψ₀⟩ ≈ |E₀⟩, apply QPE to time evolution operator U = e^(-iHt) where H is molecular Hamiltonian. U|Eₖ⟩ = e^(-iEₖt)|Eₖ⟩, so QPE estimates Eₖt/(2π). Choose t to resolve energy differences. Measure energy to chemical accuracy (~1 kcal/mol ≈ 0.0016 eV). Requires n ≈ 20-30 qubits for precision, m ≈ 100-1000 qubits for molecule. Challenges: (1) Preparing good |ψ₀⟩ (overlap with |E₀⟩). (2) Implementing controlled-e^(-iHt) (Trotterization). (3) Long coherence times (many gates). Iterative QPE variants (Kitaev's algorithm) reduce ancilla to 1 qubit but require more measurements. QPE is the gold standard for quantum eigenvalue problems, with applications in optimization, machine learning, and linear systems (HHL algorithm).
                     </p>
+                    <div class="formula-box">
+                        Shor's: QPE for period finding, φ = s/r (factor N in O(log³ N))<br>
+                        Chemistry: QPE on U = e^(-iHt), estimate E₀ (ground state energy)<br>
+                        Precision: n ≈ 20-30 qubits for chemical accuracy<br>
+                        Challenges: State preparation, controlled-U, coherence times
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Variants and NISQ-Friendly Alternatives</h3>
+                    <p>
+                        Standard QPE requires long coherence times and many gates, limiting NISQ applicability. Variants: (1) Iterative QPE (Kitaev's algorithm): Use 1 ancilla qubit, repeat n times with different controlled-U^(2^j) powers. Measure ancilla after each iteration, extract φ bit-by-bit. Reduces ancilla overhead but increases circuit depth and measurements. (2) Bayesian QPE: Use Bayesian inference to update estimate of φ after each measurement. Adaptive: choose next controlled-U power based on previous outcomes. Achieves Heisenberg-limited precision Δφ ∝ 1/T (total evolution time). (3) Variational Quantum Eigensolver (VQE): NISQ-friendly alternative to QPE. Prepare parameterized state |ψ(θ)⟩, measure ⟨H⟩ = ⟨ψ(θ)|H|ψ(θ)⟩, optimize θ classically to minimize ⟨H⟩. VQE uses short circuits (robust to noise) but requires many measurements and classical optimization. Trade-off: QPE is exact (given perfect gates) but requires fault tolerance. VQE is approximate but NISQ-compatible. (4) Quantum Signal Processing (QSP): Generalization of QPE using polynomial transformations of eigenvalues. Enables optimal eigenvalue filtering, amplitude amplification, and Hamiltonian simulation. (5) Randomized QPE: Use random controlled-U powers, reconstruct φ from measurement statistics. Reduces circuit depth at cost of more measurements. Future: Fault-tolerant quantum computers will enable full QPE for chemistry, optimization, and cryptanalysis. Near-term: VQE and iterative QPE on NISQ devices. QPE remains the theoretical foundation for quantum advantage in eigenvalue problems.
+                    </p>
+                    <div class="formula-box">
+                        Iterative QPE: 1 ancilla, n iterations (bit-by-bit extraction)<br>
+                        Bayesian QPE: Adaptive, Heisenberg-limited Δφ ∝ 1/T<br>
+                        VQE: NISQ-friendly, short circuits, classical optimization<br>
+                        Future: Fault-tolerant QPE for chemistry, cryptanalysis
+                    </div>
                 </div>
             </section>
 
