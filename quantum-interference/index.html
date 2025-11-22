@@ -22,25 +22,33 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="slit-separation">
+                        Slit Separation d (μm)
+                        <span class="value-display" id="slit-separation-value">50</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="slit-separation" min="10" max="100" step="5" value="50">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="wavelength">
+                        Wavelength λ (nm)
+                        <span class="value-display" id="wavelength-value">500</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="wavelength" min="400" max="700" step="10" value="500">
+                </div>
+
+                <div class="input-group">
+                    <label for="phase-difference">
+                        Phase Difference φ (radians)
+                        <span class="value-display" id="phase-difference-value">0.0</span>
+                    </label>
+                    <input type="range" id="phase-difference" min="0" max="6.28" step="0.1" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('constructive')">Constructive (φ=0)</button>
+                    <button class="preset-btn" onclick="applyPreset('destructive')">Destructive (φ=π)</button>
+                    <button class="preset-btn" onclick="applyPreset('partial')">Partial (φ=π/2)</button>
                 </div>
             </section>
 
@@ -49,34 +57,52 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Superposition and Amplitude Addition</h3>
                     <p>
-                        Quantum Interference is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum interference arises from the superposition principle: when a quantum system can reach a final state via multiple paths, the probability amplitudes (not probabilities) for each path add together. If ψ₁ and ψ₂ are the amplitudes for two paths, the total amplitude is ψ_total = ψ₁ + ψ₂, and the probability is P = |ψ_total|² = |ψ₁ + ψ₂|². Expanding this gives P = |ψ₁|² + |ψ₂|² + 2Re(ψ₁*ψ₂), where the last term is the interference term. This cross-term can be positive (constructive interference) or negative (destructive interference), depending on the relative phase between ψ₁ and ψ₂. Crucially, probabilities do not add: P ≠ P₁ + P₂. This is the hallmark of quantum mechanics—interference effects have no classical analog. The double-slit experiment is the canonical demonstration: a particle passing through two slits creates an interference pattern, proving it traveled through both slits simultaneously as a wave.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Amplitude addition: ψ_total = ψ₁ + ψ₂<br>
+                        Probability: P = |ψ₁ + ψ₂|² = |ψ₁|² + |ψ₂|² + 2Re(ψ₁*ψ₂)<br>
+                        Interference term: 2Re(ψ₁*ψ₂) = 2|ψ₁||ψ₂|cos(φ₁ - φ₂)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Constructive and Destructive Interference</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The interference term 2|ψ₁||ψ₂|cos(Δφ) depends on the phase difference Δφ = φ₁ - φ₂. Constructive interference occurs when Δφ = 0, 2π, 4π, ... (phases aligned): the amplitudes add coherently, giving P_max = (|ψ₁| + |ψ₂|)². For equal amplitudes |ψ₁| = |ψ₂| = a, this gives P_max = 4a², four times the single-path probability. Destructive interference occurs when Δφ = π, 3π, 5π, ... (phases opposite): the amplitudes cancel, giving P_min = (|ψ₁| - |ψ₂|)². For equal amplitudes, P_min = 0—complete cancellation, even though both paths are open! This is the "which-path" paradox: if you measure which path the particle took, the interference vanishes, and you get P = P₁ + P₂ (classical addition). Measurement collapses the superposition, destroying coherence. Interference requires indistinguishability—you cannot know which path was taken.
                     </p>
+                    <div class="formula-box">
+                        Constructive: Δφ = 2nπ ⟹ P_max = (|ψ₁| + |ψ₂|)²<br>
+                        Destructive: Δφ = (2n+1)π ⟹ P_min = (|ψ₁| - |ψ₂|)²<br>
+                        Visibility: V = (P_max - P_min)/(P_max + P_min) = 2|ψ₁||ψ₂|/(|ψ₁|² + |ψ₂|²)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Double-Slit Experiment and Path Integrals</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        In the double-slit experiment, a particle (electron, photon, atom, even molecule) passes through two slits separated by distance d and hits a screen at distance L. The path difference between the two slits to a point on the screen at angle θ is Δx = d sin(θ). This introduces a phase difference Δφ = 2πΔx/λ = 2πd sin(θ)/λ, where λ is the de Broglie wavelength. Constructive interference (bright fringes) occurs when d sin(θ) = nλ, and destructive interference (dark fringes) when d sin(θ) = (n+½)λ. The fringe spacing is Δy = λL/d. Remarkably, the pattern persists even when particles are sent one at a time—each particle interferes with itself. Feynman's path integral formulation generalizes this: the amplitude to go from A to B is the sum over all possible paths, each weighted by e^(iS/ℏ), where S is the classical action. Interference arises from summing infinitely many paths.
                     </p>
+                    <div class="formula-box">
+                        Phase difference: Δφ = 2πd sin(θ)/λ<br>
+                        Bright fringes: d sin(θ) = nλ (n = 0, ±1, ±2, ...)<br>
+                        Dark fringes: d sin(θ) = (n+½)λ<br>
+                        Fringe spacing: Δy = λL/d
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications and Quantum Technologies</h3>
+                    <p>
+                        Interference is central to quantum technologies. Interferometers: Mach-Zehnder and Michelson interferometers split and recombine light (or matter waves) to measure phase shifts with extreme precision—used in gravitational wave detection (LIGO), gyroscopes, and quantum sensors. Quantum computing: interference is exploited in quantum algorithms—Grover's search and Shor's factoring use interference to amplify correct answers and cancel wrong ones. Quantum cryptography: BB84 protocol relies on interference between different polarization bases. Atom interferometry: ultra-cold atoms create interference patterns for precision measurements of gravity, acceleration, and fundamental constants. Quantum erasers: delayed-choice experiments show that erasing "which-path" information restores interference, even after detection—demonstrating the role of information in quantum mechanics. Interference is also key to understanding decoherence: environmental interactions destroy phase coherence, causing the transition from quantum to classical behavior.
+                    </p>
+                    <div class="formula-box">
+                        Interferometer sensitivity: Δφ_min ~ 1/√N (N photons/atoms)<br>
+                        Quantum algorithms: Amplification ∝ √N (Grover's speedup)<br>
+                        Decoherence time: τ_coh ~ ℏ/(kT) (thermal decoherence)
+                    </div>
                 </div>
             </section>
 
