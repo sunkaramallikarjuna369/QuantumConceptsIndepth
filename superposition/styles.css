@@ -1,0 +1,24 @@
+/* Superposition-specific styles */
+
+/* Additional styling for superposition concept */
+.state-equation {
+    font-size: 1.6rem;
+}
+
+/* Enhance the visualization container for Bloch sphere */
+#bloch-sphere {
+    background: radial-gradient(circle at center, rgba(102, 126, 234, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* Style for checkbox */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+/* Improve preset button layout */
+.preset-buttons {
+    margin-top: 20px;
+}

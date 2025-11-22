@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superposition Principle - In Depth</title>
+    <link rel="stylesheet" href="../common/css/common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to All Concepts</a>
+        
+        <header>
+            <h1>Superposition Principle</h1>
+            <p>Interactive exploration of quantum superposition with real-time visualization</p>
+        </header>
+
+        <div class="concept-grid">
+            <!-- INPUT SECTION -->
+            <section class="section" id="input-section">
+                <h2>Input</h2>
+                
+                <div class="input-group">
+                    <label for="alpha-magnitude">
+                        Amplitude |α| (for |0⟩ state)
+                        <span class="value-display" id="alpha-value">0.707</span>
+                    </label>
+                    <input type="range" id="alpha-magnitude" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="alpha-phase">
+                        Phase of α (radians)
+                        <span class="value-display" id="alpha-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="alpha-phase" min="0" max="6.28" step="0.01" value="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="beta-magnitude">
+                        Amplitude |β| (for |1⟩ state)
+                        <span class="value-display" id="beta-value">0.707</span>
+                    </label>
+                    <input type="range" id="beta-magnitude" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="beta-phase">
+                        Phase of β (radians)
+                        <span class="value-display" id="beta-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="beta-phase" min="0" max="6.28" step="0.01" value="0">
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <input type="checkbox" id="auto-normalize" checked>
+                        Auto-normalize (enforce |α|² + |β|² = 1)
+                    </label>
+                </div>
+
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="zero">|0⟩ State</button>
+                    <button class="preset-btn" data-preset="one">|1⟩ State</button>
+                    <button class="preset-btn" data-preset="plus">|+⟩ State</button>
+                    <button class="preset-btn" data-preset="minus">|−⟩ State</button>
+                </div>
+            </section>
+
+            <!-- PROCESS SECTION -->
+            <section class="section" id="process-section">
+                <h2>Process</h2>
+                
+                <div class="process-step">
+                    <h3>Step 1: Quantum State Representation</h3>
+                    <div class="explanation">
+                        A qubit in superposition is represented as:
+                    </div>
+                    <div class="formula">
+                        |ψ⟩ = α|0⟩ + β|1⟩
+                    </div>
+                    <div class="explanation">
+                        where α and β are complex numbers called probability amplitudes.
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 2: Normalization Constraint</h3>
+                    <div class="explanation">
+                        For a valid quantum state, the probabilities must sum to 1:
+                    </div>
+                    <div class="formula">
+                        |α|² + |β|² = 1
+                    </div>
+                    <div class="explanation">
+                        When auto-normalize is enabled, we adjust the amplitudes to satisfy this constraint.
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 3: Probability Calculation</h3>
+                    <div class="explanation">
+                        The probability of measuring each state is:
+                    </div>
+                    <div class="formula">
+                        P(0) = |α|²<br>
+                        P(1) = |β|²
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Bloch Sphere Representation</h3>
+                    <div class="explanation">
+                        The state is mapped to a point on the Bloch sphere using:
+                    </div>
+                    <div class="formula">
+                        θ = 2·arccos(|α|)<br>
+                        φ = arg(β) - arg(α)
+                    </div>
+                    <div class="explanation">
+                        This gives us a 3D visualization of the quantum state.
+                    </div>
+                </div>
+            </section>
+
+            <!-- OUTPUT SECTION -->
+            <section class="section" id="output-section">
+                <h2>Output</h2>
+                
+                <div class="output-container">
+                    <div class="state-display">
+                        <div class="state-equation" id="state-equation">
+                            |ψ⟩ = 0.707|0⟩ + 0.707|1⟩
+                        </div>
+                        <div class="state-info" id="state-info">
+                            Normalization: |α|² + |β|² = 1.000
+                        </div>
+                    </div>
+
+                    <div class="probability-bars">
+                        <div class="bar-container">
+                            <div class="bar-label">Probability of |0⟩</div>
+                            <div class="bar">
+                                <div class="bar-fill" id="prob-0-bar" style="height: 50%;"></div>
+                            </div>
+                            <div class="bar-value" id="prob-0-value">50.0%</div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-label">Probability of |1⟩</div>
+                            <div class="bar">
+                                <div class="bar-fill" id="prob-1-bar" style="height: 50%;"></div>
+                            </div>
+                            <div class="bar-value" id="prob-1-value">50.0%</div>
+                        </div>
+                    </div>
+
+                    <div class="visualization" id="bloch-sphere"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
