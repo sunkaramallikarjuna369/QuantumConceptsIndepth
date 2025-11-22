@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="noise-type">Noise Type</label>
+                    <select id="noise-type">
+                        <option value="thermal" selected>Thermal Noise</option>
+                        <option value="shot">Shot Noise</option>
+                        <option value="1-f">1/f Noise (Flicker)</option>
+                        <option value="telegraph">Telegraph Noise</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="temperature">
+                        Temperature (mK)
+                        <span class="value-display" id="temperature-value">50</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="temperature" min="10" max="300" step="10" value="50">
+                </div>
+
+                <div class="input-group">
+                    <label for="coupling-strength">
+                        System-Environment Coupling
+                        <span class="value-display" id="coupling-strength-value">0.1</span>
+                    </label>
+                    <input type="range" id="coupling-strength" min="0" max="1" step="0.05" value="0.1">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('weak-coupling')">Weak Coupling</button>
+                    <button class="preset-btn" onclick="applyPreset('strong-coupling')">Strong Coupling</button>
+                    <button class="preset-btn" onclick="applyPreset('cryogenic')">Cryogenic</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Open Quantum Systems and System-Environment Interaction</h3>
                     <p>
-                        Quantum Noise and Open Systems is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Open quantum systems are quantum systems that interact with their environment, unlike closed systems that evolve unitarily. Real quantum systems are never perfectly isolated—they couple to electromagnetic fields, phonons, stray charges, magnetic field fluctuations, and other degrees of freedom. This system-environment interaction causes decoherence, energy relaxation, and noise. The total Hamiltonian is H_total = H_S + H_E + H_int where H_S is the system, H_E is the environment, and H_int is the interaction. For weak coupling, H_int << H_S, H_E, the system and environment are approximately separable. For strong coupling, the system and environment are highly entangled. The Born-Markov approximation assumes: (1) weak coupling, (2) environment has short correlation time (Markovian, memoryless), (3) environment is large (thermal bath). Under these assumptions, the system's reduced density matrix ρ_S(t) = Tr_E(ρ_total(t)) obeys a master equation: dρ_S/dt = -i[H_S, ρ_S] + L(ρ_S) where L is the Lindblad superoperator describing dissipation and decoherence. This is non-unitary evolution: Tr(ρ_S²) decreases (purity loss), entropy increases. Open quantum systems are ubiquitous: qubits in quantum computers, atoms in cavities, molecules in solution, photons in optical fibers. Understanding and controlling noise is essential for quantum technologies.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Total Hamiltonian: H_total = H_S + H_E + H_int<br>
+                        Reduced density matrix: ρ_S(t) = Tr_E(ρ_total(t))<br>
+                        Master equation: dρ_S/dt = -i[H_S, ρ_S] + L(ρ_S)<br>
+                        Born-Markov: Weak coupling, short correlation, large bath
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Lindblad Master Equation and Quantum Noise</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The Lindblad master equation is the most general form of Markovian open system dynamics: dρ/dt = -i[H, ρ] + Σₖ γₖ(LₖρLₖ† - (1/2){Lₖ†Lₖ, ρ}) where Lₖ are Lindblad operators (jump operators) and γₖ are rates. This preserves complete positivity and trace preservation (CPTP). Example: amplitude damping (energy relaxation) has L = √γ σ₋ where σ₋ = |0⟩⟨1|, giving dρ/dt = -i[H, ρ] + γ(σ₋ρσ₊ - (1/2){σ₊σ₋, ρ}). This describes spontaneous emission: |1⟩ → |0⟩ with rate γ = 1/T₁. Phase damping (dephasing) has L = √γ_φ σ_z, destroying coherence without energy loss. Thermal noise at temperature T has both relaxation and excitation: L₁ = √γ(n̄+1) σ₋ (emission), L₂ = √γn̄ σ₊ (absorption) where n̄ = 1/(e^(ℏω/kT) - 1) is the thermal occupation. At T = 0, n̄ = 0 (only emission). At high T, n̄ >> 1 (strong thermal excitation). Quantum noise sources: (1) Thermal noise from environment at T > 0. (2) Shot noise from discrete photon/phonon events. (3) 1/f noise (flicker noise) from charge traps, defects. (4) Telegraph noise from two-level fluctuators. Noise spectral density S(ω) characterizes noise: white noise has flat S(ω), 1/f noise has S(ω) ∝ 1/ω. Noise limits qubit coherence times T₁, T₂ and gate fidelities.
                     </p>
+                    <div class="formula-box">
+                        Lindblad equation: dρ/dt = -i[H, ρ] + Σₖ γₖ(LₖρLₖ† - (1/2){Lₖ†Lₖ, ρ})<br>
+                        Amplitude damping: L = √γ σ₋ (T₁ process)<br>
+                        Phase damping: L = √γ_φ σ_z (T₂ process)<br>
+                        Thermal: n̄ = 1/(e^(ℏω/kT) - 1) (Bose-Einstein)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Quantum Trajectories and Stochastic Schrödinger Equation</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Quantum trajectories (quantum jumps, Monte Carlo wavefunction) provide an alternative to the master equation by unraveling the ensemble average into individual stochastic trajectories. Instead of evolving the density matrix ρ (ensemble average), we evolve individual pure states |ψ(t)⟩ stochastically. Between jumps, the state evolves with a non-Hermitian Hamiltonian: H_eff = H - (i/2)Σₖ γₖLₖ†Lₖ. This causes norm decay: ||ψ(t)|| < 1. At random times, a "jump" occurs with probability dp = γₖ⟨ψ|Lₖ†Lₖ|ψ⟩dt, and the state jumps to |ψ'⟩ = Lₖ|ψ⟩/||Lₖ|ψ⟩||. Averaging over many trajectories recovers the master equation: ρ = ⟨|ψ⟩⟨ψ|⟩_trajectories. Quantum trajectories are useful for: (1) Numerical simulations (more efficient than full density matrix for large systems). (2) Modeling continuous measurement (each trajectory is a measurement record). (3) Understanding individual quantum systems (single atoms, ions, qubits). Example: fluorescence from a single atom—periods of bright emission (atom in excited state) interrupted by dark periods (quantum jumps to ground state). Stochastic Schrödinger equation (SSE) generalizes this to continuous monitoring: d|ψ⟩ = (-iH - (1/2)Σₖ Lₖ†Lₖ)|ψ⟩dt + Σₖ (Lₖ - ⟨Lₖ⟩)|ψ⟩dWₖ where dWₖ are Wiener increments (Gaussian white noise). SSE describes diffusive evolution under continuous weak measurement.
                     </p>
+                    <div class="formula-box">
+                        Non-Hermitian evolution: H_eff = H - (i/2)Σₖ γₖLₖ†Lₖ<br>
+                        Jump probability: dp = γₖ⟨ψ|Lₖ†Lₖ|ψ⟩dt<br>
+                        Jump: |ψ'⟩ = Lₖ|ψ⟩/||Lₖ|ψ⟩||<br>
+                        Stochastic Schrödinger: d|ψ⟩ = ... dt + Σₖ (Lₖ - ⟨Lₖ⟩)|ψ⟩dWₖ
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Noise Mitigation and Quantum Control</h3>
+                    <p>
+                        Combating noise in open quantum systems is crucial for quantum computing and quantum sensing. Strategies: (1) Isolation: Reduce system-environment coupling (cryogenic temperatures, vacuum, shielding, superconducting cavities). Superconducting qubits at 10-20 mK, ion traps in ultra-high vacuum. (2) Dynamical decoupling: Apply pulse sequences (spin echo, CPMG, Uhrig) to average out noise. Extends T₂ by 10-100×. Works best for low-frequency noise. (3) Optimal control: Design gate pulses to minimize noise sensitivity (DRAG pulses, composite pulses, optimal control theory). (4) Quantum error correction: Encode logical qubits redundantly and correct errors. Requires fault-tolerant gates and high-fidelity operations. (5) Decoherence-free subspaces (DFS) and noiseless subsystems: Encode in subspaces immune to collective noise. (6) Reservoir engineering: Engineer the environment to stabilize desired states (dissipative state preparation). (7) Quantum feedback: Measure the system continuously and apply feedback to counteract noise. Noise characterization: Randomized benchmarking measures average gate fidelity. Gate set tomography reconstructs full noise model. Noise spectroscopy (dynamical decoupling, Ramsey) measures noise spectrum S(ω). Understanding noise sources (1/f charge noise, magnetic field fluctuations, photon shot noise, phonon emission) enables targeted mitigation. Future quantum technologies will combine multiple noise mitigation techniques to achieve fault-tolerant quantum computation.
+                    </p>
+                    <div class="formula-box">
+                        Strategies: Isolation, dynamical decoupling, optimal control, QEC<br>
+                        Dynamical decoupling: Extends T₂ by 10-100×<br>
+                        Randomized benchmarking: Measures average gate fidelity<br>
+                        Reservoir engineering: Engineer environment to stabilize states
+                    </div>
                 </div>
             </section>
 
