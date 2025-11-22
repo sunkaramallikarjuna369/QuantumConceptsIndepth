@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="qubit-type">Qubit Platform</label>
+                    <select id="qubit-type">
+                        <option value="superconducting" selected>Superconducting (Transmon)</option>
+                        <option value="trapped-ion">Trapped Ion</option>
+                        <option value="photonic">Photonic</option>
+                        <option value="neutral-atom">Neutral Atom (Rydberg)</option>
+                        <option value="topological">Topological (Majorana)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="t1-time">
+                        T₁ Relaxation Time (μs)
+                        <span class="value-display" id="t1-time-value">100</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="t1-time" min="10" max="10000" step="10" value="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="t2-time">
+                        T₂ Coherence Time (μs)
+                        <span class="value-display" id="t2-time-value">50</span>
+                    </label>
+                    <input type="range" id="t2-time" min="5" max="1000" step="5" value="50">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('google')">Google Sycamore</button>
+                    <button class="preset-btn" onclick="applyPreset('ionq')">IonQ Trapped Ion</button>
+                    <button class="preset-btn" onclick="applyPreset('ideal')">Ideal Qubit</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Superconducting Qubits - Transmons and Flux Qubits</h3>
                     <p>
-                        Physical Realization of Qubits is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Superconducting qubits are the leading platform for quantum computing (Google, IBM, Rigetti). They use Josephson junctions (superconductor-insulator-superconductor) to create artificial atoms with quantized energy levels. Transmon qubit: Most common design, uses capacitively shunted Josephson junction. Hamiltonian: H = 4E_C(n - n_g)² - E_J cos(φ) where E_C is charging energy, E_J is Josephson energy, n is Cooper pair number, φ is phase. Transmon regime: E_J >> E_C (large anharmonicity, reduced charge noise sensitivity). Energy levels: E_0, E_1, E_2,... with anharmonicity α = E_12 - E_01 ≈ -E_C (typically α/2π ≈ -200 MHz). Qubit states: |0⟩ = ground state, |1⟩ = first excited state. Control: Microwave pulses at ω_01 ≈ 5 GHz for single-qubit gates. Two-qubit gates: Capacitive coupling + cross-resonance or tunable couplers. Coherence: T₁ ≈ 50-100 μs (energy relaxation), T₂ ≈ 50-150 μs (dephasing). Noise sources: dielectric loss, quasiparticles, flux noise. Operating temperature: 10-20 mK (dilution refrigerator). Advantages: Fast gates (10-50 ns), scalable fabrication (lithography), strong coupling. Disadvantages: Cryogenic operation, crosstalk, limited connectivity. Google's Sycamore: 53 transmon qubits, 2D grid, nearest-neighbor coupling. IBM Quantum: 127-qubit Eagle, 433-qubit Osprey processors. Superconducting qubits dominate current NISQ devices and are leading candidates for fault-tolerant quantum computing.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Transmon: H = 4E_C(n - n_g)² - E_J cos(φ), E_J >> E_C<br>
+                        Anharmonicity: α = E_12 - E_01 ≈ -E_C ≈ -200 MHz<br>
+                        Coherence: T₁ ≈ 50-100 μs, T₂ ≈ 50-150 μs<br>
+                        Temperature: 10-20 mK (dilution refrigerator)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Trapped Ion Qubits - Hyperfine and Optical Qubits</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Trapped ion qubits use individual atoms (ions) confined by electromagnetic fields in ultra-high vacuum. Ions are trapped in Paul traps (oscillating electric fields) or Penning traps (static fields + magnetic field). Qubit encoding: Hyperfine states of ground electronic level (e.g., ⁴⁰Ca⁺, ¹⁷¹Yb⁺, ⁸⁸Sr⁺). Example: ⁴⁰Ca⁺ has S₁/₂ ground state with hyperfine splitting ω_HF/2π ≈ 3.2 GHz. Qubit: |0⟩ = |S₁/₂, F=4, m_F=0⟩, |1⟩ = |S₁/₂, F=3, m_F=0⟩. Control: Laser pulses (Raman transitions) or microwave fields for single-qubit gates (gate time ~1-10 μs). Two-qubit gates: Mølmer-Sørensen gate using shared motional modes (phonons). Ions coupled via Coulomb interaction, collective motion mediates entanglement. Gate fidelity: >99.9% (world record). Coherence: T₁ > 1000 s (hyperfine states are long-lived), T₂ ≈ 0.1-1 s (limited by magnetic field noise). Readout: State-dependent fluorescence (>99.9% fidelity). Advantages: High fidelity gates, long coherence, all-to-all connectivity (small systems), identical qubits (atoms are identical). Disadvantages: Slow gates (μs vs. ns for superconducting), complex laser systems, scalability challenges (crosstalk, heating). IonQ: 32-qubit system, all-to-all connectivity. Honeywell/Quantinuum: 20-qubit system, high fidelity. Trapped ions excel at high-fidelity operations and are strong candidates for fault-tolerant quantum computing, especially for quantum simulation and chemistry applications.
                     </p>
+                    <div class="formula-box">
+                        Hyperfine qubit: |0⟩, |1⟩ (ground state hyperfine levels)<br>
+                        Control: Raman lasers, Mølmer-Sørensen gate (phonon-mediated)<br>
+                        Coherence: T₁ > 1000 s, T₂ ≈ 0.1-1 s<br>
+                        Gate fidelity: >99.9% (world record for two-qubit gates)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Photonic, Neutral Atom, and Topological Qubits</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Photonic qubits: Encode qubits in photon properties (polarization, path, time-bin). Advantages: Room temperature operation, low decoherence (photons don't interact with environment), natural for quantum communication. Disadvantages: Probabilistic gates (photons don't interact directly), photon loss, detection inefficiency. Linear optical quantum computing (LOQC): Use beam splitters, phase shifters, photodetectors. Requires measurement-based gates and error correction. PsiQuantum, Xanadu: Developing photonic quantum computers. Neutral atom (Rydberg) qubits: Atoms (Rb, Cs) trapped in optical tweezers (focused laser beams), arranged in 1D/2D/3D arrays. Qubit: Hyperfine ground states. Two-qubit gates: Rydberg blockade (excite to high-n Rydberg state, strong dipole-dipole interaction blocks nearby excitations). Gate time: ~1 μs. Coherence: T₁ ≈ 1-10 s, T₂ ≈ 0.1-1 s. Advantages: Scalable (100-1000 atoms), reconfigurable geometry, long coherence. Disadvantages: Atom loss, heating, gate errors. QuEra, Pasqal: Neutral atom quantum computers for optimization and simulation. Topological qubits (Majorana fermions): Encode qubits in non-local topological states (Majorana zero modes), protected from local noise. Theoretically fault-tolerant by design. Challenges: Experimental realization difficult (requires exotic materials, low temperatures). Microsoft: Pursuing topological qubits, but progress slower than other platforms. Each platform has trade-offs: superconducting (fast, scalable, noisy), trapped ion (high fidelity, slow, limited scalability), photonic (room temp, probabilistic), neutral atom (scalable, moderate fidelity), topological (fault-tolerant, experimental). The future likely involves hybrid approaches combining strengths of multiple platforms.
                     </p>
+                    <div class="formula-box">
+                        Photonic: Polarization/path encoding, room temp, probabilistic gates<br>
+                        Neutral atom: Optical tweezers, Rydberg blockade, 100-1000 atoms<br>
+                        Topological: Majorana zero modes, fault-tolerant (theory), experimental<br>
+                        Trade-offs: Speed vs. fidelity vs. scalability vs. temperature
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: DiVincenzo Criteria and Path to Scalable Quantum Computing</h3>
+                    <p>
+                        DiVincenzo criteria (2000) define requirements for physical implementation of quantum computers: (1) Scalable physical system with well-defined qubits. (2) Ability to initialize qubits to simple state (e.g., |0⟩). (3) Long coherence times (T₂ >> gate time). (4) Universal set of quantum gates. (5) Qubit-specific measurement capability. Plus two for quantum communication: (6) Interconvert stationary and flying qubits. (7) Faithful transmission of flying qubits. All platforms satisfy criteria to varying degrees. Key challenges: Scalability: Current systems have 10-1000 qubits. Fault-tolerant quantum computing requires ~1000 logical qubits = millions of physical qubits (with error correction overhead ~1000×). Connectivity: Superconducting qubits have nearest-neighbor connectivity (requires SWAP gates for long-range operations). Trapped ions have all-to-all connectivity (small systems). Neutral atoms have reconfigurable connectivity. Error rates: Current gate fidelities ~99-99.9%. Fault tolerance requires >99.9% (surface code threshold). Superconducting qubits improving rapidly. Trapped ions already above threshold. Cryogenics: Superconducting qubits require dilution refrigerators (expensive, complex). Photonic and neutral atom qubits operate at higher temperatures. Control electronics: Each qubit needs control lines (microwave, laser, etc.). Scaling to millions of qubits requires massive control infrastructure. Roadmap: NISQ era (2020s): 100-1000 noisy qubits, limited applications (simulation, optimization). Early fault tolerance (2030s): 1000-10,000 logical qubits, useful chemistry, optimization. Large-scale fault tolerance (2040s+): 100,000+ logical qubits, cryptanalysis, transformative applications. Physical qubit platforms are rapidly advancing, with multiple viable paths toward scalable, fault-tolerant quantum computing.
+                    </p>
+                    <div class="formula-box">
+                        DiVincenzo criteria: Scalable, initialize, long T₂, universal gates, measure<br>
+                        Fault tolerance: ~1000 logical qubits = millions of physical qubits<br>
+                        Gate fidelity: Need >99.9% (surface code threshold)<br>
+                        Roadmap: NISQ (2020s) → early FT (2030s) → large-scale FT (2040s+)
+                    </div>
                 </div>
             </section>
 
