@@ -1,34 +1,56 @@
 // Initialize controls
 function initializeControls() {
-    const param1 = document.getElementById('param1');
-    const param2 = document.getElementById('param2');
+    const lQuantum = document.getElementById('l-quantum');
+    const mQuantum = document.getElementById('m-quantum');
+    const theta = document.getElementById('theta');
     
-    param1.addEventListener('input', updateVisualization);
-    param2.addEventListener('input', updateVisualization);
+    lQuantum.addEventListener('change', () => {
+        updateMOptions();
+        updateVisualization();
+    });
+    mQuantum.addEventListener('change', updateVisualization);
+    theta.addEventListener('input', updateVisualization);
     
+    updateMOptions();
     updateVisualization();
+}
+
+// Update m quantum number options based on l
+function updateMOptions() {
+    const l = parseInt(document.getElementById('l-quantum').value);
+    const mSelect = document.getElementById('m-quantum');
+    
+    mSelect.innerHTML = '';
+    for (let m = -l; m <= l; m++) {
+        const option = document.createElement('option');
+        option.value = m;
+        option.textContent = `m = ${m}`;
+        if (m === 0) option.selected = true;
+        mSelect.appendChild(option);
+    }
 }
 
 // Apply preset configurations
 function applyPreset(preset) {
-    const param1 = document.getElementById('param1');
-    const param2 = document.getElementById('param2');
+    const lQuantum = document.getElementById('l-quantum');
+    const theta = document.getElementById('theta');
     
     switch(preset) {
-        case 'default':
-            param1.value = 0.5;
-            param2.value = 0.5;
+        case 's-orbital':
+            lQuantum.value = 0;
+            theta.value = 45;
             break;
-        case 'example1':
-            param1.value = 0.3;
-            param2.value = 0.7;
+        case 'p-orbital':
+            lQuantum.value = 1;
+            theta.value = 45;
             break;
-        case 'example2':
-            param1.value = 0.8;
-            param2.value = 0.2;
+        case 'd-orbital':
+            lQuantum.value = 2;
+            theta.value = 45;
             break;
     }
     
+    updateMOptions();
     updateVisualization();
 }
 

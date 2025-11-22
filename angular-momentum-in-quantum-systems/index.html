@@ -22,25 +22,34 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="l-quantum">Orbital Quantum Number l</label>
+                    <select id="l-quantum">
+                        <option value="0">l = 0 (s orbital)</option>
+                        <option value="1" selected>l = 1 (p orbital)</option>
+                        <option value="2">l = 2 (d orbital)</option>
+                        <option value="3">l = 3 (f orbital)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="m-quantum">Magnetic Quantum Number m</label>
+                    <select id="m-quantum">
+                        <option value="0" selected>m = 0</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="theta">
+                        Polar Angle θ (degrees)
+                        <span class="value-display" id="theta-value">45</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="theta" min="0" max="180" step="5" value="45">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('s-orbital')">s Orbital (l=0)</button>
+                    <button class="preset-btn" onclick="applyPreset('p-orbital')">p Orbital (l=1)</button>
+                    <button class="preset-btn" onclick="applyPreset('d-orbital')">d Orbital (l=2)</button>
                 </div>
             </section>
 
@@ -49,34 +58,54 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Orbital Angular Momentum and Quantization</h3>
                     <p>
-                        Angular Momentum in Quantum Systems is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Orbital angular momentum L = r × p is a fundamental observable in quantum mechanics, describing rotational motion. Unlike classical angular momentum (which can take any value), quantum angular momentum is quantized. The operators L̂x, L̂y, L̂z satisfy the commutation relations [L̂i, L̂j] = iℏεijkL̂k, meaning different components cannot be measured simultaneously. However, the magnitude L̂² and one component (conventionally L̂z) can be measured together. The eigenvalues are L² = ℏ²l(l+1) and Lz = ℏm, where l = 0, 1, 2, 3, ... (orbital quantum number) and m = -l, -l+1, ..., l-1, l (magnetic quantum number). For a given l, there are 2l+1 possible values of m, corresponding to different orientations of L. This quantization arises from the boundary conditions on wavefunctions—requiring single-valuedness under rotation leads to integer l. The spherical harmonics Ylm(θ,φ) are the eigenfunctions of L̂² and L̂z, forming a complete basis for functions on the sphere.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Commutation: [L̂i, L̂j] = iℏεijkL̂k<br>
+                        Magnitude: L̂²|l,m⟩ = ℏ²l(l+1)|l,m⟩<br>
+                        z-component: L̂z|l,m⟩ = ℏm|l,m⟩<br>
+                        Allowed values: l = 0,1,2,... and m = -l,...,+l
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Ladder Operators and Spherical Harmonics</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The ladder operators L̂± = L̂x ± iL̂y raise or lower the m quantum number: L̂±|l,m⟩ = ℏ√(l(l+1) - m(m±1))|l,m±1⟩. Starting from the highest state |l,l⟩ (where L̂+|l,l⟩ = 0), repeated application of L̂- generates all 2l+1 states for a given l. This algebraic approach avoids solving differential equations directly. The spherical harmonics Ylm(θ,φ) = Θlm(θ)e^(imφ) are the angular part of solutions to the Schrödinger equation in spherical coordinates. They describe the angular distribution of electron orbitals in atoms: Y00 is spherically symmetric (s orbital), Y1m are dumbbell-shaped (p orbitals), Y2m are cloverleaf-shaped (d orbitals), etc. The spherical harmonics are orthonormal: ∫Ylm*Yl'm' dΩ = δll'δmm', and form a complete basis for expanding any function on the sphere. They appear in atomic physics, molecular chemistry, quantum field theory, and even cosmology (cosmic microwave background analysis).
                     </p>
+                    <div class="formula-box">
+                        Ladder operators: L̂±|l,m⟩ = ℏ√(l(l+1) - m(m±1))|l,m±1⟩<br>
+                        Spherical harmonics: Ylm(θ,φ) = √[(2l+1)(l-m)!/(4π(l+m)!)] Plm(cos θ)e^(imφ)<br>
+                        Orthonormality: ∫Ylm*Yl'm' dΩ = δll'δmm'
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Total Angular Momentum and Addition Rules</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Total angular momentum J = L + S combines orbital (L) and spin (S) angular momentum. For a single electron, L and S couple to form J with quantum number j, where |l-s| ≤ j ≤ l+s. For spin-½, this gives j = l ± ½ (except l=0 gives only j=½). This is spin-orbit coupling, responsible for fine structure in atomic spectra (e.g., sodium D-line doublet). The Clebsch-Gordan coefficients ⟨l,ml;s,ms|j,mj⟩ describe how |l,ml⟩⊗|s,ms⟩ states combine into |j,mj⟩ states. For multi-electron atoms, individual angular momenta couple: L = Σli, S = Σsi, J = L + S (LS coupling or Russell-Saunders coupling). Alternatively, for heavy atoms, ji = li + si couple first, then J = Σji (jj coupling). Angular momentum addition is crucial for understanding atomic term symbols (²S+¹Lj notation), selection rules for transitions (Δl = ±1, Δj = 0,±1), and molecular rotational spectra.
                     </p>
+                    <div class="formula-box">
+                        Total: J = L + S<br>
+                        Allowed j: |l-s| ≤ j ≤ l+s (triangle inequality)<br>
+                        Clebsch-Gordan: |j,mj⟩ = Σ ⟨l,ml;s,ms|j,mj⟩ |l,ml⟩⊗|s,ms⟩<br>
+                        Selection rules: Δl = ±1, Δj = 0,±1 (electric dipole transitions)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications in Atoms, Molecules, and Quantum Systems</h3>
+                    <p>
+                        Angular momentum is central to atomic structure. The hydrogen atom energy levels depend on n (principal quantum number), but degeneracy is lifted by l (fine structure), m (Zeeman effect in magnetic fields), and spin (hyperfine structure). Molecular rotations are quantized: a rigid rotor has energy E = ℏ²J(J+1)/(2I), where I is moment of inertia and J is rotational quantum number. Rotational spectroscopy (microwave/infrared) measures these transitions to determine molecular structure. In quantum optics, photons carry orbital angular momentum (OAM) in Laguerre-Gaussian beams, used for optical tweezers, super-resolution microscopy, and quantum communication (OAM-encoded qubits). Quantum dots and artificial atoms exhibit shell structure analogous to real atoms due to angular momentum quantization. In nuclear physics, nuclear spin and orbital angular momentum determine nuclear magnetic moments and selection rules for radioactive decay. Angular momentum conservation is a fundamental symmetry (Noether's theorem from rotational invariance), underlying selection rules and forbidden transitions throughout quantum physics.
+                    </p>
+                    <div class="formula-box">
+                        Hydrogen fine structure: ΔE ~ α²mc²/(n³) (α = fine structure constant)<br>
+                        Rigid rotor: E = ℏ²J(J+1)/(2I)<br>
+                        Photon OAM: Lz = lℏ per photon (l = ..., -2, -1, 0, 1, 2, ...)<br>
+                        Zeeman effect: ΔE = μBBgmj (energy shift in magnetic field)
+                    </div>
                 </div>
             </section>
 
