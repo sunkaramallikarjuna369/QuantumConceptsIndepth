@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="channel-type">Quantum Channel Type</label>
+                    <select id="channel-type">
+                        <option value="depolarizing" selected>Depolarizing Channel</option>
+                        <option value="amplitude-damping">Amplitude Damping</option>
+                        <option value="phase-damping">Phase Damping</option>
+                        <option value="bit-flip">Bit Flip Channel</option>
+                        <option value="phase-flip">Phase Flip Channel</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="error-probability">
+                        Error Probability (p)
+                        <span class="value-display" id="error-probability-value">0.1</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="error-probability" min="0" max="1" step="0.05" value="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="num-kraus">
+                        Number of Kraus Operators
+                        <span class="value-display" id="num-kraus-value">4</span>
+                    </label>
+                    <input type="range" id="num-kraus" min="1" max="8" step="1" value="4">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('low-noise')">Low Noise</button>
+                    <button class="preset-btn" onclick="applyPreset('high-noise')">High Noise</button>
+                    <button class="preset-btn" onclick="applyPreset('unitary')">Unitary (No Noise)</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Channels as CPTP Maps</h3>
                     <p>
-                        Quantum Channels and Kraus Operators is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum channels describe the evolution of open quantum systems, generalizing unitary evolution to include noise, decoherence, and measurement. A quantum channel is a completely positive trace-preserving (CPTP) map ε: ρ → ε(ρ) that transforms density matrices. Trace-preserving means Tr(ε(ρ)) = Tr(ρ) = 1 (probability conservation). Complete positivity means (ε ⊗ I)(ρ_AB) ≥ 0 for all ρ_AB (ensures physical states even when extended to larger systems). This is stronger than positivity ε(ρ) ≥ 0. Example: transpose map T(ρ) = ρ^T is positive but not completely positive (fails on entangled states). Quantum channels include: (1) Unitary evolution: ε(ρ) = UρU† (reversible, no information loss). (2) Measurements: ε(ρ) = Σₘ PₘρPₘ where Pₘ are projectors (irreversible, information gain). (3) Noise: depolarizing, damping, dephasing (irreversible, information loss). (4) Partial trace: ε(ρ_AB) = Tr_B(ρ_AB) (discarding subsystem). Quantum channels are the most general quantum operations, encompassing all physical processes. They preserve the convex structure of density matrices: ε(Σᵢ pᵢρᵢ) = Σᵢ pᵢε(ρᵢ). Channels can be composed: ε₂ ∘ ε₁. The set of channels forms a semigroup (no inverse for irreversible channels). Quantum channels are central to quantum information theory, quantum error correction, and quantum communication.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Quantum channel: ε: ρ → ε(ρ) (CPTP map)<br>
+                        Trace-preserving: Tr(ε(ρ)) = 1<br>
+                        Complete positivity: (ε ⊗ I)(ρ_AB) ≥ 0<br>
+                        Examples: Unitary, measurement, noise, partial trace
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Kraus Representation Theorem</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The Kraus representation theorem (operator-sum representation, Stinespring dilation) states that any CPTP map ε can be written as ε(ρ) = Σₖ KₖρKₖ† where {Kₖ} are Kraus operators satisfying Σₖ Kₖ†Kₖ = I (completeness). The number of Kraus operators is at most d² for d-dimensional systems. Kraus operators are not unique: any unitary rotation {K'ₖ = Σⱼ UₖⱼKⱼ} gives the same channel. Examples: (1) Depolarizing channel: ε(ρ) = (1-p)ρ + p(I/2). Kraus operators: K₀ = √(1-3p/4)I, K₁ = √(p/4)X, K₂ = √(p/4)Y, K₃ = √(p/4)Z. This applies X, Y, Z errors with equal probability p/4. (2) Amplitude damping: K₀ = [[1,0],[0,√(1-γ)]], K₁ = [[0,√γ],[0,0]]. This describes energy relaxation |1⟩ → |0⟩ with rate γ. (3) Phase damping: K₀ = [[1,0],[0,√(1-γ)]], K₁ = [[0,0],[0,√γ]]. This destroys coherence without energy loss. (4) Bit flip: K₀ = √(1-p)I, K₁ = √p X. (5) Phase flip: K₀ = √(1-p)I, K₁ = √p Z. Kraus operators provide a compact representation of quantum noise. They enable efficient simulation of noisy quantum circuits: apply Kraus operators stochastically or compute ε(ρ) = Σₖ KₖρKₖ† directly. Kraus representation connects to Stinespring dilation: any channel arises from unitary evolution on system + environment followed by partial trace.
                     </p>
+                    <div class="formula-box">
+                        Kraus representation: ε(ρ) = Σₖ KₖρKₖ†<br>
+                        Completeness: Σₖ Kₖ†Kₖ = I (trace-preserving)<br>
+                        Depolarizing: K₀ = √(1-3p/4)I, K₁,₂,₃ = √(p/4)X,Y,Z<br>
+                        Amplitude damping: K₀ = [[1,0],[0,√(1-γ)]], K₁ = [[0,√γ],[0,0]]
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Choi-Jamiołkowski Isomorphism and Channel Capacity</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The Choi-Jamiołkowski isomorphism establishes a one-to-one correspondence between quantum channels ε and Choi matrices (Choi states). For a channel ε acting on d-dimensional systems, the Choi matrix is J(ε) = (ε ⊗ I)(|Φ⁺⟩⟨Φ⁺|) where |Φ⁺⟩ = Σᵢ |i⟩|i⟩/√d is the maximally entangled state. J(ε) is a d² × d² matrix. The channel is CPTP iff J(ε) ≥ 0 (positive semidefinite) and Tr_A(J(ε)) = I (partial trace condition). Kraus operators can be extracted from J(ε): if J(ε) = Σₖ λₖ|vₖ⟩⟨vₖ| (eigendecomposition), then Kₖ = √λₖ reshape(|vₖ⟩). Choi matrices enable: (1) Testing if a map is CPTP (check positivity). (2) Computing channel properties (diamond norm, channel fidelity). (3) Optimizing over channels (semidefinite programming). Quantum channel capacity quantifies information transmission: (1) Classical capacity C(ε) = max_ρ χ({pᵢ, ε(ρᵢ)}) (Holevo bound). For depolarizing channel, C ≈ 1 - H(p) bits per use. (2) Quantum capacity Q(ε) = lim_{n→∞} (1/n)Q⁽¹⁾(ε⊗ⁿ) (coherent information). For depolarizing, Q > 0 only if p < 1/4 (hashing bound). (3) Entanglement-assisted capacity C_E(ε) (uses pre-shared entanglement). Quantum channels have rich structure: degradable channels (Q = C_E), anti-degradable (Q = 0), additive channels (Q⁽¹⁾ is additive). Channel capacities determine fundamental limits of quantum communication.
                     </p>
+                    <div class="formula-box">
+                        Choi matrix: J(ε) = (ε ⊗ I)(|Φ⁺⟩⟨Φ⁺|)<br>
+                        CPTP iff: J(ε) ≥ 0 and Tr_A(J(ε)) = I<br>
+                        Classical capacity: C(ε) = max χ({pᵢ, ε(ρᵢ)})<br>
+                        Quantum capacity: Q(ε) (coherent information)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications in Quantum Error Correction and Tomography</h3>
+                    <p>
+                        Quantum channels and Kraus operators are essential for quantum error correction (QEC). QEC encodes logical qubits to protect against noise: |ψ⟩_L → |ψ̃⟩ (encoding), ε(|ψ̃⟩⟨ψ̃|) (noise), recovery → |ψ⟩_L (decoding). For error correction to succeed, the recovery map R must satisfy R ∘ ε ∘ E = I on the code subspace. Knill-Laflamme conditions: a code C corrects errors {Eₐ} iff ⟨i|Eₐ†Eᵦ|j⟩ = cₐᵦδᵢⱼ for all |i⟩, |j⟩ ∈ C. This means errors are either correctable or distinguishable. Example: 3-qubit bit flip code corrects single X errors. Kraus operators: E₀ = I, E₁ = X₁, E₂ = X₂, E₃ = X₃. Syndrome measurement distinguishes errors, recovery applies correcting X. Quantum process tomography (QPT) reconstructs the channel ε from input-output data. Prepare states {ρᵢ}, apply ε, measure ε(ρᵢ). For d-dimensional systems, need d⁴ measurements to reconstruct ε fully. Standard QPT uses Pauli basis: ε(ρ) = Σₐᵦ χₐᵦ PₐρPᵦ where χₐᵦ is the process matrix. Measure χₐᵦ by preparing Pauli eigenstates and measuring in Pauli basis. Randomized benchmarking (RB) estimates average gate fidelity without full tomography: apply random Clifford sequences, measure decay F(m) = A·p^m + B, extract p (depolarizing parameter). Gate set tomography (GST) reconstructs gates and measurements self-consistently. Quantum channels are the foundation of quantum information processing, enabling precise characterization and control of quantum operations.
+                    </p>
+                    <div class="formula-box">
+                        QEC condition: ⟨i|Eₐ†Eᵦ|j⟩ = cₐᵦδᵢⱼ (Knill-Laflamme)<br>
+                        Process tomography: Reconstruct ε from input-output data<br>
+                        Randomized benchmarking: F(m) = A·p^m + B (average fidelity)<br>
+                        Gate set tomography: Self-consistent gate reconstruction
+                    </div>
                 </div>
             </section>
 
