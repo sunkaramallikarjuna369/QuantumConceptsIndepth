@@ -22,25 +22,41 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="operator-a">Select Operator Â</label>
+                    <select id="operator-a">
+                        <option value="x">Pauli X (σ_x)</option>
+                        <option value="y">Pauli Y (σ_y)</option>
+                        <option value="z">Pauli Z (σ_z)</option>
+                        <option value="position">Position (x̂)</option>
+                        <option value="momentum">Momentum (p̂)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
-                    </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <label for="operator-b">Select Operator B̂</label>
+                    <select id="operator-b">
+                        <option value="x">Pauli X (σ_x)</option>
+                        <option value="y" selected>Pauli Y (σ_y)</option>
+                        <option value="z">Pauli Z (σ_z)</option>
+                        <option value="position">Position (x̂)</option>
+                        <option value="momentum">Momentum (p̂)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="order-toggle">Calculation Order</label>
+                    <select id="order-toggle">
+                        <option value="ab">ÂB̂ (A then B)</option>
+                        <option value="ba">B̂Â (B then A)</option>
+                        <option value="commutator">[Â,B̂] = ÂB̂ - B̂Â</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('pauli-xy')">Pauli X,Y</button>
+                    <button class="preset-btn" onclick="applyPreset('pauli-xz')">Pauli X,Z</button>
+                    <button class="preset-btn" onclick="applyPreset('position-momentum')">Position-Momentum</button>
+                    <button class="preset-btn" onclick="calculateCommutator()">Calculate [Â,B̂]</button>
                 </div>
             </section>
 
@@ -49,34 +65,49 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Commutator</h3>
                     <p>
-                        Commutators and Non-Commuting Observables is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The commutator of two operators  and B̂ is defined as [Â,B̂] = ÂB̂ - B̂Â. If [Â,B̂] = 0, the operators commute and can be measured simultaneously with arbitrary precision. If [Â,B̂] ≠ 0, they don't commute, and measuring one affects the other—this is the mathematical origin of the uncertainty principle.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        [Â,B̂] = ÂB̂ - B̂Â<br>
+                        If [Â,B̂] = 0: operators commute<br>
+                        If [Â,B̂] ≠ 0: operators don't commute
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Physical Meaning of Non-Commutation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        When two observables don't commute, they represent incompatible measurements. You cannot prepare a quantum state that is simultaneously an eigenstate of both operators. The most famous example is position and momentum: [x̂,p̂] = iℏ. This non-zero commutator directly leads to the Heisenberg uncertainty principle ΔxΔp ≥ ℏ/2.
                     </p>
+                    <div class="formula-box">
+                        [x̂,p̂] = iℏ (canonical commutation relation)<br>
+                        This implies: ΔxΔp ≥ ℏ/2
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Pauli Matrix Commutators</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The Pauli matrices have well-defined commutation relations: [σ_x,σ_y] = 2iσ_z, [σ_y,σ_z] = 2iσ_x, and [σ_z,σ_x] = 2iσ_y. These relations form the Lie algebra of SU(2) and are fundamental to understanding spin and angular momentum in quantum mechanics. Each pair of Pauli operators is non-commuting.
                     </p>
+                    <div class="formula-box">
+                        [σ_x,σ_y] = 2iσ_z<br>
+                        [σ_y,σ_z] = 2iσ_x<br>
+                        [σ_z,σ_x] = 2iσ_y
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Simultaneous Eigenstates</h3>
+                    <p>
+                        Two operators can have simultaneous eigenstates if and only if they commute. This means you can find states that are definite (not superposed) with respect to both observables. For example, energy and angular momentum often commute in atomic systems, allowing states with definite values of both. Non-commuting operators cannot share a complete set of eigenstates.
+                    </p>
+                    <div class="formula-box">
+                        If [Â,B̂] = 0: ∃|ψ⟩ such that Â|ψ⟩ = a|ψ⟩ and B̂|ψ⟩ = b|ψ⟩<br>
+                        (simultaneous eigenstates exist)
+                    </div>
                 </div>
             </section>
 
