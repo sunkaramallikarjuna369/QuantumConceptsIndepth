@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="state-type">Quantum State to Clone</label>
+                    <select id="state-type">
+                        <option value="0">|0⟩ (orthogonal basis)</option>
+                        <option value="1">|1⟩ (orthogonal basis)</option>
+                        <option value="plus" selected>|+⟩ (superposition)</option>
+                        <option value="minus">|-⟩ (superposition)</option>
+                        <option value="custom">Custom state</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="fidelity">
+                        Cloning Fidelity (max achievable)
+                        <span class="value-display" id="fidelity-value">0.83</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="fidelity" min="0.5" max="1" step="0.01" value="0.83" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label for="num-copies">
+                        Attempted Copies
+                        <span class="value-display" id="num-copies-value">2</span>
+                    </label>
+                    <input type="range" id="num-copies" min="1" max="5" step="1" value="2">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('orthogonal')">Orthogonal States</button>
+                    <button class="preset-btn" onclick="applyPreset('superposition')">Superposition</button>
+                    <button class="preset-btn" onclick="applyPreset('unknown')">Unknown State</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Statement and Proof of the Theorem</h3>
                     <p>
-                        No-Cloning Theorem is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The no-cloning theorem states that it is impossible to create an identical copy of an arbitrary unknown quantum state. Formally, there is no unitary operator U that can clone any state: U(|ψ⟩⊗|0⟩) = |ψ⟩⊗|ψ⟩ for all |ψ⟩. Proof by contradiction: Suppose such a U exists. For two states |ψ⟩ and |φ⟩, we have U(|ψ⟩⊗|0⟩) = |ψ⟩⊗|ψ⟩ and U(|φ⟩⊗|0⟩) = |φ⟩⊗|φ⟩. Taking inner products: ⟨ψ|φ⟩ = ⟨ψ⊗0|U†U|φ⊗0⟩ = ⟨ψ⊗ψ|φ⊗φ⟩ = ⟨ψ|φ⟩². This implies ⟨ψ|φ⟩ = 0 or 1, meaning |ψ⟩ and |φ⟩ must be orthogonal or identical. Thus, U can only clone states from a known orthogonal basis (e.g., |0⟩ and |1⟩), not arbitrary superpositions. The theorem is a consequence of the linearity of quantum mechanics and unitarity of evolution. It's fundamentally different from classical physics, where copying information is trivial (e.g., photocopying a document). The no-cloning theorem protects quantum information and enables quantum cryptography.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        No-cloning: No U such that U(|ψ⟩⊗|0⟩) = |ψ⟩⊗|ψ⟩ for all |ψ⟩<br>
+                        Proof: ⟨ψ|φ⟩ = ⟨ψ|φ⟩² ⟹ ⟨ψ|φ⟩ ∈ {0,1} (orthogonal or identical)<br>
+                        Consequence: Can clone orthogonal basis, not superpositions<br>
+                        Basis cloning: CNOT clones |0⟩, |1⟩ but not |+⟩, |-⟩
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Approximate Cloning and Trade-offs</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        While perfect cloning is impossible, approximate cloning is allowed. The universal quantum cloning machine (UQCM) produces two imperfect copies with fidelity F = 5/6 ≈ 0.833 for any input state—better than classical strategies (F = 2/3). For N→M cloning (N originals to M copies), the optimal fidelity is F = N(M+1)/[M(N+1)]. State-dependent cloning can achieve higher fidelity if the input is restricted to a known set (e.g., cloning states on the equator of the Bloch sphere). The no-cloning theorem also implies the no-deleting theorem: you cannot perfectly delete an unknown quantum state. These limitations arise from the monogamy of entanglement: if |ψ⟩ is maximally entangled with A, it cannot be entangled with B. Cloning would create entanglement with multiple systems, violating monogamy. Approximate cloning is used in quantum error correction (where redundancy is needed) and quantum cryptography (eavesdropping detection).
                     </p>
+                    <div class="formula-box">
+                        Universal cloning: F = 5/6 ≈ 0.833 (1→2 copies)<br>
+                        N→M cloning: F = N(M+1)/[M(N+1)]<br>
+                        Classical limit: F = 2/3 (measure and prepare)<br>
+                        No-deleting: Cannot erase unknown state perfectly
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Implications for Quantum Information</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The no-cloning theorem has profound implications for quantum information science. It prevents eavesdropping in quantum key distribution (QKD): an eavesdropper cannot copy qubits without disturbing them, so Alice and Bob detect the intrusion. It ensures the security of quantum money: quantum states on banknotes cannot be counterfeited. It makes quantum teleportation necessary: to transfer a state, you must destroy the original (no copying). It limits quantum error correction: you cannot simply copy a qubit for redundancy; instead, you must encode it into entangled states (e.g., |0⟩_L = |000⟩, |1⟩_L = |111⟩). The theorem also explains why quantum computers cannot efficiently solve NP-complete problems by "trying all solutions at once and copying the correct one"—measurement collapses superposition, and cloning is forbidden. It's a fundamental resource constraint in quantum information, analogous to the speed of light in relativity. The no-cloning theorem is one of the pillars of quantum mechanics, alongside superposition, entanglement, and measurement.
                     </p>
+                    <div class="formula-box">
+                        QKD security: Eavesdropper disturbs states (no cloning)<br>
+                        Quantum money: Cannot counterfeit quantum states<br>
+                        Teleportation: Must destroy original (no cloning)<br>
+                        Error correction: Encode into entangled states, not copies
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Experimental Demonstrations and Applications</h3>
+                    <p>
+                        The no-cloning theorem has been experimentally verified using photons, atoms, and ions. In 1996, Buzek and Hillery proposed the universal quantum cloning machine, and it was demonstrated with photons in 1998. Experiments show that attempting to clone a superposition state like |+⟩ = (|0⟩+|1⟩)/√2 using a CNOT gate (which clones |0⟩ and |1⟩ perfectly) produces an entangled state (|00⟩+|11⟩)/√2, not two copies of |+⟩. This demonstrates the impossibility of perfect cloning. The theorem is exploited in quantum cryptography protocols like BB84 and E91, where security relies on the inability to clone unknown states. Quantum digital signatures use no-cloning to prevent forgery. Quantum random number generators rely on the fact that quantum states cannot be copied, ensuring true randomness. The no-cloning theorem also motivates quantum error correction codes (Shor code, surface codes) that protect quantum information without violating the theorem. Future quantum networks will use no-cloning as a security feature, ensuring that quantum data cannot be intercepted and copied.
+                    </p>
+                    <div class="formula-box">
+                        Experimental verification: Photons (1998), atoms, ions<br>
+                        CNOT on |+⟩: Produces (|00⟩+|11⟩)/√2, not |+⟩⊗|+⟩<br>
+                        BB84 protocol: Security from no-cloning<br>
+                        Quantum signatures: No-cloning prevents forgery
+                    </div>
                 </div>
             </section>
 
