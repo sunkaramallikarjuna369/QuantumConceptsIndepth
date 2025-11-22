@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="decoherence-type">Decoherence Channel</label>
+                    <select id="decoherence-type">
+                        <option value="amplitude-damping" selected>Amplitude Damping (T1)</option>
+                        <option value="phase-damping">Phase Damping (T2)</option>
+                        <option value="depolarizing">Depolarizing Channel</option>
+                        <option value="bit-flip">Bit Flip</option>
+                        <option value="phase-flip">Phase Flip</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="decoherence-rate">
+                        Decoherence Rate (γ)
+                        <span class="value-display" id="decoherence-rate-value">0.1</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="decoherence-rate" min="0" max="1" step="0.05" value="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="time-steps">
+                        Time Evolution Steps
+                        <span class="value-display" id="time-steps-value">10</span>
+                    </label>
+                    <input type="range" id="time-steps" min="1" max="20" step="1" value="10">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('slow-decay')">Slow Decay</button>
+                    <button class="preset-btn" onclick="applyPreset('fast-decay')">Fast Decay</button>
+                    <button class="preset-btn" onclick="applyPreset('pure-dephasing')">Pure Dephasing</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: From Quantum to Classical - The Decoherence Process</h3>
                     <p>
-                        Quantum Decoherence is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum decoherence is the process by which quantum systems lose their coherence (superposition and entanglement) due to interaction with the environment, transitioning from quantum to classical behavior. A closed quantum system evolves unitarily, preserving superposition: |ψ⟩ = α|0⟩ + β|1⟩. However, real systems are never isolated—they interact with environments (photons, phonons, stray fields). This entangles the system with the environment: |ψ⟩|E₀⟩ → α|0⟩|E₀⟩ + β|1⟩|E₁⟩. If we trace out the environment (measure only the system), the system's density matrix becomes ρ = Tr_E(|ψ⟩⟨ψ|) = |α|²|0⟩⟨0| + |β|²|1⟩⟨1| + (off-diagonal terms that decay). The off-diagonal terms (coherences) decay exponentially with time: ρ₀₁(t) ∝ e^(-t/T₂), where T₂ is the dephasing time. This destroys superposition, leaving a classical mixture. Decoherence explains the quantum-to-classical transition: macroscopic objects appear classical because they decohere extremely fast (T₂ ~ 10^(-40) s for a dust particle). For qubits, T₂ ~ 10-100 μs (superconducting), ~1 s (ion traps), limiting quantum computation. Decoherence is irreversible (entropy increases) and faster than energy relaxation (T₁). It's the main obstacle to quantum computing, requiring error correction.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        System-environment entanglement: |ψ⟩|E₀⟩ → α|0⟩|E₀⟩ + β|1⟩|E₁⟩<br>
+                        Reduced density matrix: ρ = Tr_E(|ψ⟩⟨ψ|) (mixed state)<br>
+                        Coherence decay: ρ₀₁(t) ∝ e^(-t/T₂) (T₂ = dephasing time)<br>
+                        Qubit T₂: ~10-100 μs (superconducting), ~1 s (ion traps)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Decoherence Channels and Timescales</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Decoherence is modeled by quantum channels (completely positive trace-preserving maps). Amplitude damping describes energy relaxation (T₁ process): |1⟩ → |0⟩ with rate γ = 1/T₁. Kraus operators: K₀ = [[1,0],[0,√(1-γ)]], K₁ = [[0,√γ],[0,0]]. This models spontaneous emission, phonon emission. Phase damping (dephasing, T₂ process) destroys coherence without energy loss: |+⟩ → (|0⟩ or |1⟩) with rate γ_φ = 1/T₂. Kraus operators: K₀ = [[√(1-γ_φ),0],[0,√(1-γ_φ)]], K₁ = [[√γ_φ,0],[0,0]], K₂ = [[0,0],[0,√γ_φ]]. This models fluctuating magnetic fields, charge noise. Depolarizing channel: ρ → (1-p)ρ + p(I/2) (uniform noise). Bit flip: X with probability p. Phase flip: Z with probability p. Timescales: T₁ (energy relaxation) and T₂ (dephasing) satisfy T₂ ≤ 2T₁ (dephasing is faster). Pure dephasing: T₂* = 1/(1/T₂ - 1/(2T₁)). For superconducting qubits: T₁ ~ 50-100 μs, T₂ ~ 10-50 μs. For ion traps: T₁ ~ 10 s, T₂ ~ 1 s. For NV centers: T₁ ~ 1 ms, T₂ ~ 1 ms. Decoherence limits gate fidelity: F ~ 1 - t_gate/T₂. For t_gate ~ 10 ns and T₂ ~ 50 μs, F ~ 99.98% (good). Quantum error correction requires F > 99% (threshold theorem).
                     </p>
+                    <div class="formula-box">
+                        Amplitude damping (T₁): |1⟩ → |0⟩, rate γ = 1/T₁<br>
+                        Phase damping (T₂): Coherence decay, rate γ_φ = 1/T₂<br>
+                        Relation: T₂ ≤ 2T₁ (dephasing faster than relaxation)<br>
+                        Gate fidelity: F ~ 1 - t_gate/T₂ (requires F > 99%)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Quantum-to-Classical Transition and Pointer States</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Decoherence explains why macroscopic objects obey classical physics despite being made of quantum particles. Zurek's pointer states (einselection, environment-induced superselection) are states that remain stable under decoherence. For a system interacting with environment, certain states (pointer states) become entangled with distinguishable environment states, while superpositions of pointer states decohere rapidly. Example: position basis for macroscopic objects. A dust particle in superposition |x₁⟩ + |x₂⟩ decoheres in ~10^(-40) s because photons scatter differently from each position, entangling position with environment. Pointer states |x⟩ are stable (classical positions). Decoherence time scales as τ_D ~ ℏ/(λ²kT) where λ is separation, k is Boltzmann constant, T is temperature. For λ = 1 cm, T = 300 K, τ_D ~ 10^(-40) s (instantaneous). For λ = 1 nm, τ_D ~ 10^(-20) s (still fast). This explains Schrödinger's cat: macroscopic superpositions decohere instantly, making them unobservable. Decoherence solves the measurement problem: measurement is just strong decoherence, selecting pointer states (measurement basis). However, decoherence doesn't solve the preferred basis problem (why position for macroscopic objects?) or explain wavefunction collapse (decoherence produces mixed states, not definite outcomes). Decoherence is central to quantum foundations and quantum-to-classical transition.
                     </p>
+                    <div class="formula-box">
+                        Pointer states: Stable under decoherence (einselection)<br>
+                        Decoherence time: τ_D ~ ℏ/(λ²kT) (λ = separation)<br>
+                        Macroscopic: λ = 1 cm → τ_D ~ 10^(-40) s (instant)<br>
+                        Schrödinger's cat: Macroscopic superpositions decohere instantly
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Combating Decoherence - Error Correction and DFS</h3>
+                    <p>
+                        Combating decoherence is essential for quantum computing. Strategies: (1) Isolation: Reduce environment coupling (cryogenic temperatures, vacuum, shielding). Superconducting qubits at 10 mK, ion traps in ultra-high vacuum. (2) Fast gates: Complete operations before decoherence (t_gate << T₂). Superconducting gates ~10 ns, ion trap gates ~1 μs. (3) Dynamical decoupling: Apply pulse sequences (spin echo, CPMG) to cancel dephasing. Extends T₂ by 10-100×. (4) Decoherence-free subspaces (DFS): Encode qubits in subspaces immune to collective noise. Example: two qubits with collective dephasing, encode logical |0⟩_L = |01⟩, |1⟩_L = |10⟩ (antisymmetric subspace). Collective phase e^(iφ(Z₁+Z₂)) leaves |01⟩ - |10⟩ invariant. (5) Quantum error correction (QEC): Encode logical qubits redundantly (e.g., Shor code, surface code) and correct errors. Surface code requires ~1000 physical qubits per logical qubit with T₁, T₂ ~ 100 μs and gate fidelity > 99%. (6) Topological qubits: Use anyons (Majorana fermions) with topological protection, immune to local noise. Still experimental. Current NISQ devices (50-1000 qubits, no error correction) are limited by decoherence. Future fault-tolerant quantum computers will use QEC to overcome decoherence, enabling arbitrary-length computations.
+                    </p>
+                    <div class="formula-box">
+                        Strategies: Isolation, fast gates, dynamical decoupling, DFS, QEC<br>
+                        Dynamical decoupling: Extends T₂ by 10-100×<br>
+                        DFS: Encode in subspaces immune to collective noise<br>
+                        QEC: Surface code ~1000 physical qubits per logical (F > 99%)
+                    </div>
                 </div>
             </section>
 
