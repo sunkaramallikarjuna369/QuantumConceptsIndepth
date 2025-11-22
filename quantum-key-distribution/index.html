@@ -22,25 +22,37 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="protocol">QKD Protocol</label>
+                    <select id="protocol">
+                        <option value="bb84" selected>BB84 (Bennett-Brassard 1984)</option>
+                        <option value="e91">E91 (Ekert 1991)</option>
+                        <option value="b92">B92 (Bennett 1992)</option>
+                        <option value="sarg04">SARG04</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="channel-loss">
+                        Channel Loss (dB)
+                        <span class="value-display" id="channel-loss-value">3</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="channel-loss" min="0" max="20" step="1" value="3">
+                </div>
+
+                <div class="input-group">
+                    <label for="eavesdropper">Eavesdropper Present</label>
+                    <select id="eavesdropper">
+                        <option value="none" selected>No Eavesdropper</option>
+                        <option value="intercept-resend">Intercept-Resend Attack</option>
+                        <option value="pns">Photon Number Splitting</option>
+                        <option value="trojan-horse">Trojan Horse Attack</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('secure-channel')">Secure Channel</button>
+                    <button class="preset-btn" onclick="applyPreset('eavesdropping')">Eavesdropping Demo</button>
+                    <button class="preset-btn" onclick="applyPreset('long-distance')">Long Distance</button>
                 </div>
             </section>
 
@@ -49,34 +61,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Unconditional Security from Quantum Mechanics</h3>
                     <p>
-                        Quantum Key Distribution is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum key distribution (QKD) enables two parties (Alice and Bob) to establish a shared secret key with unconditional security guaranteed by the laws of quantum mechanics, not computational assumptions. Classical cryptography (RSA, Diffie-Hellman) relies on hardness of factoring or discrete log, vulnerable to quantum computers (Shor's algorithm) and future mathematical breakthroughs. QKD security is information-theoretic: even an adversary with unlimited computational power cannot break it without being detected. The key principle: quantum states cannot be measured without disturbance (no-cloning theorem, measurement collapse). If an eavesdropper (Eve) intercepts qubits, she introduces errors detectable by Alice and Bob. QKD protocols use single photons in superposition states (e.g., |0⟩, |1⟩, |+⟩, |-⟩) sent over optical fiber or free space. Alice and Bob compare a subset of their results publicly to estimate the error rate (QBER, quantum bit error rate). If QBER is below a threshold (~11% for BB84), they perform error correction and privacy amplification to distill a secure key. If QBER is high, Eve is present, and they abort. QKD provides unconditional security but requires authenticated classical channel (to prevent man-in-the-middle attacks).
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Security: Information-theoretic (not computational)<br>
+                        No-cloning: Eavesdropping introduces detectable errors<br>
+                        QBER threshold: ~11% for BB84 (higher → Eve detected)<br>
+                        Key rate: R ≈ 1 - 2h(QBER) bits/photon (h = binary entropy)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: BB84 Protocol and Implementation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        BB84 (Bennett-Brassard 1984) is the first and most widely used QKD protocol. Alice prepares single photons in one of four states: |0⟩, |1⟩ (rectilinear basis Z) or |+⟩, |-⟩ (diagonal basis X), chosen randomly. She sends photons to Bob, who measures in a random basis (Z or X). After transmission, Alice and Bob publicly announce their basis choices (not the results). They keep bits where bases matched (~50%) and discard the rest (sifted key). To detect eavesdropping, they compare a random subset of the sifted key. If error rate is low (~1-3% from noise), they proceed with error correction (e.g., LDPC codes) and privacy amplification (hash functions) to produce the final secure key. If Eve performs intercept-resend attack (measure and resend), she guesses the wrong basis 50% of the time, introducing 25% error rate—easily detected. Practical implementations use weak coherent pulses (not true single photons), vulnerable to photon number splitting (PNS) attacks. Decoy states (varying pulse intensities) detect PNS. Commercial QKD systems (ID Quantique, Toshiba) achieve ~100 km over fiber at kbps rates. Satellite QKD (Micius, 2016) enables global key distribution. Challenges: photon loss (exponential with distance), detector efficiency, and side-channel attacks.
                     </p>
+                    <div class="formula-box">
+                        BB84: 4 states (|0⟩, |1⟩, |+⟩, |-⟩), 2 bases (Z, X)<br>
+                        Sifted key: ~50% (bases matched)<br>
+                        Intercept-resend: 25% error rate (easily detected)<br>
+                        Distance: ~100 km fiber, ~1000 km satellite
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: E91 and Entanglement-Based QKD</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        E91 (Ekert 1991) uses entangled photon pairs instead of single photons. A source generates Bell pairs |Φ⁺⟩ = (|00⟩+|11⟩)/√2, sending one photon to Alice and one to Bob. They measure in random bases (e.g., Z, X, Y). For matched bases, their results are perfectly correlated (both get 0 or both get 1). For mismatched bases, they test Bell inequality violations (CHSH: S ≤ 2 classically, S = 2√2 quantum). If S ≈ 2√2, no eavesdropper is present (Eve's measurement would reduce entanglement, lowering S). E91 provides device-independent security: even if Alice and Bob don't trust their devices, Bell violation certifies security. However, E91 requires high-quality entanglement sources and is more complex than BB84. Continuous-variable QKD (CV-QKD) uses coherent states and homodyne detection, enabling integration with existing telecom infrastructure. Measurement-device-independent QKD (MDI-QKD) removes detector side-channel vulnerabilities by using an untrusted relay. Twin-field QKD (TF-QKD) extends distance to ~500 km by using phase matching. Quantum repeaters (using entanglement swapping and purification) will enable arbitrarily long distances, but require quantum memories (not yet practical). QKD networks (DARPA, China, Europe) are being deployed for government and financial applications.
                     </p>
+                    <div class="formula-box">
+                        E91: Entangled pairs |Φ⁺⟩ = (|00⟩+|11⟩)/√2<br>
+                        Bell test: S = 2√2 → no eavesdropper<br>
+                        Device-independent: Security from Bell violation<br>
+                        MDI-QKD: Untrusted relay, TF-QKD: ~500 km distance
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Real-World Deployment and Post-Quantum Cryptography</h3>
+                    <p>
+                        QKD is transitioning from research to deployment. China's Micius satellite (2016) demonstrated intercontinental QKD (Beijing-Vienna, 7600 km). The Beijing-Shanghai QKD backbone (2000 km, 32 nodes) secures government and financial communications. Europe's OPENQKD project and DARPA's quantum network are building QKD infrastructure. Commercial QKD systems cost $50k-$500k and achieve 1-10 kbps key rates over 10-100 km. Challenges: high cost, limited distance, low key rates, and need for line-of-sight (fiber or satellite). QKD complements post-quantum cryptography (PQC): lattice-based, hash-based, and code-based algorithms resist quantum attacks and are being standardized by NIST (2024). PQC is software-only, scalable, and works over existing networks, but relies on computational assumptions. QKD provides unconditional security but requires specialized hardware. Hybrid approach: use QKD for high-security applications (government, military, finance) and PQC for general use. Quantum internet vision: global QKD network + quantum repeaters + distributed quantum computing. Current QKD is practical for metropolitan networks (~100 km) but not yet for global consumer use. Future: integrated photonics, on-chip QKD, and quantum memories will reduce cost and increase performance.
+                    </p>
+                    <div class="formula-box">
+                        Deployment: China (Micius satellite, 2000 km backbone)<br>
+                        Commercial: $50k-$500k, 1-10 kbps, 10-100 km<br>
+                        PQC: Lattice/hash/code-based (NIST 2024 standards)<br>
+                        Hybrid: QKD (high-security) + PQC (general use)
+                    </div>
                 </div>
             </section>
 
