@@ -22,25 +22,38 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="algorithm-family">Algorithm Family</label>
+                    <select id="algorithm-family">
+                        <option value="lattice" selected>Lattice-Based (CRYSTALS-Kyber)</option>
+                        <option value="hash">Hash-Based (SPHINCS+)</option>
+                        <option value="code">Code-Based (Classic McEliece)</option>
+                        <option value="multivariate">Multivariate (Rainbow)</option>
+                        <option value="isogeny">Isogeny-Based (SIKE)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="security-level">
+                        Security Level (bits)
+                        <span class="value-display" id="security-level-value">128</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="security-level" min="128" max="256" step="64" value="128">
+                </div>
+
+                <div class="input-group">
+                    <label for="attack-type">Quantum Attack</label>
+                    <select id="attack-type">
+                        <option value="none" selected>No Attack</option>
+                        <option value="shor">Shor's Algorithm (RSA/ECC)</option>
+                        <option value="grover">Grover's Search</option>
+                        <option value="both">Combined Attack</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('nist-winner')">NIST Winner</button>
+                    <button class="preset-btn" onclick="applyPreset('comparison')">Classical vs PQC</button>
+                    <button class="preset-btn" onclick="applyPreset('quantum-threat')">Quantum Threat</button>
                 </div>
             </section>
 
@@ -49,34 +62,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Quantum Threat to Classical Cryptography</h3>
                     <p>
-                        Post-Quantum Cryptography is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Post-quantum cryptography (PQC) refers to cryptographic algorithms designed to resist attacks by quantum computers. Classical public-key cryptography (RSA, ECC, Diffie-Hellman) relies on the hardness of integer factorization and discrete logarithm problems. Shor's algorithm (1994) solves both in polynomial time O((log N)³) on a quantum computer, exponentially faster than the best classical algorithms (~O(e^((log N)^(1/3)})). A quantum computer with ~10⁶ logical qubits (10⁹ physical qubits with error correction) can break 2048-bit RSA in hours, estimated feasible by 2030s-2040s. This threatens all current internet security: HTTPS, TLS, VPNs, digital signatures, blockchain, and government/military communications. Symmetric cryptography (AES, SHA) is less vulnerable: Grover's algorithm provides only quadratic speedup, so AES-256 remains secure (128-bit quantum security). However, public-key cryptography must be replaced. The "harvest now, decrypt later" threat: adversaries record encrypted data today and decrypt it once quantum computers are available, compromising long-term secrets (medical records, state secrets, financial data). PQC aims to provide quantum-resistant alternatives deployable on classical computers, ensuring security in the post-quantum era.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Shor's algorithm: Factor N in O((log N)³) time<br>
+                        Threat timeline: 2030s-2040s (10⁹ physical qubits)<br>
+                        Symmetric: AES-256 → 128-bit quantum security (Grover)<br>
+                        Public-key: RSA, ECC, DH → broken by Shor
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: NIST Post-Quantum Standardization</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        NIST launched a post-quantum cryptography standardization process in 2016, evaluating 82 candidate algorithms. In 2022, NIST selected 4 algorithms for standardization (finalized 2024): CRYSTALS-Kyber (lattice-based key encapsulation), CRYSTALS-Dilithium (lattice-based digital signatures), FALCON (lattice-based signatures, compact), and SPHINCS+ (hash-based signatures, stateless). Lattice-based cryptography relies on the hardness of problems like Learning With Errors (LWE) and Shortest Vector Problem (SVP), believed hard even for quantum computers. Hash-based signatures (SPHINCS+) use only hash functions (provably secure if hash is secure) but have large signatures (~50 KB). Code-based (Classic McEliece) and multivariate (Rainbow, broken 2022) were also considered. Isogeny-based (SIKE, broken 2022) was eliminated. CRYSTALS-Kyber is the primary choice for key exchange (replacing RSA/ECDH), with key sizes ~1-2 KB (vs 256 bytes for ECC). CRYSTALS-Dilithium is the primary signature scheme (replacing RSA/ECDSA), with signatures ~2-4 KB (vs 64 bytes for ECDSA). PQC algorithms are slower and have larger keys/signatures than classical, but are implementable on current hardware. Hybrid schemes (classical + PQC) provide defense-in-depth during transition.
                     </p>
+                    <div class="formula-box">
+                        NIST winners (2024): Kyber, Dilithium, FALCON, SPHINCS+<br>
+                        Lattice: LWE, SVP (hard for quantum computers)<br>
+                        Key sizes: Kyber ~1-2 KB (ECC: 256 bytes)<br>
+                        Signatures: Dilithium ~2-4 KB (ECDSA: 64 bytes)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Lattice-Based Cryptography</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Lattice-based cryptography is the leading PQC approach, underlying CRYSTALS-Kyber and Dilithium. A lattice is a discrete subgroup of ℝⁿ (e.g., integer linear combinations of basis vectors). The Learning With Errors (LWE) problem: given (A, b = As + e) where A is a random matrix, s is a secret vector, and e is small error, find s. This is believed hard even for quantum computers (no known polynomial-time quantum algorithm). CRYSTALS-Kyber (key encapsulation): Alice generates public key pk = (A, b = As + e) and secret key sk = s. Bob encapsulates a shared secret by computing c = (u = A^T r + e₁, v = b^T r + e₂ + ⌊q/2⌋·m) where m is the message (shared secret). Alice decapsulates by computing m = ⌊(v - s^T u) / (q/2)⌋. The errors e, e₁, e₂ are small, so s^T u ≈ s^T A^T r = b^T r ≈ v - ⌊q/2⌋·m, allowing recovery of m. Security relies on hardness of LWE. Kyber has three security levels: Kyber-512 (128-bit), Kyber-768 (192-bit), Kyber-1024 (256-bit). Performance: Kyber-768 key generation ~50 μs, encapsulation ~70 μs, decapsulation ~60 μs (vs RSA-2048: ~1 ms). Lattice cryptography is efficient, versatile (encryption, signatures, FHE), and quantum-resistant, making it the foundation of PQC.
                     </p>
+                    <div class="formula-box">
+                        LWE problem: Given (A, b = As + e), find s<br>
+                        Kyber: pk = (A, As + e), ciphertext = (A^T r + e₁, b^T r + e₂ + m)<br>
+                        Security levels: Kyber-512 (128-bit), Kyber-768 (192-bit), Kyber-1024 (256-bit)<br>
+                        Performance: ~50-70 μs (vs RSA: ~1 ms)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Migration and Deployment</h3>
+                    <p>
+                        Migrating to PQC is a massive undertaking requiring updates to protocols (TLS 1.3, SSH, IPsec), libraries (OpenSSL, BoringSSL), and applications (browsers, VPNs, IoT devices). NIST recommends starting migration now to be quantum-safe by 2030. Challenges: larger key/signature sizes strain bandwidth and storage (especially IoT); performance overhead (though manageable); and compatibility with legacy systems. Hybrid schemes (e.g., X25519+Kyber for TLS) combine classical and PQC, providing security if either is secure. Google, Cloudflare, and AWS have deployed hybrid PQC in production. Apple announced PQC for iMessage (2024). Governments mandate PQC: US NIST standards, EU quantum-safe roadmap, China's commercial cryptography regulations. Crypto-agility (ability to switch algorithms quickly) is critical for future-proofing. PQC coexists with QKD: PQC is software-based, scalable, and works over existing networks; QKD provides unconditional security but requires specialized hardware and is limited to ~100 km. Hybrid approach: PQC for general use, QKD for high-security applications. The post-quantum transition is underway, ensuring security against future quantum computers while maintaining compatibility with classical infrastructure.
+                    </p>
+                    <div class="formula-box">
+                        Migration: TLS 1.3, SSH, IPsec, OpenSSL, browsers<br>
+                        Hybrid: Classical + PQC (e.g., X25519+Kyber)<br>
+                        Deployment: Google, Cloudflare, AWS, Apple iMessage<br>
+                        Timeline: NIST recommends quantum-safe by 2030
+                    </div>
                 </div>
             </section>
 
