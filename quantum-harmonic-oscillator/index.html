@@ -22,25 +22,33 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="quantum-number">
+                        Quantum Number n
+                        <span class="value-display" id="quantum-number-value">0</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="quantum-number" min="0" max="5" step="1" value="0">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="omega">
+                        Angular Frequency ω
+                        <span class="value-display" id="omega-value">1.0</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="omega" min="0.5" max="3" step="0.1" value="1.0">
+                </div>
+
+                <div class="input-group">
+                    <label for="time">
+                        Time t (for animation)
+                        <span class="value-display" id="time-value">0.0</span>
+                    </label>
+                    <input type="range" id="time" min="0" max="10" step="0.1" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('ground')">Ground State (n=0)</button>
+                    <button class="preset-btn" onclick="applyPreset('first-excited')">First Excited (n=1)</button>
+                    <button class="preset-btn" onclick="applyPreset('high-energy')">High Energy (n=4)</button>
                 </div>
             </section>
 
@@ -49,34 +57,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: The Harmonic Oscillator Potential</h3>
                     <p>
-                        Quantum Harmonic Oscillator is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The quantum harmonic oscillator (QHO) is one of the most important exactly solvable problems in quantum mechanics. It describes a particle in a parabolic potential V(x) = ½mω²x², where m is mass and ω is the angular frequency. This potential approximates many physical systems near equilibrium: vibrating molecules, phonons in solids, electromagnetic field modes (photons), and even the quantum vacuum. The classical harmonic oscillator oscillates with frequency ω, but the quantum version has discrete energy levels. The QHO is the foundation for quantum field theory—every quantum field is decomposed into infinitely many harmonic oscillators. It's also central to understanding molecular vibrations, infrared spectroscopy, and quantum optics.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Potential: V(x) = ½mω²x² (parabolic well)<br>
+                        Hamiltonian: Ĥ = p̂²/(2m) + ½mω²x̂²<br>
+                        Classical frequency: ω = √(k/m) where k is spring constant
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Energy Levels and Wavefunctions</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Solving the Schrödinger equation Ĥψₙ(x) = Eₙψₙ(x) for the harmonic oscillator gives discrete energy levels Eₙ = ℏω(n + ½) for n = 0, 1, 2, 3, ... The energy levels are equally spaced by ℏω, unlike the quadratic spacing in the infinite square well. The ground state (n=0) has energy E₀ = ½ℏω, called the zero-point energy—even at absolute zero, the oscillator has residual energy due to the uncertainty principle. The wavefunctions ψₙ(x) are Gaussian functions multiplied by Hermite polynomials Hₙ(x). The ground state is ψ₀(x) = (mω/πℏ)^(1/4) exp(-mωx²/2ℏ), a pure Gaussian. Higher states have n nodes (zeros) and oscillate more rapidly. The probability density |ψₙ(x)|² shows n+1 peaks.
                     </p>
+                    <div class="formula-box">
+                        Energy levels: Eₙ = ℏω(n + ½), n = 0, 1, 2, ...<br>
+                        Zero-point energy: E₀ = ½ℏω (ground state)<br>
+                        Wavefunctions: ψₙ(x) = Nₙ Hₙ(√(mω/ℏ)x) exp(-mωx²/2ℏ)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Ladder Operators and Creation/Annihilation</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        The QHO has an elegant algebraic solution using ladder operators (raising/lowering operators). Define â = √(mω/2ℏ)(x̂ + ip̂/(mω)) and â† = √(mω/2ℏ)(x̂ - ip̂/(mω)). These satisfy [â, â†] = 1 (canonical commutation relation). The Hamiltonian becomes Ĥ = ℏω(â†â + ½), where N̂ = â†â is the number operator with eigenvalues n. The operator â† "creates" a quantum of energy ℏω: â†|n⟩ = √(n+1)|n+1⟩, while â "annihilates" one: â|n⟩ = √n|n-1⟩. Starting from the ground state |0⟩ (defined by â|0⟩ = 0), all states are generated by |n⟩ = (â†)ⁿ/√(n!)|0⟩. This formalism is the basis for quantum field theory—particles are excitations of harmonic oscillator modes.
                     </p>
+                    <div class="formula-box">
+                        Ladder operators: â = √(mω/2ℏ)(x̂ + ip̂/(mω)), â† = (â)*<br>
+                        Hamiltonian: Ĥ = ℏω(â†â + ½) = ℏω(N̂ + ½)<br>
+                        Action: â†|n⟩ = √(n+1)|n+1⟩, â|n⟩ = √n|n-1⟩
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications and Physical Systems</h3>
+                    <p>
+                        The QHO appears throughout physics. Molecular vibrations: diatomic molecules like H₂ vibrate as harmonic oscillators, explaining infrared absorption spectra. Phonons: lattice vibrations in solids are quantized as phonons, each mode a harmonic oscillator. Photons: the electromagnetic field is a collection of harmonic oscillators—each mode has energy Eₙ = ℏω(n + ½), where n is the photon number. Quantum optics: coherent states (laser light) are superpositions of number states. Zero-point energy: the vacuum has infinite zero-point energy ½ℏω per mode, leading to the Casimir effect. Quantum computing: superconducting qubits are anharmonic oscillators (slightly nonlinear), where the lowest two levels form a qubit. The QHO is the "hydrogen atom" of quantum mechanics—simple enough to solve exactly, yet rich enough to capture essential quantum phenomena.
+                    </p>
+                    <div class="formula-box">
+                        Molecular vibrations: E_vib = ℏω(n + ½) (IR spectroscopy)<br>
+                        Photons: Each EM mode is a QHO with n photons<br>
+                        Zero-point energy: Vacuum energy = Σ_modes ½ℏωᵢ
+                    </div>
                 </div>
             </section>
 
