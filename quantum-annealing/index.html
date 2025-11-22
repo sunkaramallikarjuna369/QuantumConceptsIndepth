@@ -22,25 +22,35 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="problem-type">Optimization Problem</label>
+                    <select id="problem-type">
+                        <option value="ising" selected>Ising Model</option>
+                        <option value="maxcut">Max-Cut</option>
+                        <option value="tsp">Traveling Salesman</option>
+                        <option value="portfolio">Portfolio Optimization</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="annealing-time">
+                        Annealing Time (μs)
+                        <span class="value-display" id="annealing-time-value">20</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="annealing-time" min="1" max="100" step="1" value="20">
+                </div>
+
+                <div class="input-group">
+                    <label for="num-qubits">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-value">2000</span>
+                    </label>
+                    <input type="range" id="num-qubits" min="100" max="5000" step="100" value="2000">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('dwave')">D-Wave Advantage</button>
+                    <button class="preset-btn" onclick="applyPreset('fast')">Fast Anneal</button>
+                    <button class="preset-btn" onclick="applyPreset('slow')">Slow Anneal</button>
                 </div>
             </section>
 
@@ -49,34 +59,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Annealing - Adiabatic Optimization</h3>
                     <p>
-                        Quantum Annealing is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum annealing is a metaheuristic for solving combinatorial optimization problems by exploiting quantum tunneling and adiabatic evolution. Unlike gate-based quantum computing, quantum annealing is analog: the system evolves continuously under a time-dependent Hamiltonian. The process: (1) Initialize system in ground state of simple Hamiltonian H_0 (e.g., transverse field: H_0 = -Σᵢ σᵢˣ). (2) Slowly evolve to problem Hamiltonian H_P encoding optimization objective (e.g., Ising model: H_P = Σᵢⱼ Jᵢⱼ σᵢᶻσⱼᶻ + Σᵢ hᵢσᵢᶻ). (3) Time-dependent Hamiltonian: H(t) = A(t)H_0 + B(t)H_P where A(t) decreases from 1 to 0, B(t) increases from 0 to 1 over annealing time T. (4) Adiabatic theorem: If evolution is slow enough (T >> ℏ/Δ² where Δ is minimum energy gap), system remains in ground state. Final state is ground state of H_P, encoding optimal solution. Quantum advantage: Quantum tunneling allows system to escape local minima by tunneling through energy barriers (vs. classical thermal hopping over barriers). For problems with tall, narrow barriers, quantum annealing can be exponentially faster than classical simulated annealing. However, for problems with wide barriers or small gaps, quantum advantage is limited. Quantum annealing is heuristic (not guaranteed to find global optimum) but often finds good approximate solutions quickly. D-Wave Systems pioneered commercial quantum annealers with 2000-5000 qubits (superconducting flux qubits).
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        H(t) = A(t)H_0 + B(t)H_P (time-dependent Hamiltonian)<br>
+                        H_0 = -Σᵢ σᵢˣ (transverse field), H_P = Σᵢⱼ Jᵢⱼ σᵢᶻσⱼᶻ + Σᵢ hᵢσᵢᶻ (Ising)<br>
+                        Adiabatic condition: T >> ℏ/Δ² (stay in ground state)<br>
+                        Quantum tunneling: Escape local minima through barriers
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Ising Model and QUBO Formulation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Quantum annealers solve optimization problems encoded as Ising models or Quadratic Unconstrained Binary Optimization (QUBO). Ising model: Classical spin system with Hamiltonian H = Σᵢⱼ Jᵢⱼ sᵢsⱼ + Σᵢ hᵢsᵢ where sᵢ ∈ {-1, +1} are spins, Jᵢⱼ are coupling strengths, hᵢ are local fields. Goal: Find spin configuration {sᵢ} that minimizes H. QUBO: Equivalent formulation with binary variables xᵢ ∈ {0, 1}. H_QUBO = Σᵢⱼ Qᵢⱼ xᵢxⱼ where Q is symmetric matrix. Conversion: sᵢ = 2xᵢ - 1. Many NP-hard problems can be mapped to Ising/QUBO: Max-Cut (graph partitioning), Traveling Salesman Problem (TSP), graph coloring, job scheduling, portfolio optimization, protein folding. Example - Max-Cut: Given graph G=(V,E), partition vertices into two sets to maximize edges between sets. Ising formulation: H = -Σ_(i,j)∈E (1 - sᵢsⱼ)/2. Minimizing H maximizes cut. D-Wave hardware: Chimera graph topology (2000 qubits, degree-6 connectivity) or Pegasus graph (5000 qubits, degree-15). Not all-to-all connectivity, so problem graphs must be embedded (minor embedding). Embedding overhead reduces effective problem size. Challenges: (1) Limited connectivity requires embedding. (2) Noise and imperfect annealing reduce solution quality. (3) Not all problems have efficient Ising/QUBO formulations. (4) Classical optimization (simulated annealing, branch-and-bound) often competitive for small-medium problems. Quantum annealing excels for problems with specific structure (tall, narrow barriers) and large problem sizes where classical methods struggle.
                     </p>
+                    <div class="formula-box">
+                        Ising: H = Σᵢⱼ Jᵢⱼ sᵢsⱼ + Σᵢ hᵢsᵢ, sᵢ ∈ {-1, +1}<br>
+                        QUBO: H = Σᵢⱼ Qᵢⱼ xᵢxⱼ, xᵢ ∈ {0, 1} (sᵢ = 2xᵢ - 1)<br>
+                        Max-Cut: H = -Σ_(i,j)∈E (1 - sᵢsⱼ)/2 (minimize to maximize cut)<br>
+                        D-Wave: Chimera/Pegasus topology, minor embedding required
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: D-Wave Systems and Quantum Annealing Hardware</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        D-Wave Systems is the leading quantum annealing company, with commercial systems since 2011. D-Wave Advantage: 5000+ superconducting flux qubits, Pegasus topology (degree-15 connectivity), operating at 15 mK. Annealing time: 1-2000 μs (typical 20 μs). Readout: 1000+ samples per second. Coherence: T₂ ≈ 1-10 μs (short compared to gate-based qubits, but sufficient for annealing). Noise sources: flux noise, control errors, thermal excitations. Programming model: User specifies Jᵢⱼ and hᵢ (Ising parameters), D-Wave performs annealing and returns samples (low-energy configurations). Post-processing: Multiple annealing runs (1000-10,000 samples), select best solution. Quantum annealing vs. gate-based quantum computing: Annealing is analog (continuous evolution), gate-based is digital (discrete gates). Annealing is specialized (optimization only), gate-based is universal (any algorithm). Annealing has more qubits (5000 vs. 100-1000 for gate-based) but lower coherence and connectivity. Annealing is NISQ-friendly (no error correction needed for heuristic optimization). Applications: D-Wave used for traffic optimization (Volkswagen), drug discovery (Menten AI), financial modeling (JPMorgan), machine learning (feature selection, clustering). Results: Mixed. Some problems show speedup over classical (specific instances with favorable structure), others show no advantage or classical methods win. Quantum annealing is not a silver bullet but a useful tool for specific optimization problems. Future: Improved connectivity (all-to-all or higher-degree graphs), longer coherence, hybrid quantum-classical algorithms (quantum annealing + classical refinement).
                     </p>
+                    <div class="formula-box">
+                        D-Wave Advantage: 5000+ qubits, Pegasus topology, 15 mK<br>
+                        Annealing time: 1-2000 μs (typical 20 μs), 1000+ samples/s<br>
+                        Applications: Traffic, drug discovery, finance, ML<br>
+                        Results: Mixed (speedup for specific problems, not universal)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Quantum Annealing vs. QAOA and Future Directions</h3>
+                    <p>
+                        Quantum Approximate Optimization Algorithm (QAOA) is a gate-based alternative to quantum annealing for combinatorial optimization. QAOA: Prepare parameterized state |ψ(β, γ)⟩ = U_B(β_p)U_C(γ_p)...U_B(β_1)U_C(γ_1)|+⟩^⊗n where U_C(γ) = e^(-iγH_C) (problem Hamiltonian), U_B(β) = e^(-iβH_B) (mixer Hamiltonian). Measure ⟨H_C⟩, optimize β, γ classically to minimize ⟨H_C⟩. QAOA is variational (hybrid quantum-classical), uses short circuits (NISQ-friendly). Comparison: Quantum annealing is continuous (analog), QAOA is discrete (digital). Annealing requires long coherence for adiabatic evolution, QAOA uses short circuits (robust to noise). Annealing is hardware-specific (D-Wave), QAOA runs on any gate-based quantum computer. QAOA has theoretical guarantees (approximation ratios), annealing is heuristic. For shallow circuits (p=1-2 layers), QAOA ≈ quantum annealing. For deep circuits (p→∞), QAOA → adiabatic evolution. Empirical results: QAOA and quantum annealing perform similarly on many problems, both outperformed by classical algorithms for small-medium instances. Quantum advantage for optimization remains elusive. Future directions: (1) Reverse annealing: Start from classical solution, anneal backward to refine. (2) Quantum annealing with error correction: Protect against noise for longer annealing times. (3) Hybrid algorithms: Quantum annealing + classical optimization (e.g., quantum-classical decomposition). (4) New hardware: Photonic annealers, neutral atom annealers. (5) Better problem embeddings: Reduce overhead, improve solution quality. Quantum annealing is a promising approach for optimization, but practical quantum advantage requires continued hardware improvements and algorithmic innovations.
+                    </p>
+                    <div class="formula-box">
+                        QAOA: |ψ(β, γ)⟩ = U_B(β_p)U_C(γ_p)...U_B(β_1)U_C(γ_1)|+⟩^⊗n<br>
+                        Annealing: Analog, long coherence. QAOA: Digital, short circuits<br>
+                        Results: Similar performance, both lag classical for small-medium<br>
+                        Future: Reverse annealing, error correction, hybrid algorithms
+                    </div>
                 </div>
             </section>
 
