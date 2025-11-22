@@ -22,25 +22,37 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="num-qubits">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-value">3</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-qubits" min="2" max="5" step="1" value="3">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
-                    </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <label for="input-state">Input State (decimal)</label>
+                    <select id="input-state">
+                        <option value="0">|0⟩ (all zeros)</option>
+                        <option value="1">|1⟩</option>
+                        <option value="3" selected>|3⟩</option>
+                        <option value="5">|5⟩</option>
+                        <option value="7">|7⟩</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="transform-type">Transform Type</label>
+                    <select id="transform-type">
+                        <option value="qft" selected>QFT (Forward)</option>
+                        <option value="inverse-qft">Inverse QFT</option>
+                        <option value="classical-fft">Classical FFT (comparison)</option>
+                    </select>
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('period-finding')">Period Finding</button>
+                    <button class="preset-btn" onclick="applyPreset('phase-estimation')">Phase Estimation</button>
+                    <button class="preset-btn" onclick="applyPreset('shor-demo')">Shor's Algorithm</button>
                 </div>
             </section>
 
@@ -49,34 +61,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: From Classical to Quantum Fourier Transform</h3>
                     <p>
-                        Quantum Fourier Transform is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        The classical discrete Fourier transform (DFT) maps a vector of N complex numbers (x₀, x₁, ..., x_{N-1}) to another vector (y₀, y₁, ..., y_{N-1}) where yₖ = (1/√N)Σⱼ xⱼ e^(2πijk/N). It decomposes signals into frequency components and is fundamental to signal processing, solving PDEs, and fast multiplication. The fast Fourier transform (FFT) computes DFT in O(N log N) time. The quantum Fourier transform (QFT) is the quantum analog: it maps the computational basis state |j⟩ to (1/√N)Σₖ e^(2πijk/N)|k⟩. For n qubits (N=2ⁿ), QFT transforms |j⟩ = |j_{n-1}...j₁j₀⟩ into a product state: |0.j_{n-1}j_{n-2}...j₀⟩⊗|0.j_{n-2}...j₀⟩⊗...⊗|0.j₀⟩, where |0.j⟩ = (|0⟩+e^(2πi·0.j)|1⟩)/√2. The QFT circuit uses Hadamard gates and controlled phase rotations R_k = diag(1, e^(2πi/2^k)). Remarkably, QFT requires only O(n²) gates (polynomial), while classical FFT needs O(N log N) = O(2ⁿ n) operations (exponential in n). This exponential speedup is the key to Shor's algorithm.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Classical DFT: yₖ = (1/√N)Σⱼ xⱼ e^(2πijk/N)<br>
+                        QFT: |j⟩ → (1/√N)Σₖ e^(2πijk/N)|k⟩<br>
+                        Product form: |0.j_{n-1}...j₀⟩⊗...⊗|0.j₀⟩<br>
+                        Complexity: O(n²) gates (quantum) vs O(2ⁿ n) ops (classical FFT)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: QFT Circuit and Implementation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The QFT circuit for n qubits consists of n stages. Stage k (for qubit k): apply Hadamard to qubit k, then controlled-R_m gates from qubits k+1, k+2, ..., n-1 to qubit k, where R_m rotates by angle 2π/2^m. After all stages, reverse the qubit order (swap operations). For 3 qubits: H on qubit 0, CR₂ from qubit 1, CR₃ from qubit 2; then H on qubit 1, CR₂ from qubit 2; then H on qubit 2; finally swap qubits 0↔2. Total gates: n Hadamards + n(n-1)/2 controlled rotations + n/2 swaps = O(n²). The inverse QFT (QFT†) reverses the circuit: apply inverse swaps, then inverse controlled rotations (R_k† = R_{-k}), then Hadamards. Inverse QFT is used in quantum phase estimation and Shor's algorithm to extract the period. Implementing QFT on hardware requires high-fidelity two-qubit gates (controlled rotations with small angles like π/2⁸ are challenging). Approximate QFT (omitting small-angle rotations) reduces gate count with minimal fidelity loss, making it practical for NISQ devices.
                     </p>
+                    <div class="formula-box">
+                        QFT circuit: H + controlled-R gates + swaps<br>
+                        Gate count: n H + n(n-1)/2 CR + n/2 swaps = O(n²)<br>
+                        Inverse QFT: Reverse circuit (QFT†)<br>
+                        Approximate QFT: Omit small rotations (R_k for large k)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Quantum Phase Estimation</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Quantum phase estimation (QPE) is the killer app of QFT. Given a unitary U and an eigenstate |ψ⟩ with eigenvalue e^(2πiφ), QPE estimates φ to n bits of precision. The algorithm: prepare n ancilla qubits in |0⟩ⁿ and apply Hadamards to get |+⟩ⁿ. Apply controlled-U^(2^k) gates from ancilla qubit k to |ψ⟩ (for k=0 to n-1). This creates the state (1/√2ⁿ)Σⱼ e^(2πiφj)|j⟩|ψ⟩. Apply inverse QFT to the ancilla qubits. Measuring gives j ≈ 2ⁿφ (mod 2ⁿ), so φ ≈ j/2ⁿ. With n bits, φ is estimated to precision 2^(-n). QPE is used in Shor's algorithm (finding the order of a modular exponentiation), quantum chemistry (finding molecular energy eigenvalues), and quantum machine learning (principal component analysis). The bottleneck is implementing controlled-U^(2^k), which requires U to be efficiently implementable. For Shor's algorithm, U is modular exponentiation, which can be done efficiently using quantum arithmetic circuits.
                     </p>
+                    <div class="formula-box">
+                        QPE input: Unitary U, eigenstate |ψ⟩, eigenvalue e^(2πiφ)<br>
+                        QPE output: Estimate φ to n bits (precision 2^(-n))<br>
+                        Circuit: H⊗ⁿ → controlled-U^(2^k) → QFT† → Measure<br>
+                        Applications: Shor's algorithm, quantum chemistry, PCA
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Shor's Algorithm and Cryptography</h3>
+                    <p>
+                        Shor's algorithm (1994) factors integers in polynomial time, breaking RSA cryptography. Given N (product of two primes p and q), Shor's algorithm finds p and q in O((log N)³) time (classical: exponential, ~O(e^((log N)^(1/3)})). The algorithm reduces factoring to period finding: pick random a < N, find the period r of f(x) = a^x mod N (i.e., a^r ≡ 1 mod N). If r is even and a^(r/2) ≢ -1 mod N, then gcd(a^(r/2)±1, N) gives a factor. Period finding uses QPE: prepare |+⟩ⁿ|1⟩, apply controlled-U^(2^k) where U|y⟩ = |ay mod N⟩, then inverse QFT. Measuring gives j/2ⁿ ≈ s/r (for some s), so r is found via continued fractions. The QFT enables extracting the period from the superposition. Shor's algorithm threatens RSA, ECC, and Diffie-Hellman (all rely on hardness of factoring or discrete log). Post-quantum cryptography (lattice-based, hash-based, code-based) is being developed to resist quantum attacks. Implementing Shor's algorithm requires ~10⁶ logical qubits (10⁹ physical qubits with error correction) to factor 2048-bit RSA, estimated for the 2030s-2040s. Current record: factoring 21 = 3×7 (2012, using 4 qubits).
+                    </p>
+                    <div class="formula-box">
+                        Shor's algorithm: Factor N in O((log N)³) time<br>
+                        Period finding: Find r such that a^r ≡ 1 mod N<br>
+                        QFT role: Extract period from superposition<br>
+                        Threat: Breaks RSA, ECC, DH (2030s-2040s with 10⁹ qubits)
+                    </div>
                 </div>
             </section>
 
