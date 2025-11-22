@@ -22,25 +22,34 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="dimension">Hilbert Space Dimension</label>
+                    <select id="dimension">
+                        <option value="2">2D (Single Qubit)</option>
+                        <option value="4">4D (Two Qubits)</option>
+                        <option value="8">8D (Three Qubits)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="state-alpha">
+                        State α (|0⟩ component)
+                        <span class="value-display" id="state-alpha-value">0.707</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="state-alpha" min="0" max="1" step="0.01" value="0.707">
+                </div>
+
+                <div class="input-group">
+                    <label for="state-phase">
+                        State Phase φ (radians)
+                        <span class="value-display" id="state-phase-value">0.00</span>
+                    </label>
+                    <input type="range" id="state-phase" min="0" max="6.28" step="0.01" value="0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('superposition')">Superposition</button>
+                    <button class="preset-btn" onclick="applyPreset('ground')">Ground State</button>
+                    <button class="preset-btn" onclick="applyPreset('excited')">Excited State</button>
                 </div>
             </section>
 
@@ -49,34 +58,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: What is Hilbert Space?</h3>
                     <p>
-                        Hilbert Space is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        A Hilbert space is a complete complex vector space equipped with an inner product. "Complete" means every Cauchy sequence converges to a point in the space (no "holes"). In quantum mechanics, the state of a quantum system is represented by a vector |ψ⟩ in a Hilbert space ℋ. For a single qubit, ℋ is 2-dimensional (ℂ²). For n qubits, ℋ is 2ⁿ-dimensional (ℂ^(2ⁿ)). The inner product ⟨φ|ψ⟩ measures the overlap between states. Hilbert space provides the mathematical framework for all of quantum mechanics—every quantum state, every observable, and every evolution lives in or acts on Hilbert space.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Hilbert space: ℋ (complete complex vector space with inner product)<br>
+                        Single qubit: ℋ = ℂ² (2D complex space = 4 real dimensions)<br>
+                        n qubits: ℋ = ℂ^(2ⁿ) (2ⁿ-dimensional complex space)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Inner Product and Norm</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        The inner product ⟨φ|ψ⟩ on Hilbert space is a complex-valued function satisfying: (1) linearity in the second argument, (2) conjugate symmetry ⟨φ|ψ⟩* = ⟨ψ|φ⟩, (3) positive-definiteness ⟨ψ|ψ⟩ ≥ 0 with equality only for |ψ⟩ = 0. The norm ||ψ|| = √⟨ψ|ψ⟩ gives the "length" of a state vector. In quantum mechanics, states are normalized: ||ψ|| = 1, ensuring probabilities sum to 1. The inner product |⟨φ|ψ⟩|² gives the probability of measuring |φ⟩ when the system is in state |ψ⟩. Orthogonal states (⟨φ|ψ⟩ = 0) are perfectly distinguishable.
                     </p>
+                    <div class="formula-box">
+                        Inner product: ⟨φ|ψ⟩ = Σᵢ φᵢ*ψᵢ ∈ ℂ<br>
+                        Norm: ||ψ|| = √⟨ψ|ψ⟩ ∈ ℝ≥0<br>
+                        Normalization: ⟨ψ|ψ⟩ = 1 for physical states
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Basis and Dimensionality</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        A Hilbert space has a basis—a set of orthonormal vectors {|eᵢ⟩} such that ⟨eᵢ|eⱼ⟩ = δᵢⱼ (Kronecker delta) and any state can be written as |ψ⟩ = Σᵢ cᵢ|eᵢ⟩. For a single qubit, the computational basis is {|0⟩, |1⟩}. For two qubits, it's {|00⟩, |01⟩, |10⟩, |11⟩}. The dimension of the Hilbert space is the number of basis vectors. An n-qubit system has dimension 2ⁿ, which grows exponentially—this is why quantum computers can potentially solve certain problems exponentially faster than classical computers. Different bases (computational, Hadamard, Bell) provide different perspectives on the same quantum state.
                     </p>
+                    <div class="formula-box">
+                        Orthonormal basis: {|e₁⟩, |e₂⟩, ..., |eₙ⟩} with ⟨eᵢ|eⱼ⟩ = δᵢⱼ<br>
+                        Any state: |ψ⟩ = Σᵢ cᵢ|eᵢ⟩ where cᵢ = ⟨eᵢ|ψ⟩<br>
+                        Completeness: Σᵢ |eᵢ⟩⟨eᵢ| = I (identity operator)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Operators on Hilbert Space</h3>
+                    <p>
+                        Linear operators Â: ℋ → ℋ map states to states. Observables (measurable quantities like position, momentum, energy) are represented by Hermitian operators (Â† = Â). Quantum gates (like Hadamard, CNOT) are unitary operators (Û†Û = I) that preserve the norm. The eigenvalue equation Â|a⟩ = a|a⟩ defines eigenstates |a⟩ and eigenvalues a. Measuring observable  collapses the state to an eigenstate, with the measured value being the corresponding eigenvalue. The spectral theorem says every Hermitian operator has a complete set of orthonormal eigenstates—this is the mathematical foundation of quantum measurement.
+                    </p>
+                    <div class="formula-box">
+                        Linear operator: Â(c₁|ψ₁⟩ + c₂|ψ₂⟩) = c₁Â|ψ₁⟩ + c₂Â|ψ₂⟩<br>
+                        Hermitian: Â† = Â (observables)<br>
+                        Unitary: Û†Û = I (quantum gates, time evolution)
+                    </div>
                 </div>
             </section>
 
