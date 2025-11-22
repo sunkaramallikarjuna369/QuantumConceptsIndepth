@@ -22,25 +22,36 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
-                    </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <label for="circuit-type">Circuit Type</label>
+                    <select id="circuit-type">
+                        <option value="bell-state" selected>Bell State Preparation</option>
+                        <option value="teleportation">Quantum Teleportation</option>
+                        <option value="grover">Grover's Algorithm</option>
+                        <option value="qft">Quantum Fourier Transform</option>
+                        <option value="vqe">VQE Ansatz</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="num-qubits">
+                        Number of Qubits
+                        <span class="value-display" id="num-qubits-value">2</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="num-qubits" min="2" max="5" step="1" value="2">
+                </div>
+
+                <div class="input-group">
+                    <label for="circuit-depth">
+                        Circuit Depth
+                        <span class="value-display" id="circuit-depth-value">3</span>
+                    </label>
+                    <input type="range" id="circuit-depth" min="1" max="10" step="1" value="3">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('bell-demo')">Bell State</button>
+                    <button class="preset-btn" onclick="applyPreset('entanglement')">Entanglement</button>
+                    <button class="preset-btn" onclick="applyPreset('algorithm')">Algorithm Circuit</button>
                 </div>
             </section>
 
@@ -49,34 +60,55 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Quantum Circuit Model and Gates</h3>
                     <p>
-                        Quantum Circuits is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum circuits are the standard model for quantum computation, analogous to classical logic circuits. A quantum circuit consists of qubits (wires), quantum gates (operations), and measurements. Time flows left to right. Single-qubit gates (H, X, Y, Z, S, T, rotation gates Rx, Ry, Rz) act on one qubit. Two-qubit gates (CNOT, CZ, SWAP, controlled-U) create entanglement. Multi-qubit gates (Toffoli, Fredkin) enable universal computation. All quantum gates are unitary (reversible): U†U = I. The Hadamard gate H = (1/√2)[[1,1],[1,-1]] creates superposition: H|0⟩ = |+⟩. The CNOT gate flips the target qubit if control is |1⟩: CNOT|00⟩ = |00⟩, CNOT|10⟩ = |11⟩. Any unitary can be decomposed into single-qubit gates and CNOTs (universal gate set). The Solovay-Kitaev theorem states that any unitary can be approximated to precision ε using O(log^c(1/ε)) gates from a finite universal set. Circuit depth (number of time steps) and gate count determine complexity. Shallow circuits (constant depth) are implementable on NISQ devices; deep circuits require error correction.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Single-qubit: H, X, Y, Z, S, T, Rx(θ), Ry(θ), Rz(θ)<br>
+                        Two-qubit: CNOT, CZ, SWAP, controlled-U (create entanglement)<br>
+                        Universal: Any unitary = single-qubit gates + CNOTs<br>
+                        Solovay-Kitaev: Approximate any U with O(log^c(1/ε)) gates
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Bell State Preparation and Entanglement</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        Bell states are maximally entangled two-qubit states: |Φ⁺⟩ = (|00⟩+|11⟩)/√2, |Φ⁻⟩ = (|00⟩-|11⟩)/√2, |Ψ⁺⟩ = (|01⟩+|10⟩)/√2, |Ψ⁻⟩ = (|01⟩-|10⟩)/√2. To prepare |Φ⁺⟩: start with |00⟩, apply H to qubit 0 (get |+0⟩ = (|00⟩+|10⟩)/√2), then CNOT from qubit 0 to qubit 1 (get (|00⟩+|11⟩)/√2). This two-gate circuit creates entanglement. Bell states violate Bell inequalities (CHSH: S ≤ 2 classically, S = 2√2 quantum), proving quantum nonlocality. Entanglement is a resource for quantum protocols: teleportation, superdense coding, QKD, and quantum computing. GHZ states (|000⟩+|111⟩)/√2 and W states (|001⟩+|010⟩+|100⟩)/√3 are multi-qubit entangled states. Entanglement entropy S = -Tr(ρ_A log ρ_A) quantifies entanglement (S=0 for product states, S=log d for maximally entangled). Entanglement cannot be created by local operations and classical communication (LOCC), making it a nonlocal resource. Quantum circuits efficiently create and manipulate entanglement, enabling quantum advantage.
                     </p>
+                    <div class="formula-box">
+                        Bell state |Φ⁺⟩: H on qubit 0, then CNOT(0→1)<br>
+                        Circuit: |00⟩ → H₀ → |+0⟩ → CNOT → (|00⟩+|11⟩)/√2<br>
+                        CHSH: S_quantum = 2√2 > 2 = S_classical<br>
+                        Entanglement entropy: S = -Tr(ρ_A log ρ_A)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Circuit Compilation and Optimization</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        Compiling a quantum algorithm into hardware-executable circuits is nontrivial. High-level algorithms (Shor's, Grover's) must be decomposed into native gates of the target hardware (e.g., IBM uses √X, Rz, CNOT; Google uses √X, √Y, Rz, CZ). Qubit connectivity constraints require SWAP gates to move data between non-adjacent qubits, increasing depth. Circuit optimization reduces gate count and depth: gate cancellation (H·H = I), commutation rules (Rz commutes with Z), and gate fusion (combine adjacent single-qubit gates). Transpilers (Qiskit, Cirq) automate compilation. For example, Toffoli (CCNOT) decomposes into 6 CNOTs and single-qubit gates. Approximate compilation trades fidelity for efficiency (e.g., T-gate synthesis using Clifford+T). Variational circuits (VQE, QAOA) use parameterized gates Ry(θ), Rz(φ) optimized classically. Circuit depth is critical: NISQ devices have coherence times ~100 μs and gate times ~10-100 ns, limiting depth to ~10³ gates. Error mitigation (zero-noise extrapolation, probabilistic error cancellation) improves NISQ results. Future fault-tolerant circuits will use logical gates on error-corrected qubits, enabling arbitrary depth.
                     </p>
+                    <div class="formula-box">
+                        Compilation: Algorithm → native gates (√X, Rz, CNOT, CZ)<br>
+                        Optimization: Gate cancellation, commutation, fusion<br>
+                        Toffoli: Decomposes into 6 CNOTs + single-qubit gates<br>
+                        NISQ limit: Depth ~10³ gates (coherence time / gate time)
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Quantum Circuit Complexity and Applications</h3>
+                    <p>
+                        Quantum circuit complexity studies the resources (gates, depth, qubits) needed to implement algorithms. BQP (bounded-error quantum polynomial time) is the class of problems solvable by quantum circuits with polynomial size and depth. BQP contains P (classical polynomial time) and is believed to contain problems outside NP (e.g., factoring via Shor's algorithm). Quantum supremacy (Google 2019, 53 qubits, depth ~20) demonstrated a task intractable classically. Circuit depth determines parallelism: constant-depth circuits (AC⁰) are weak, but quantum constant-depth circuits with measurements (IQP) can solve hard problems. Measurement-based quantum computing (MBQC) uses a cluster state and single-qubit measurements, equivalent to the circuit model. Adiabatic quantum computing (AQC) evolves a Hamiltonian slowly, also equivalent to circuits. Applications: Grover's search (depth O(√N)), Shor's factoring (depth O((log N)³)), VQE/QAOA (depth O(p) for p layers), quantum simulation (depth O(t/Δt) for time t). Quantum circuits are the foundation of quantum computing, enabling algorithm design, hardware implementation, and complexity analysis. Future quantum computers will execute circuits with millions of gates on error-corrected qubits, solving problems intractable classically.
+                    </p>
+                    <div class="formula-box">
+                        BQP: Quantum polynomial time (contains P, believed ⊃ NP)<br>
+                        Quantum supremacy: 53 qubits, depth ~20 (Google 2019)<br>
+                        Circuit depth: Grover O(√N), Shor O((log N)³), VQE O(p)<br>
+                        Future: Millions of gates on error-corrected qubits
+                    </div>
                 </div>
             </section>
 
