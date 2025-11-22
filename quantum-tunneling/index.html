@@ -22,25 +22,33 @@
                 <h2>Input</h2>
                 
                 <div class="input-group">
-                    <label for="param1">
-                        Parameter 1
-                        <span class="value-display" id="param1-value">0.5</span>
+                    <label for="barrier-height">
+                        Barrier Height V₀ (eV)
+                        <span class="value-display" id="barrier-height-value">3.0</span>
                     </label>
-                    <input type="range" id="param1" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="barrier-height" min="1" max="5" step="0.1" value="3.0">
                 </div>
 
                 <div class="input-group">
-                    <label for="param2">
-                        Parameter 2
-                        <span class="value-display" id="param2-value">0.5</span>
+                    <label for="barrier-width">
+                        Barrier Width L (nm)
+                        <span class="value-display" id="barrier-width-value">2.0</span>
                     </label>
-                    <input type="range" id="param2" min="0" max="1" step="0.01" value="0.5">
+                    <input type="range" id="barrier-width" min="0.5" max="4" step="0.1" value="2.0">
+                </div>
+
+                <div class="input-group">
+                    <label for="particle-energy">
+                        Particle Energy E (eV)
+                        <span class="value-display" id="particle-energy-value">2.0</span>
+                    </label>
+                    <input type="range" id="particle-energy" min="0.5" max="4.5" step="0.1" value="2.0">
                 </div>
 
                 <div class="preset-buttons">
-                    <button class="preset-btn" onclick="applyPreset('default')">Default</button>
-                    <button class="preset-btn" onclick="applyPreset('example1')">Example 1</button>
-                    <button class="preset-btn" onclick="applyPreset('example2')">Example 2</button>
+                    <button class="preset-btn" onclick="applyPreset('low-energy')">Low Energy (E < V₀)</button>
+                    <button class="preset-btn" onclick="applyPreset('high-tunneling')">High Tunneling</button>
+                    <button class="preset-btn" onclick="applyPreset('thin-barrier')">Thin Barrier</button>
                 </div>
             </section>
 
@@ -49,34 +57,51 @@
                 <h2>Process</h2>
                 
                 <div class="process-step">
-                    <h3>Step 1: Understanding the Concept</h3>
+                    <h3>Step 1: Classical Impossibility vs Quantum Reality</h3>
                     <p>
-                        Quantum Tunneling is a fundamental concept in quantum mechanics that describes...
-                    </p>
-                </div>
-
-                <div class="process-step">
-                    <h3>Step 2: Mathematical Framework</h3>
-                    <p>
-                        The mathematical description involves quantum operators and state vectors.
+                        Quantum tunneling is a purely quantum phenomenon with no classical analog. Classically, a particle with energy E cannot penetrate a potential barrier of height V₀ > E—it would be reflected 100%. However, in quantum mechanics, the wavefunction ψ(x) does not abruptly vanish at the barrier; instead, it decays exponentially inside the barrier as ψ(x) ∝ e^(-κx), where κ = √(2m(V₀-E)/ℏ²). If the barrier has finite width L, the wavefunction can "leak through" to the other side, giving a nonzero transmission probability T. This is tunneling—the particle has a probability T of appearing on the far side of the barrier, even though it lacks the classical energy to surmount it. Tunneling is not the particle "borrowing energy" or "going over the barrier"—it's a direct consequence of the wave nature of matter and the continuity of the wavefunction.
                     </p>
                     <div class="formula-box">
-                        Mathematical formulas and equations
+                        Classical: E < V₀ ⟹ T = 0 (total reflection)<br>
+                        Quantum: T ≈ e^(-2κL) where κ = √(2m(V₀-E)/ℏ²)<br>
+                        Wavefunction in barrier: ψ(x) ∝ e^(-κx) (exponential decay)
                     </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 3: Physical Interpretation</h3>
+                    <h3>Step 2: Transmission Probability and WKB Approximation</h3>
                     <p>
-                        The physical meaning and implications of this concept in quantum systems.
+                        For a rectangular barrier of height V₀ and width L, the exact transmission probability is T = [1 + (V₀²sinh²(κL))/(4E(V₀-E))]⁻¹ for E < V₀. For thick barriers (κL ≫ 1), this simplifies to T ≈ 16(E/V₀)(1 - E/V₀)e^(-2κL), showing exponential suppression with barrier width. The tunneling probability depends critically on three factors: (1) barrier height V₀ - E (higher barrier ⟹ lower T), (2) barrier width L (wider barrier ⟹ exponentially lower T), and (3) particle mass m (heavier particle ⟹ lower T). For arbitrary barrier shapes V(x), the WKB (Wentzel-Kramers-Brillouin) approximation gives T ≈ exp(-2∫√(2m(V(x)-E)/ℏ²)dx), integrating over the classically forbidden region. This explains why electrons tunnel easily but macroscopic objects never do—the exponential suppression with mass is enormous.
                     </p>
+                    <div class="formula-box">
+                        Rectangular barrier: T ≈ 16(E/V₀)(1 - E/V₀)e^(-2κL)<br>
+                        WKB approximation: T ≈ exp(-2∫√(2m(V(x)-E)/ℏ²)dx)<br>
+                        Exponential dependence: T ∝ e^(-2√(2m(V₀-E))L/ℏ)
+                    </div>
                 </div>
 
                 <div class="process-step">
-                    <h3>Step 4: Applications</h3>
+                    <h3>Step 3: Tunneling Time and Causality</h3>
                     <p>
-                        How this concept is used in quantum computing, quantum information, and other applications.
+                        How long does tunneling take? This is a subtle question. The Büttiker-Landauer traversal time τ = ℏ(dφ/dE), where φ is the phase shift of the transmitted wave, gives a characteristic timescale. For opaque barriers (T ≪ 1), τ saturates at τ ≈ L/v_barrier, where v_barrier = √(2(V₀-E)/m) is the "velocity" inside the barrier. Remarkably, τ can be shorter than L/c (speed of light), leading to apparent superluminal velocities. However, this does not violate causality—the peak of a wavepacket can travel faster than c, but no information or energy is transmitted superluminally. The "tunneling time paradox" arises from trying to assign a classical trajectory to a quantum process. Tunneling is fundamentally non-local—the particle does not have a well-defined position inside the barrier. Experiments with attosecond pulses have measured tunneling times, confirming quantum predictions.
                     </p>
+                    <div class="formula-box">
+                        Traversal time: τ = ℏ(dφ/dE) (phase-time relation)<br>
+                        Saturation: τ ≈ L/v_barrier for opaque barriers<br>
+                        No causality violation: Information speed ≤ c always
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <h3>Step 4: Applications and Physical Phenomena</h3>
+                    <p>
+                        Tunneling is ubiquitous in nature and technology. Alpha decay: radioactive nuclei emit alpha particles via tunneling through the Coulomb barrier—Gamow's 1928 theory explained decay rates using tunneling. Scanning tunneling microscope (STM): electrons tunnel between a sharp tip and a surface, allowing atomic-resolution imaging (Nobel Prize 1986). Tunnel diodes: semiconductor devices exploit tunneling for ultra-fast switching. Nuclear fusion in stars: protons tunnel through the Coulomb repulsion barrier to fuse, powering the Sun—without tunneling, stars would not shine. Ammonia maser: the nitrogen atom tunnels through the plane of hydrogen atoms, creating a double-well potential used in the first maser (1954). Quantum computing: superconducting qubits use Josephson junctions, where Cooper pairs tunnel through an insulating barrier. Tunneling is also central to quantum field theory—vacuum decay, Hawking radiation, and instantons all involve tunneling processes.
+                    </p>
+                    <div class="formula-box">
+                        Alpha decay: Decay rate Γ ∝ e^(-2G) (Gamow factor)<br>
+                        STM: Tunneling current I ∝ e^(-2κd) (exponential with distance)<br>
+                        Nuclear fusion: Rate ∝ e^(-E_G/kT) where E_G is Gamow energy
+                    </div>
                 </div>
             </section>
 
